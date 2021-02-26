@@ -10,19 +10,22 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # List of all the files in the database
 def index(request):
-    # Get the files from the database and render the template
+    # Get the files from the database and setup-up the lastpagetrue variable
     files = Filepage.objects.all()
     lptrue = False
 
+    # Save user's id
     uid = request.user.id
     user = User.objects.get(id=uid)
 
+    # Check whether the user has a latest page
     try:
         if user.latestpage:
             lptrue = True
     except:
         pass
 
+    # Return the index with a list of the files and whether the user has a last page
     return render(request, 'files/index.html', {
         "files":files,
         "lptrue":lptrue
