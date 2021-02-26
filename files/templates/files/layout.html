@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    <style>
+        .opdracht {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: lightslategray;
+        }
+    </style>
+    <body>
+        {% if message %}
+        <div>{{ message }}</div>
+        {% endif %}
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

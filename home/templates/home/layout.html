@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+    </head>
+    <body>
+        {% if message %}
+        <div>{{ message }}</div>
+        {% endif %}
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "files/layout.html" %}
+
+{% block title %} List of files {% endblock %}
+
+{% block body %}
+
+<h1>A list of the files</h1>
+
+<ul>
+{% for file in files %}
+    <li>
+        <a href="{% url 'fileview' file.chapterpath file.path %}">{{ file.title }}</a>
+    </li>
+{% endfor %}
+</ul>
+
+{% if lptrue %}
+    <a href="{% url 'latestpage' %}">Latest page!</a>
+{% endif %}
+
+{% endblock %}

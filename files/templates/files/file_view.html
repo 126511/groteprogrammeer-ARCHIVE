@@ -1,0 +1,11 @@
+{% extends "files/layout.html" %}
+
+{% block title %} {{file.title }} {% endblock %}
+
+{% block body %}
+    <h6>this shows for every file!</h6>
+{% autoescape off %}
+    {{ file.file }}
+{% endautoescape %}
+
+{% endblock %}

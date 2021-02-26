@@ -1,0 +1,58 @@
+<h1>Les 2 - Het begin</h1>
+<p>Het doel van deze les in het kunnen vragen aan de gebruiker om een waarde, die waar wij vervolgens iets mee kunnen doen.</p>
+
+
+<h2>Paragraaf 1: Het opzetten van programma</h2>
+<p>Maar voor we kunnen beginnen met het schrijven van opdrachten voor de computer moeten we eerst ons bestand opzetten. Er zijn twee dingen die je moet doen voordat je in C kan beginnen.</p>
+<ul>
+    <li>Het importeren van verschililende bibliotheken</li>
+    <ul>
+        <li>
+            <p>C zichzelf is niet zo'n uitgebreide <strong>programeertaal</strong>, daarom moeten we voor de simpelste opdracht, het uitprinten van een stukje tekst, al een <strong>bibliotheek</strong> (library) importeren. Gelukkig is dit heel erg simpel:</p>
+            <p> <code>#include &ltstdio.h&gt</code></p>
+            <p>	Met <code>#include</code> zeg je tegen de computer dat het volgende wilt importeren.
+                <code>stdio.h</code> staat voor StandardIO, het is dus een standaard library voor INPUT/OUTPUT. Het staat tussen haakjes zodat C weet dat het een verwijzing is naar een bestand dat <code>stdio.h</code> heet. Het bestandstype <code>.h</code> staat voor <strong>header</strong>, ofwel een library.
+            </p>
+        </li>
+    </ul>
+    <li>Het openen van een hoofdfunctie</li>
+    <ul>
+        <li>
+            <p>Een <strong>functie</strong> is een verzameling van opdrachten. Denk bijvoorbeeld aan wandelen. Dat is een functie die bestaat uit opdrachten zoals: rechterbeen omhoog, vooruit en naar beneden en linkerbeen omhoog, vooruit en naar beneden. Elk programma moet een hoofdfunctie hebben. die noemen we <code>main</code>. Een functie kan een <strong>argument</strong> hebben: dat is een input-waarde, zoals bijvoorbeeld hoeveel stappen je loopt. Ook heeft een functie een <strong>return</strong>-waarde. Dat is vaak een geheel getal zoals 0 of 1. Als het 0 is, is de functie succesvol uitgevoerd. Als het 1 is, is er een error gekomen en is de functie vroegtijdig gestopt.</p>
+            <p><code>int main(void)</code></p>
+            <ul>
+                <li><code>int</code> is de return-waarde; het staat voor <strong>integer</strong> (geheel getal). <code>Void</code> betekent dat <code>main</code> geen arugments nodig heeft. Dit is het standaard format voor een main-functie.</li>
+                <li>Daarnaast hebben we ook nog accolades { } nodig om de code die in de functie hoort te scheiden van die daarbuiten. We hebben nu dit bestand.</li>
+            </ul>
+        </li>
+    </ul>
+</ul>
+
+
+<iframe height="400px" width="100%" src="https://repl.it/@126511/EenBestandOpzetten?lite=true" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>            
+
+
+<h2>Paragraaf 2: Het uitprinten van tekst</h2>
+<p>Nu we weten hoe we een programma kunnen starten kunnen we ook ons programma <strong>runnen</strong>, ofwel uitvoeren. Druk maar op de groene pijl middel bovenaan het venster hierboven. In het donkerblauwe veld; de <strong>terminal</strong>, zie je dat het programma twee commands uitvoert:</p>
+<ul>
+    <li><code>clang</code> (met wat extra tekst erachter): <code>clang</code> is een programma dat van de tekst in het bestand een vertaling maakt naar een taal die de computer begrijpt. Je hoeft niet te begrijpen waarom dat command werkt en wat al die extra arguments doen.</li>
+    <li><code>./main</code>: dit betekent, voer de vertaling uit. <code>Clang</code> heeft de vertaling <clang>main</clang> genoemd. Als de vertaling <code>programma</code> had geheten, was het command dus <code>./programma</code> geweest. Deze <code>main</code> heeft niks te maken met het feit van onze hoofd-funtie main heet.</li>
+</ul>
+<p>Als je het programma uitvoert zie je dat er niks gebeurt. Dat komt omdat onze functie (tussen de accolades) leeg is! Laten we dat snel is opvullen met een opdracht voor de computer. De eerste opdracht is <code>printf</code>. Deze opdracht neemt 1 argument: de tekst die je wilt printen, deze tekst moet je tussen aanhalingstekens zetten, dat kunnen dubbele (") of enkele (') aanhalingstekens zijn. Als je maar begint en eindigt met dezelfde. Als je goedemorgen wilt uitprinten krijg je dus <code>printf("goedemorgen")</code>. Aan het einde van een functie heb je nog 1 ding nodig: een puntkomma (;). Dit geeft voor het programma aan dat je functie nu klaar is. Dan krijg je dit: <code>printf("goedemorgen");</code>.</p>
+<p>Aan het einde van een print-functie, zit niet standaard een nieuwe regel. Om een nieuwe regel (ENTER) te printen aan het einde van hetgeen dat je print gebruik je het teken <code>\n</code>. Een backslash (\) geeft aan de computer aan dat het teken erachter niet zomaar moet worden uitgeprint, maar dat het moet worden <strong>geformatteerd</strong>, dat is het anders uitprinten van wat het is. De manier waarop je goedemorgen uitprint is dus <code>printf("goedemorgen\n");</code>.</p>
+
+<p class="opdracht">Opdracht 1: Schrijf op regel 4 van het bestand boven paragraaf 2 een regel die "hallo, wereld" uitprint. Om te checken of het werkt, druk je op de groene pijl bovenin.</p>
+
+<h2>Paragraaf 3: Het vragen om input van een gebruiker</h2>
+<p>Vaak willen we dat ons programma niet zomaar iets uitprint, maar dat we een vragen om <strong>input</strong> aan de gebruiker en daar dan later iets mee doen. Voor het vragen van een input hebben we een nieuwe library nodig. Naast <code>stdio.h</code> hebben we nu <code>cs50.h</code> nodig. Hierin zit de opdracht <code>get_string</code>. Deze functie neemt als argument de tekst die je wilt uitprinten en dan de gebruiken in een terminal vraagt. Voer bijvoorbeeld het programma hieronder uit. Het vraagt je om twee gehele getallen, die het programma optelt en die waarde weer uitprint.</p>
+
+
+<iframe height="400px" width="100%" src="https://repl.it/@126511/AddIntegers?lite=true" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
+
+
+<p>In het bestand hierboven wordt op regel 5, 6 en 8 een variabele. Met <code>get_int</code> (een functie om de gebruiker een integer te vragen) worden x en y gedefiniëerd. Een <strong>variabele</strong> is een naam die je aan een waarde geeft. Een variabele begin je met het type waarde die je wilt opslaan, voorbeelden zijn <code>int</code> (geheel getal), <code>string</code> (stukje tekst), <code>char</code> (karakter) of een <code>bool</code> (waar/niet waar). In dit geval kiezen we voor een <code>int</code>, aangezien je twee getallen wilt optellen. Vervolgens maken we een nieuwe variabele: <code>z</code>, wat de som is van <code>x</code> en <code>y</code>. Je mag variabelen dus optellen alsof het echte getallen zijn.</p>
+<p>Om een variabele uit te printen gebruik je <code>%</code> met een letter daarachter. Voor integers is dat  <code>i</code>, voor strings is dat <code>s</code>. Binnen de haakjes achter <code>printf</code>, maar buiten de aanhalingsteken voeg je de naam van de variabele toe na een komma. Om x uit te printen doe je dus <code>printf("%i\n", x);</code>.</p>
+
+<p class="opdracht">Opdracht 2: Schrijf een programma dat de gebruiker om een naam vraagt en dan Hallo, [naam]! uitprint.</p>
+
+<h6 class="subtitle">CS-methode door Vincent Ruijgrok en Christiaan van der Haven</h6>
