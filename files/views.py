@@ -59,13 +59,10 @@ def latestpage(request):
     user = User.objects.get(id=uid)
 
     # Try to find the user's latest page 
-    try:
-        latestpage = user.latestpage
-        lpath = latestpage.path
-        lchapterpath = latestpage.chapterpath
-    # If that doesn't exist, redirect to the first page there is
-    except:
-        return HttpResponseRedirect("/files/h1/1")
+    latestpage = user.latestpage
+    lpath = latestpage.path
+    lchapterpath = latestpage.chapterpath
+
 
     # Return a redirect to the correct path (/files/chapterpath/path)
     return HttpResponseRedirect("/files/" + lchapterpath + "/" + lpath)
