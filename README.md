@@ -1,3 +1,5 @@
+Dit is chris z'n branch. Welcome! And have fun :)
+
 Current functionalities:
 
 - Loggin' in and out
