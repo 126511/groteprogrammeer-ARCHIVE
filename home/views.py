@@ -88,11 +88,3 @@ def register(request):
         return render(request, "home/register.html", {
             'form':form
         })
-        
-
-        
-
-
-
-
-
