@@ -3,16 +3,19 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
+# Decide whether the default path redirects to /user or /index
 def home_index(request):
-    # Decides whether the default path ("") redirects to /user or /index
+    # If the user's not logged in, go to /index, otherwise to /user
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/index")
     return HttpResponseRedirect("/user")
 
+# Render a form for the user to log in
 def login_view(request):
     # Logs the user in via a form
     if request.method == "POST":
@@ -41,6 +44,7 @@ def login_view(request):
         return render(request, "home/login.html")
 
 
+# Log users out
 def logout_view(request):
     # Log the user out and redirect to the main page, providing a message of success
     logout(request)
@@ -48,15 +52,45 @@ def logout_view(request):
         "message": "We logged you out."
     })
 
+# General home-page
 def index(request):
     # Render the corresponding template
     return render(request, "home/index.html")
 
+# Render a page specific for a user
 @login_required
 def user(request):
     # Render the corresponding template, if the user's logged in
     return render(request, "home/user.html")
 
+# Register a user
+def register(request):
+    # Create a form with which the user can log in
+    form = UserCreationForm(request.POST)
+    # If the user's provided a valid form
+    if form.is_valid():
+        # Save the data
+        form.save()
+        username = form.cleaned_data.get("username")
+        password1 = form.cleaned_data.get("password1")
+        
+        # Register the user and log them in automatically
+        user = authenticate(username=username, password=password1)
+        login(request, user)
+
+        # Render their own user page and a corresponding message of success
+        return render(request, 'home/user.html', {
+            "message":"We've created your account!"
+        })
+    
+    else:
+        # Render the template with the form
+        return render(request, "home/register.html", {
+            'form':form
+        })
+        
+
+        
 
 
 

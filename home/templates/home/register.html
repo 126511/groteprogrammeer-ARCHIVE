@@ -1,0 +1,19 @@
+{% extends "home/layout.html" %}
+
+{% block body %}
+    <h1>Register</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <p>
+                {{ field.label_tag }} <br> {{ field }}
+
+                {% for error in field.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </p>
+        {% endfor %}
+        <button type="submit">Sign up</button>     
+    </form>
+{% endblock %}
+
