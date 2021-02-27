@@ -1,0 +1,35 @@
+[33mcommit c9a44765ce7b5fbe58b040671c96e3e112390028[m[33m ([m[1;36mHEAD -> [m[1;32mvincent_main[m[33m, [m[1;31morigin/vincent_main[m[33m, [m[1;32mmain[m[33m)[m
+Author: 126511 <126511@dgwcloud.nl>
+Date:   Sat Feb 27 11:48:15 2021 +0100
+
+    deleted a test
+
+[33mcommit dd05483542f1ce3047e1cd0e2bd36e54d57afc83[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: 126511 <126511@dgwcloud.nl>
+Date:   Fri Feb 26 21:48:31 2021 +0100
+
+    added comments to files/views.py
+
+[33mcommit 198ff10e5fac465e1793a232c3db5f8bb7bfc482[m
+Author: 126511 <126511@dgwcloud.nl>
+Date:   Fri Feb 26 21:25:31 2021 +0100
+
+    removed unused function
+
+[33mcommit d35834c71337a154a396c7411e14fc2abbb08318[m
+Author: 126511 <126511@dgwcloud.nl>
+Date:   Fri Feb 26 21:23:12 2021 +0100
+
+    removed //
+
+[33mcommit 87049fb609123b45d2f977364cc4905eb9150056[m
+Author: 126511 <126511@dgwcloud.nl>
+Date:   Fri Feb 26 17:37:45 2021 +0100
+
+    startup
+
+[33mcommit c4950d70aa34209640cf2e983300c39223ae7673[m
+Author: 126511 <126511@dgwcloud.nl>
+Date:   Fri Feb 26 17:34:47 2021 +0100
+
+    readme
