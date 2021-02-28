@@ -1,15 +1,16 @@
 {% extends "home/layout.html" %}
 
 {% block body %}
+    <h1>Log in</h1>
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
 
         {% if request.GET.next %}
             <input type="hidden" name="next" value="{{ request.GET.next }}">
         {% endif %}
-        <input type="text" name="username" placeholder="Username" autofocus>
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" value="Log in">
+        <p><input type="text" name="username" placeholder="Username" autofocus></p>
+        <p><input type="password" name="password" placeholder="Password"></p>
+        <p><input type="submit" value="Log in"></p>
     </form>
 {% endblock %}
 

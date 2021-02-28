@@ -9,9 +9,34 @@ from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
 # List of all the files in the database
+@login_required
 def index(request):
-    # Get the files from the database and setup-up the lastpagetrue variable
+    # Set up a set with all chapterpaths and a dict with the all pages
+    chapterpaths = set()
+    pagedict = dict()
+
+    # Populate the set of chapterpaths
     files = Filepage.objects.all()
+    for file in files:
+        chapterpaths.add(file.chapterpath)
+
+    # Define a function as a key for sorting the pathslist
+    def getPathInt(tuplein):
+        return int(tuplein[0])
+
+    # For every chapterpath, find the corresponding paths and titles
+    for chapterpath in sorted(chapterpaths):
+        pathslist = []
+        for p in Filepage.objects.filter(chapterpath=chapterpath):
+            # and put them in a list as a tuple
+            curpage = (p.path, p.title)
+            pathslist.append(curpage)
+        # that is sorted, by the paths
+        pathslist = sorted(pathslist, key=getPathInt)
+        # and then connect the chapterpath to that list in pagedict
+        pagedict[chapterpath] = pathslist
+
+    # Set up the lastpagetrue variable
     lptrue = False
 
     # Save user's id
@@ -27,11 +52,13 @@ def index(request):
 
     # Return the index with a list of the files and whether the user has a last page
     return render(request, 'files/index.html', {
-        "files":files,
-        "lptrue":lptrue
+        "lptrue":lptrue,
+        "pagedict":pagedict,
+        "Filepage":Filepage
     })
 
 # Basic view for viewing a file and updating the latestpage a user's visited
+@login_required
 def file_view(request, chapterpath, path):
     # Query for the file and save the user's id
     file = Filepage.objects.get(chapterpath=chapterpath, path=path)
@@ -56,6 +83,7 @@ def file_view(request, chapterpath, path):
     })
 
 # Redirect a user to their latest page
+@login_required
 def latestpage(request):
     # Save the user's id
     uid = request.user.id
