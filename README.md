@@ -1,4 +1,4 @@
-Current functionalities:
+Dit is chris z'n branch. Welcome! And have fun :)
 
 - Loggin' in and out
 - An index page for logged in users and for logged out ones
@@ -24,3 +24,8 @@ USER HOME PAGE
 - cards with news, marks, upcoming projects etc...
 - Easily go to documentation, lessons, projects and more
 - Other nifty features to make life easier
+
+Ik ga hier allemaal leuke dingen toevoegen yehes, maar deze moet dan eigenlijk niet naar main gepusht worden dat moet ik nog ff uitzoeken
+
+ff 1 dingetje veranderen hooorrr, echt de laatste keer
+
