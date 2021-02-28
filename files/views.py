@@ -11,25 +11,30 @@ from django.core.exceptions import ObjectDoesNotExist
 # List of all the files in the database
 @login_required
 def index(request):
-    # Set up a set with all chapterpaths and a dict with the paths
+    # Set up a set with all chapterpaths and a dict with the all pages
     chapterpaths = set()
-    pathsdict = dict()
+    pagedict = dict()
 
     # Populate the set of chapterpaths
     files = Filepage.objects.all()
     for file in files:
         chapterpaths.add(file.chapterpath)
 
-    # For every chapterpath, find the corresponding paths
+    # Define a function as a key for sorting the pathslist
+    def getPathInt(tuplein):
+        return int(tuplein[0])
+
+    # For every chapterpath, find the corresponding paths and titles
     for chapterpath in sorted(chapterpaths):
-        paths = []
+        pathslist = []
         for p in Filepage.objects.filter(chapterpath=chapterpath):
-            # and put them in a list,
-            paths.append(p.path)
-        # that is sorted
-        paths = sorted(paths, key=lambda x: int(x))
-        # and then connect the chapterpath to that list in pathsdict
-        pathsdict[chapterpath] = paths
+            # and put them in a list as a tuple
+            curpage = (p.path, p.title)
+            pathslist.append(curpage)
+        # that is sorted, by the paths
+        pathslist = sorted(pathslist, key=getPathInt)
+        # and then connect the chapterpath to that list in pagedict
+        pagedict[chapterpath] = pathslist
 
     # Set up the lastpagetrue variable
     lptrue = False
@@ -48,7 +53,8 @@ def index(request):
     # Return the index with a list of the files and whether the user has a last page
     return render(request, 'files/index.html', {
         "lptrue":lptrue,
-        "pathsdict":pathsdict
+        "pagedict":pagedict,
+        "Filepage":Filepage
     })
 
 # Basic view for viewing a file and updating the latestpage a user's visited

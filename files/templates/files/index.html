@@ -9,18 +9,17 @@
 {% endif %}
 
 <h1>A list of the files</h1>
+ 
 
 <ul>
-    {% for chapterpath, paths in pathsdict.items %}
+    {% for chapterpath, tuples in pagedict.items %}
        <li>{{ chapterpath }}</li>
        <ul>
-            {% for path in paths %}
-                <li><a href="{% url 'fileview' chapterpath path %}">{{ path }}</a></li>
+            {% for tuple in tuples %}
+                <li><a href="{% url 'fileview' chapterpath tuple.0 %}">{{ tuple.1 }}</a></li>
             {% endfor %}
        </ul>
     {% endfor %}
 </ul>
-
-
 
 {% endblock %}
