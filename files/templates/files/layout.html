@@ -3,22 +3,12 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
     </head>
-
-    <style>
-        .opdracht {
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: lightslategray;
-        }
-    </style>
     <body>
+        <!-- status_code returns -1 for an error, 0 for message and 1 for success -->
         {% if message %}
         <div>{{ message }}</div>
         {% endif %}
+
         {% block body %}
         {% endblock %}
     </body>

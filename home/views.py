@@ -36,7 +36,8 @@ def login_view(request):
         else:
             # Let them try again and shout at them
             return render(request, "home/login.html", {
-                "message": "That's not valid input you blithering idiot!!!!!!!"
+                "message": "That's not valid input you blithering idiot!!!!!!!",
+                "status_code":-1
             })
 
     # Render the form for the user so they can log in
@@ -48,7 +49,8 @@ def logout_view(request):
     # Log the user out and redirect to the main page, providing a message of success
     logout(request)
     return render(request, "home/index.html", {
-        "message": "We logged you out."
+        "message": "We logged you out.",
+        "status_code":1
     })
 
 # General home-page
@@ -79,7 +81,8 @@ def register(request):
 
         # Render their own user page and a corresponding message of success
         return render(request, 'home/user.html', {
-            "message":"We've created your account!"
+            "message":"We've created your account!",
+            "status_code":1
         })
     
     else:
