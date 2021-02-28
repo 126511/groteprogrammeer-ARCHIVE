@@ -21,12 +21,13 @@ def index(request):
         chapterpaths.add(file.chapterpath)
 
     # For every chapterpath, find the corresponding paths
-    for chapterpath in chapterpaths:
+    for chapterpath in sorted(chapterpaths):
         paths = []
         for p in Filepage.objects.filter(chapterpath=chapterpath):
             # and put them in a list,
             paths.append(p.path)
         # and then connect the chapterpath to that list in pathsdict
+        paths = sorted(paths, key=lambda x: int(x))
         pathsdict[chapterpath] = paths
 
     # Set up the lastpagetrue variable
