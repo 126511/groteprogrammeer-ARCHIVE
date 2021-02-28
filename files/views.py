@@ -26,8 +26,9 @@ def index(request):
         for p in Filepage.objects.filter(chapterpath=chapterpath):
             # and put them in a list,
             paths.append(p.path)
-        # and then connect the chapterpath to that list in pathsdict
+        # that is sorted
         paths = sorted(paths, key=lambda x: int(x))
+        # and then connect the chapterpath to that list in pathsdict
         pathsdict[chapterpath] = paths
 
     # Set up the lastpagetrue variable
