@@ -43,7 +43,6 @@ def login_view(request):
     else:
         return render(request, "home/login.html")
 
-
 # Log users out
 def logout_view(request):
     # Log the user out and redirect to the main page, providing a message of success

@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
 # List of all the files in the database
+@login_required
 def index(request):
     # Get the files from the database and setup-up the lastpagetrue variable
     files = Filepage.objects.all()
@@ -32,6 +33,7 @@ def index(request):
     })
 
 # Basic view for viewing a file and updating the latestpage a user's visited
+@login_required
 def file_view(request, chapterpath, path):
     # Query for the file and save the user's id
     file = Filepage.objects.get(chapterpath=chapterpath, path=path)
@@ -56,6 +58,7 @@ def file_view(request, chapterpath, path):
     })
 
 # Redirect a user to their latest page
+@login_required
 def latestpage(request):
     # Save the user's id
     uid = request.user.id
