@@ -11,8 +11,25 @@ from django.core.exceptions import ObjectDoesNotExist
 # List of all the files in the database
 @login_required
 def index(request):
-    # Get the files from the database and setup-up the lastpagetrue variable
+    # Set up a set with all chapterpaths and a dict with the paths
+    chapterpaths = set()
+    pathsdict = dict()
+
+    # Populate the set of chapterpaths
     files = Filepage.objects.all()
+    for file in files:
+        chapterpaths.add(file.chapterpath)
+
+    # For every chapterpath, find the corresponding paths
+    for chapterpath in chapterpaths:
+        paths = []
+        for p in Filepage.objects.filter(chapterpath=chapterpath):
+            # and put them in a list,
+            paths.append(p.path)
+        # and then connect the chapterpath to that list in pathsdict
+        pathsdict[chapterpath] = paths
+
+    # Set up the lastpagetrue variable
     lptrue = False
 
     # Save user's id
@@ -28,8 +45,8 @@ def index(request):
 
     # Return the index with a list of the files and whether the user has a last page
     return render(request, 'files/index.html', {
-        "files":files,
-        "lptrue":lptrue
+        "lptrue":lptrue,
+        "pathsdict":pathsdict
     })
 
 # Basic view for viewing a file and updating the latestpage a user's visited

@@ -4,18 +4,23 @@
 
 {% block body %}
 
+{% if lptrue %}
+    <h2>Jump back to your <a href="{% url 'latestpage' %}">latest page</a>!</h2>
+{% endif %}
+
 <h1>A list of the files</h1>
 
 <ul>
-{% for file in files %}
-    <li>
-        <a href="{% url 'fileview' file.chapterpath file.path %}">{{ file.title }}</a>
-    </li>
-{% endfor %}
+    {% for chapterpath, paths in pathsdict.items %}
+       <li>{{ chapterpath }}</li>
+       <ul>
+            {% for path in paths %}
+                <li><a href="{% url 'fileview' chapterpath path %}">{{ path }}</a></li>
+            {% endfor %}
+       </ul>
+    {% endfor %}
 </ul>
 
-{% if lptrue %}
-    <a href="{% url 'latestpage' %}">Latest page!</a>
-{% endif %}
+
 
 {% endblock %}

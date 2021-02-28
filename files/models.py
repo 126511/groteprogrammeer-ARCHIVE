@@ -19,6 +19,9 @@ class Filepage(models.Model):
     def slug(self):
         return slugify(self.path), slugify(self.chapterpath)
 
+    def __str__(self):
+        return self.title + " on /" + self.chapterpath + "/" + self.path
+
 # Saves the latest chapterpath and path a user's visited
 class LatestPage(models.Model):
     # Link to the Users table Django made 
