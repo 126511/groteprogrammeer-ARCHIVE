@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, resolve
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import Course, Courselist
 
 # Create your views here.
 
@@ -58,11 +59,46 @@ def index(request):
     # Render the corresponding template
     return render(request, "home/index.html")
 
-# Render a page specific for a user
+# Render a page specific for a user, where they can jump back into their course, or sign up for one
 @login_required
-def user(request):
-    # Render the corresponding template, if the user's logged in
-    return render(request, "home/user.html")
+def user(request, message = None, status_code = None):
+    # If they've signed up, save their data
+    if request.method == "POST":
+        uid = request.user.id
+        user = User.objects.get(id=uid)
+        chosencourse = request.POST["chosen_course"]
+        course = Courselist.objects.get(name=chosencourse)
+
+        # Save their new course 
+        c = Course(user=user, course=course)
+        c.save()
+        # Redirect them to the first page of that course
+        return HttpResponseRedirect(reverse('fileview', 
+            kwargs={'chapterpath':course.chapterpath, 'path':course.starterpath}))
+    # If they want to see the page
+    else:
+        # Save their data
+        uid = request.user.id
+        user = User.objects.get(id=uid)
+        course = None
+
+        # Find out whether they have a course
+        try:
+            if Course.objects.filter(user=user).first():
+                course = True
+        except:
+            pass
+
+        # Generate a list of all courses
+        courselist = Courselist.objects.all()
+
+        # Render their page, with the correct course
+        return render(request, "home/user.html", {
+            "course":course,
+            "courselist":courselist,
+            "message":message,
+            "status_code":status_code
+        })
 
 # Register a user
 def register(request):
@@ -80,11 +116,7 @@ def register(request):
         login(request, user)
 
         # Render their own user page and a corresponding message of success
-        return render(request, 'home/user.html', {
-            "message":"We've created your account!",
-            "status_code":1
-        })
-    
+        return HttpResponseRedirect(reverse("user"))
     else:
         # Render the template with the form
         return render(request, "home/register.html", {
