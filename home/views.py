@@ -5,7 +5,8 @@ from django.urls import reverse, resolve
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Course, Courselist
+from .models import Course, Courselist, Progress, OldProgress
+from files.models import Filepage
 
 # Create your views here.
 
@@ -69,12 +70,36 @@ def user(request, message = None, status_code = None):
         chosencourse = request.POST["chosen_course"]
         course = Courselist.objects.get(name=chosencourse)
 
+        # Try to get data from previous sign-ups for this course
+        try:
+            olds = OldProgress.objects.filter(user=user, course=course)
+        except:
+            pass
+
         # Save their new course 
         c = Course(user=user, course=course)
         c.save()
-        # Redirect them to the first page of that course
-        return HttpResponseRedirect(reverse('fileview', 
-            kwargs={'chapterpath':course.chapterpath, 'path':course.starterpath}))
+
+        # If they've ever signed up for this course
+        if olds:
+            # Find their old data
+            for old in olds:
+                progress = Progress(course=c, path=old.path, completed=old.completed)
+                progress.save()
+        else:  
+            # Otherwise, set setup all progress (with default=False)
+            pathslist = []
+            for p in Filepage.objects.filter(chapterpath=c.course.start.chapterpath):
+                # and put them in a list as a tuple
+                pathslist.append(p.path)
+            
+            for q in pathslist:
+                path = Filepage.objects.get(chapterpath=c.course.start.chapterpath, path=q)
+                progress = Progress(course=c, path=path)
+                progress.save()
+
+        # Redirect them to their user page
+        return HttpResponseRedirect("/user")
     # If they want to see the page
     else:
         # Save their data
@@ -82,22 +107,32 @@ def user(request, message = None, status_code = None):
         user = User.objects.get(id=uid)
         course = None
 
-        # Find out whether they have a course
-        try:
-            if Course.objects.filter(user=user).first():
-                course = True
-        except:
-            pass
-
         # Generate a list of all courses
         courselist = Courselist.objects.all()
+
+        # Find out whether they have a course
+        c = Course.objects.filter(user=user).first()
+        if c:
+            course = c
+        else:
+            # Render their page, with the correct course
+            return render(request, "home/user.html", {
+                "course":course,
+                "courselist":courselist,
+            })
+
+        # A function that return an int of the path, so that it can be sorted
+        def makeKey(progress):
+            return int(progress.path.path)
+
+        # Make a list of all progress (paragraphs) and sort it
+        pathslist = Progress.objects.filter(course=c)
+        pathslist = sorted(pathslist, key=makeKey)
 
         # Render their page, with the correct course
         return render(request, "home/user.html", {
             "course":course,
-            "courselist":courselist,
-            "message":message,
-            "status_code":status_code
+            "pathslist":pathslist,
         })
 
 # Register a user
@@ -122,3 +157,42 @@ def register(request):
         return render(request, "home/register.html", {
             'form':form
         })
+
+# Updates the progress of a user
+def progress(request):
+    if request.method == "POST":
+        # Save their data
+        uid = request.user.id
+        user = User.objects.get(id=uid)
+        path = request.POST["path"]
+
+        # Get the course and the page they've completed
+        course = Course.objects.get(user=user)
+        page = Filepage.objects.get(chapterpath=course.course.start.chapterpath, path=path)
+
+        # Update the progress
+        p = Progress.objects.get(course=course, path=page)
+        p.completed = True
+        p.save(update_fields=['completed'])
+
+        # Redirect them to their homepage
+        return HttpResponseRedirect("/user")
+
+# If they want to leave a course, this function runs
+def leavecourse(request):
+    # Save their data
+    uid = request.user.id
+    user = User.objects.get(id=uid)
+
+    # Find their course
+    course = Course.objects.get(user=user)
+    
+    # Find all their progress for this course
+    progresses = Progress.objects.filter(course=course)
+    for progress in progresses:
+        # move it to the oldprogress table, if it already exists there, do nothing
+        OldProgress.objects.get_or_create(user=progress.course.user, course=progress.course.course, path=progress.path, completed=progress.completed)
+    # Delete the current course
+    course.delete()
+    # Redirect them to their homepage
+    return HttpResponseRedirect("/user")

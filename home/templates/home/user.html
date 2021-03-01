@@ -25,4 +25,21 @@
         </p>
     {% endif %}
 
+    
+
+    <ul>
+    {% for path in pathslist %}
+        <li>
+            <a href="{% url 'fileview' path.path.chapterpath path.path.path %}">{{ path.path.title }}</a>
+            {% if path.completed %} (completed) {% else %} {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+
+    {% if course %}
+    <form method="get" action="{% url 'leavecourse' %}">
+        <button type="submit">Finish course</button>
+    </form>
+    {% endif %}
+
 {% endblock %}

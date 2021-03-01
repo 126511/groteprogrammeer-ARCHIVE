@@ -7,4 +7,12 @@
     {{ file.file }}
 {% endautoescape %}
 
+
+    <form method="post" action="{% url 'progress' %}">
+        {% csrf_token %}
+        <input type="hidden" value="{{ file.path }}" name="path">
+        <input type="submit" value="completed">
+    </form>
+
+
 {% endblock %}
