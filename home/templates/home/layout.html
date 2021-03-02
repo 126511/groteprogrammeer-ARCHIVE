@@ -1,13 +1,65 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Home</title>
-    </head>
-    <body>
+
+<head>
+    <!-- load vue, vuetify, stylesheets and fonts -->
+    <link href="{% static 'home/styles.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+    <!-- make a div with id="app" to inject vue code inside it-->    
+    <div id="app">
+
+        <!-- checks if there is an error message from the server 'status_code' gives the type of message-->
         {% if message %}
         <div>{{ message }}</div>
         {% endif %}
         {% block body %}
         {% endblock %}
-    </body>
+    </div>
+    
+    <!-- Import Vuetify customized preset -->
+    <script src="{% static 'home/Vuetifyobj.js' %}"></script>
+
+
+    <!-- templates for components-->
+    <template id="loginbutton">
+        <div class="text-center">
+            <v-btn 
+                href="{% url 'login' %}"
+                width="100"
+                rounded
+                color="primary_l"
+            >
+                login
+            </v-btn>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    
+    <script>
+        // define components
+        Loginbutton = Vue.component('loginbutton', {
+            delimiters: ['[[',']]'],
+            template: '#loginbutton',
+        });
+
+        // tell vue to inject its code to "app"
+        new Vue({
+        el: '#app',
+        // add the Vuetify to the vue renderer
+        vuetify: new Vuetify(),
+        });
+    </script>
+
+    
+
+</body>
 </html>
