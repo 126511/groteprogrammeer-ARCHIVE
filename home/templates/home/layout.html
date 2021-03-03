@@ -14,6 +14,7 @@
 <body>
     <!-- make a div with id="app" to inject vue code inside it-->    
     <div id="app">
+    <v-app>
 
         <!-- checks if there is an error message from the server 'status_code' gives the type of message-->
         {% if message %}
@@ -21,42 +22,128 @@
         {% endif %}
         {% block body %}
         {% endblock %}
+    </v-app>
     </div>
     
-    <!-- Import Vuetify customized preset -->
-    <script src="{% static 'home/Vuetifyobj.js' %}"></script>
-
-
     <!-- templates for components-->
-    <template id="loginbutton">
-        <div class="text-center">
-            <v-btn 
-                href="{% url 'login' %}"
-                width="100"
-                rounded
-                color="primary_l"
-            >
-                login
-            </v-btn>
-        </div>
+    <template id="mynavbar">
+            <v-app-bar color="primary" height="88">
+                <v-toolbar-items>
+                    <v-btn
+                    color="primary"
+                    text
+                    width="180"
+                    >
+                    <v-img style="margin-top: 12px;" src="{% static 'home/logo.png' %}" width="100"></v-img>
+                    </v-btn>
+                    <v-btn 
+                        color="accent1"
+                        text
+                        width="160"
+                    >
+                        <h2>Over ons</h2>
+                    </v-btn>
+                    <v-btn 
+                        color="accent1"
+                        text
+                        width="160"
+                    >
+                        <h2>PWS</h2>
+                    </v-btn>
+                    <v-btn 
+                        color="accent1"
+                        text
+                        width="160"
+                    >
+                        <h2>Contact</h2>
+                    </v-btn>
+                </v-toolbar-items>
+                <v-spacer></v-spacer>
+                <v-toolbar-items class="pa-0">
+                    <v-container class="my-3" height="100%">
+                        <v-btn 
+                            v-on:click="$emit('expandlogin')"
+                            width="160"
+                            height="48"
+                            rounded
+                            color="primary_l"
+                            class="my-auto accent2--text font-weight-black"
+                        ><h2>login</h2></v-btn>
+                    </v-container>
+                    <v-container class="my-3" height="100%">
+                        <v-btn 
+                            href="{% url 'register' %}"
+                            width="160"
+                            height="48"
+                            rounded
+                            color="primary_l"
+                            class="accent2--text font-weight-black"
+                        ><h2>register</h2></v-btn>
+                    </v-container>
+                </v-toolbar-items>
+            </v-app-bar>
+    </template>
+    
+    <template id="loginexpansion">
+        <v-expand-transition>
+            <v-sheet class="rounded-b-xl" color="white" width="400" height="240" v-show="expand_l" elevation="0" outlined>
+                <h2>loginnn</h2>
+            </v-sheet>
+        </v-expand-transition>
     </template>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     
     <script>
+        
         // define components
-        Loginbutton = Vue.component('loginbutton', {
+        Navbar = Vue.component('mynavbar', {
             delimiters: ['[[',']]'],
-            template: '#loginbutton',
+            template: '#mynavbar',
+            props: {expand_l: Boolean, expand_r: Boolean},
+        });
+        
+        Loginexpansion = Vue.component('loginexpansion', {
+            delimiters: ['[[',']]'],
+            template: '#loginexpansion',
+            props: {expand_l: Boolean},
         });
 
-        // tell vue to inject its code to "app"
+        // vue render function
         new Vue({
+        // tell vue to render everything with id="app"
         el: '#app',
-        // add the Vuetify to the vue renderer
-        vuetify: new Vuetify(),
+        
+        // add the Vuetify to the vue renderer together with the edits of the default vuetify preset
+        vuetify: new Vuetify({
+            theme: {
+                themes: {
+                    light: {
+                        //light theme colors, dark theme yet to come
+                        primary: '#424242',
+                        primary_d: '#212121',
+                        primary_l: '#616161',
+                        error: '#b71c1c',
+                        accent1: '#fb4789',
+                        accent2: '#fbb947',
+                        accent3: '#89fb47',
+                        on_primary: '#FFFFFF',
+                    },
+                },
+            },
+        }),
+        
+        data(){
+            return {
+                expand_l: false,
+                expand_r: false,
+            }
+        }
         });
+
+        
+
     </script>
 
     

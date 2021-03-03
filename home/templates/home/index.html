@@ -3,5 +3,12 @@
 {% block body %}
 {% load static %}
 <!-- Put the body here -->
-<loginbutton></loginbutton>
+<v-container height="88px" width="100%" fluid class="pa-0">
+    <mynavbar v-on:expandlogin="expand_l = !expand_l"></mynavbar>
+</v-container>
+<v-row>
+    <v-spacer></v-spacer>
+    <loginexpansion v-bind:expand_l="expand_l"></loginexpansion>
+</v-row>
+<v-row></v-row>
 {% endblock %}
