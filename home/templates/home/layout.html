@@ -4,45 +4,58 @@
 
 <head>
     <!-- load vue, vuetify, stylesheets and fonts -->
-    <link href="{% static 'home/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'home/styles.css' %}" rel="stylesheet" type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    {% block head %}{% endblock %}
 </head>
 
 <body>
     <!-- make a div with id="app" to inject vue code inside it-->    
-    <div id="app">
+    <div id="app">  
     <v-app>
-        <v-container height="88px" width="100%" fluid class="pa-0">
+        <v-container height="88px" width="200%" fluid class="pa-0">
             <mynavbar v-on:expandlogin="expand_l = !expand_l"></mynavbar>
         </v-container>
         <!-- checks if there is an error message from the server 'status_code' gives the type of message-->
-        {% if message %}
-        <div>{{ message }}</div>
-        {% endif %}
+ 
         {% block body %}
+
         {% endblock %}
+
+        {% if message %}
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                setTimeout(() => {
+                    alert("{{ message }}");
+                }, 500)
+                
+            })
+        </script>
+        {% endif %}
     </v-app>
     </div>
-    
+
     <!-- templates for components-->
     <template id="mynavbar">
-            <v-app-bar color="primary" height="88" elevation="4">
+            <v-app-bar color="primary" height="88" elevation="4" style= "width:auto;">
                 <v-toolbar-items>
                     <v-btn
                     color="primary"
                     text
                     width="180"
+                    href="{% url 'index' %}"
                     >
-                    <v-img style="margin-top: 12px;" src="{% static 'home/logo.png' %}" width="100"></v-img>
+                    <v-img style="margin-top: 0px;" src="{% static 'home/Slide1.png' %}" width="100"></v-img>
                     </v-btn>
                     <v-divider vertical></v-divider>
                     <v-btn 
                         color="accent2"
                         text
                         width="160"
+                        href="{% url 'about-us' %}"
                     >
                         <h2>Over ons</h2>
                     </v-btn>
@@ -51,6 +64,7 @@
                         color="accent2"
                         text
                         width="160"
+                        href="{% url 'pws' %}"
                     >
                         <h2>PWS</h2>
                     </v-btn>
@@ -59,6 +73,7 @@
                         color="accent2"
                         text
                         width="160"
+                        href="{% url 'contact' %}"
                     >
                         <h2>Contact</h2>
                     </v-btn>
@@ -92,7 +107,7 @@
     
     <template id="loginexpansion">
         <v-expand-transition>
-            <v-sheet class="rounded-bl-lg text-center" color="white" width="400" height="240" v-show="expand_l" elevation="2">
+            <v-sheet class="rounded-bl-lg text-center pa-4" style="position: absolute; left:auto; right: 5px;" color="white" width="400" height="240" v-show="expand_l" elevation="2">
                 <form action="{% url 'login' %}" method="post">
                     {% csrf_token %}
             

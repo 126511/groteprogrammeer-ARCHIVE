@@ -36,7 +36,7 @@ def login_view(request):
         else:
             # Let them try again and shout at them
             return render(request, "home/login.html", {
-                "message": "That's not valid input you blithering idiot!!!!!!!"
+                "message": "That is not valid input you blithering idiot!!!!!!!"
             })
 
     # Render the form for the user so they can log in
@@ -79,7 +79,7 @@ def register(request):
 
         # Render their own user page and a corresponding message of success
         return render(request, 'home/user.html', {
-            "message":"We've created your account!"
+            "message":"We have created your account!"
         })
     
     else:
@@ -87,3 +87,12 @@ def register(request):
         return render(request, "home/register.html", {
             'form':form
         })
+
+def about_us(request):
+    return render(request, "home/about-us.html")
+
+def pws(request):
+    return render(request, "home/pws.html")
+
+def contact(request):
+    return render(request, "home/contact.html")
