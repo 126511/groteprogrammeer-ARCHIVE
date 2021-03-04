@@ -38,12 +38,8 @@ def login_view(request):
         else:
             # Let them try again and shout at them
             return render(request, "home/login.html", {
-<<<<<<< HEAD
                 "message": "That's not valid input you blithering idiot!!!!!!!",
                 "status_code":-1
-=======
-                "message": "That is not valid input you blithering idiot!!!!!!!"
->>>>>>> chris_main
             })
 
     # Render the form for the user so they can log in
@@ -165,7 +161,6 @@ def register(request):
             'form':form
         })
 
-<<<<<<< HEAD
 # Updates the progress of a user
 def progress(request):
     if request.method == "POST":
