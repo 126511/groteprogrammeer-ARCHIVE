@@ -15,7 +15,9 @@
     <!-- make a div with id="app" to inject vue code inside it-->    
     <div id="app">
     <v-app>
-
+        <v-container height="88px" width="100%" fluid class="pa-0">
+            <mynavbar v-on:expandlogin="expand_l = !expand_l"></mynavbar>
+        </v-container>
         <!-- checks if there is an error message from the server 'status_code' gives the type of message-->
         {% if message %}
         <div>{{ message }}</div>
@@ -27,7 +29,7 @@
     
     <!-- templates for components-->
     <template id="mynavbar">
-            <v-app-bar color="primary" height="88">
+            <v-app-bar color="primary" height="88" elevation="4">
                 <v-toolbar-items>
                     <v-btn
                     color="primary"
@@ -36,47 +38,51 @@
                     >
                     <v-img style="margin-top: 12px;" src="{% static 'home/logo.png' %}" width="100"></v-img>
                     </v-btn>
+                    <v-divider vertical></v-divider>
                     <v-btn 
-                        color="accent1"
+                        color="accent2"
                         text
                         width="160"
                     >
                         <h2>Over ons</h2>
                     </v-btn>
+                    <v-divider vertical></v-divider>
                     <v-btn 
-                        color="accent1"
+                        color="accent2"
                         text
                         width="160"
                     >
                         <h2>PWS</h2>
                     </v-btn>
+                    <v-divider vertical></v-divider>
                     <v-btn 
-                        color="accent1"
+                        color="accent2"
                         text
                         width="160"
                     >
                         <h2>Contact</h2>
                     </v-btn>
+                    <v-divider vertical></v-divider>
                 </v-toolbar-items>
                 <v-spacer></v-spacer>
                 <v-toolbar-items class="pa-0">
-                    <v-container class="my-3" height="100%">
+                    <v-container class="my-2" height="100%">
                         <v-btn 
+                            outlined
+                            elevation="0"
                             v-on:click="$emit('expandlogin')"
                             width="160"
                             height="48"
-                            rounded
-                            color="primary_l"
                             class="my-auto accent2--text font-weight-black"
                         ><h2>login</h2></v-btn>
                     </v-container>
-                    <v-container class="my-3" height="100%">
+                    <v-container class="my-2" height="100%">
                         <v-btn 
+                            outlined
+                            elevation="0"
                             href="{% url 'register' %}"
                             width="160"
                             height="48"
-                            rounded
-                            color="primary_l"
                             class="accent2--text font-weight-black"
                         ><h2>register</h2></v-btn>
                     </v-container>
@@ -86,8 +92,17 @@
     
     <template id="loginexpansion">
         <v-expand-transition>
-            <v-sheet class="rounded-b-xl" color="white" width="400" height="240" v-show="expand_l" elevation="0" outlined>
-                <h2>loginnn</h2>
+            <v-sheet class="rounded-bl-lg text-center" color="white" width="400" height="240" v-show="expand_l" elevation="2">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+            
+                    {% if request.GET.next %}
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+                    {% endif %}
+                    <v-text-field class="ma-3" dense type="text" name="username" label="Username" outlined clearable autofocus></v-text-field>
+                    <v-text-field class="ma-3" dense type="password" name="password" label="Password" outlined clearable></v-text-field>
+                    <v-btn elevation="0" color="accent2" type="submit" value="Log in">Submit</v-btn>
+                </form>
             </v-sheet>
         </v-expand-transition>
     </template>
