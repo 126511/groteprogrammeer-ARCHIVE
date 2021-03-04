@@ -1,7 +1,65 @@
 {% extends "home/layout.html" %}
+{% load static %}
+
+{% block head %}
+<style>
+body {
+    position: relative;
+    max-width: 100%;
+}
+.bg-image {
+    height: 100%;
+    width: 100%;
+    background: url("{% static 'home/bg.jpg' %}") !important;
+    color: white;
+    margin: 0;   
+    left: 0;
+}       
+
+.site-body {
+    width: 1000px;
+    height: auto;
+    position: relative;
+    margin-left: 50px;
+    margin-top: 50px;
+    background: rgba(0, 0, 0, 0.40);
+    padding: 15px;
+}
+html {
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+#footer {
+    color: white;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    left: auto;
+    top: auto;
+}
+
+</style>
+{% endblock %}
 
 {% block body %}
-<h1>Hello world!</h1>
-<a href="{% url 'login' %}">Login</a><br>
-<a href="{% url 'register' %}">Register</a>
+{% load static %}
+<!-- Put the body here -->
+<div class="">
+    <v-row>
+        <v-spacer></v-spacer>
+        <loginexpansion v-bind:expand_l="expand_l"></loginexpansion>
+    </v-row>
+</div>
+
+<div class="bg-image">
+    <div class="site-body">
+        <div class="display-1">
+            <span class="display-2">Welkom op GroteProgrameer.nl,</span><br> dé website om uw leerlingen te helpen met het leren van informatica. Deze methode is gebaseerd op de nieuwste versie van het examenprogramma informatica voor het VWO. Wij vinden dat informatica leren niet alleen voor bèta-leerlingen moet zijn, daarom is groteprogrammeer.nl voor alle leerlingen een manier om op een toegankelijke en leuke wijze computer science te leren!<br><br>
+            Informatica bestaat niet alleen uit programmeren; het bestaat uit het oplossen van problemen, je kunnen verplaatsen in de klant, maar ook begrijpen waar je mee bezig bent, niet alleen maar code typen en hopen dat het werkt. Wij beginnen bij het begin, bij de basis en dat maakt informatica voor alle leerlingen begrijpelijk, maar bovenal fantastisch leuk!        </div>
+    </div>
+    <footer id="footer"><a href="https://besthqwallpapers.com/download/original/87429">source</a></footer>
+</div>
+
+
 {% endblock %}

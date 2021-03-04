@@ -38,8 +38,12 @@ def login_view(request):
         else:
             # Let them try again and shout at them
             return render(request, "home/login.html", {
+<<<<<<< HEAD
                 "message": "That's not valid input you blithering idiot!!!!!!!",
                 "status_code":-1
+=======
+                "message": "That is not valid input you blithering idiot!!!!!!!"
+>>>>>>> chris_main
             })
 
     # Render the form for the user so they can log in
@@ -151,13 +155,17 @@ def register(request):
         login(request, user)
 
         # Render their own user page and a corresponding message of success
-        return HttpResponseRedirect(reverse("user"))
+        return render(request, 'home/user.html', {
+            "message":"We have created your account!"
+        })
+    
     else:
         # Render the template with the form
         return render(request, "home/register.html", {
             'form':form
         })
 
+<<<<<<< HEAD
 # Updates the progress of a user
 def progress(request):
     if request.method == "POST":
@@ -195,3 +203,12 @@ def leavecourse(request):
     course.delete()
     # Redirect them to their homepage
     return HttpResponseRedirect("/user")
+
+def about_us(request):
+    return render(request, "home/about-us.html")
+
+def pws(request):
+    return render(request, "home/pws.html")
+
+def contact(request):
+    return render(request, "home/contact.html")
