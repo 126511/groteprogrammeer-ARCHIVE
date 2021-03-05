@@ -52,7 +52,10 @@ def logout_view(request):
     logout(request)
     return render(request, "home/index.html", {
         "message": "We logged you out.",
+<<<<<<< HEAD
         "status_code":1
+=======
+>>>>>>> ab52b4aa942d327a2c2d745888b8707b145519e1
     })
 
 # General home-page
