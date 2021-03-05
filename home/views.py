@@ -48,7 +48,7 @@ def logout_view(request):
     # Log the user out and redirect to the main page, providing a message of success
     logout(request)
     return render(request, "home/index.html", {
-        "message": "We logged you out."
+        "message": "We logged you out.",
     })
 
 # General home-page
