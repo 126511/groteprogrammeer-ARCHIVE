@@ -174,8 +174,9 @@ def progress(request):
         page = Filepage.objects.get(chapterpath=course.course.start.chapterpath, path=path)
 
         # Update the progress
-        p = Progress.objects.filter(course=course, path=page)
-        p.update(completed=True)
+        p = Progress.objects.get(course=course, path=page)
+        p.completed = True
+        p.save()
 
         # Redirect them to their homepage
         return HttpResponseRedirect("/user")
@@ -193,7 +194,12 @@ def leavecourse(request):
     progresses = Progress.objects.filter(course=course)
     for progress in progresses:
         # move it to the oldprogress table, if it already exists there, do nothing
-        OldProgress.objects.update_or_create(user=progress.course.user, course=progress.course.course, path=progress.path, completed=progress.completed)
+        try:
+            old = OldProgress.objects.get(user=progress.course.user, course=progress.course.course, path=progress.path)
+            old.completed = progress.completed
+        except OldProgress.DoesNotExist:
+            old = OldProgress(user=progress.course.user, course=progress.course.course, path=progress.path, completed=progress.completed)
+        old.save()
     # Delete the current course
     course.delete()
     # Redirect them to their homepage
