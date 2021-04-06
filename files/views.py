@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
-from .models import Filepage, LatestPage
+from .models import Filepage, LatestPage, Term
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+import json
 
 # Create your views here.
 
@@ -77,9 +78,22 @@ def file_view(request, chapterpath, path):
         page = LatestPage(user=user, path=path, chapterpath=chapterpath)
         page.save()
 
+    # Get all documentation from the database
+    d = Term.objects.all()
+    docs = dict()
+
+    for every in d:
+       docs[every.term] = every.definition
+    
+    jsonobj = json.dumps(docs) 
+
+    
+
+
     # Render the template with the corresponding file
     return render(request, 'files/file_view.html', {
         'file':file,
+        'docs':jsonobj,
     })
 
 # Redirect a user to their latest page

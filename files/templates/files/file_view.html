@@ -3,16 +3,64 @@
 {% block title %} {{file.title }} {% endblock %}
 
 {% block body %}
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("hey")
+        const d = document.getElementById("documentation");
+        d.style.display = "none";
+        
+        const l = document.getElementById("lesson");
+        l.style.width = "100%";
+    })
+    function getdocs(term) {
+        const docs = document.getElementById("docs").value;
+        o = JSON.parse(`${docs}`)
+        const text = o[`${term}`]
+        document.querySelector("#documentation").innerHTML = text
+
+        const documentation = document.getElementById("documentation")
+        documentation.style.display = "block";
+        const lesson = document.getElementById("lesson")
+        documentation.style.width = "75%";
+
+
+    }
+</script>
+<style>
+    #lesson {
+        width: 75%;
+    }
+    #documentation {
+        width: 25%;
+    }
+
+    .button {
+        font-weight: bold;
+        background-color: transparent;
+        border: 0px;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 16px;
+    }
+    #footer {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        left: auto;
+        top: auto;
+}
+</style>
+
 {% autoescape off %}
     {{ file.file }}
 {% endautoescape %}
-
-
+<input type="hidden" id="docs" name="docs" value="{{ docs }}">
     <form method="post" action="{% url 'progress' %}">
         {% csrf_token %}
         <input type="hidden" value="{{ file.path }}" name="path">
         <input type="submit" value="completed">
     </form>
-
-
+    <footer>
+        <button id="footer" class="button" onclick="getdocs('jitske')">Jitske</button>
+    </footer>
 {% endblock %}
