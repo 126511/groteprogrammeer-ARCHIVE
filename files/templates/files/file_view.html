@@ -7,7 +7,7 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", () => {
         console.log("hey")
-        const d = document.getElementById("documentation");
+        const d = document.getElementById("sidebar");
         d.style.display = "none";
         
         const l = document.getElementById("lesson");
@@ -19,20 +19,25 @@
         const text = o[`${term}`]
         document.querySelector("#documentation").innerHTML = text
 
-        const documentation = document.getElementById("documentation")
+        const documentation = document.getElementById("sidebar")
         documentation.style.display = "block";
         const lesson = document.getElementById("lesson")
         documentation.style.width = "75%";
-
-
     }
+    
+    function gaweg() {
+        const d = document.getElementById("sidebar");
+        d.style.display = "none";
+    }
+
 </script>
 <style>
     #lesson {
         width: 75%;
     }
     #documentation {
-        width: 25%;
+        padding: 10px;
+
     }
 
     .button {

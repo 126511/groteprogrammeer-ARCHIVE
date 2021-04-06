@@ -87,9 +87,6 @@ def file_view(request, chapterpath, path):
     
     jsonobj = json.dumps(docs) 
 
-    
-
-
     # Render the template with the corresponding file
     return render(request, 'files/file_view.html', {
         'file':file,
