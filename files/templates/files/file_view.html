@@ -5,14 +5,6 @@
 {% block body %}
 
 <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", () => {
-        console.log("hey")
-        const d = document.getElementById("sidebar");
-        d.style.display = "none";
-        
-        const l = document.getElementById("lesson");
-        l.style.width = "100%";
-    })
     function getdocs(term) {
         const docs = document.getElementById("docs").value;
         o = JSON.parse(`${docs}`)
@@ -24,10 +16,11 @@
         const lesson = document.getElementById("lesson")
         lesson.style.width = "75%";
     }
-    
     function gaweg() {
         const d = document.getElementById("sidebar");
         d.style.display = "none";
+        const l = document.getElementById("lesson");
+        l.style.width = "100%";
     }
 
 </script>
@@ -55,11 +48,22 @@
         top: auto;
 }
 </style>
+<div style="display: flex; height: 100%">
+    <div id="lesson">
+        {% autoescape off %}
+            {{ file.file }}
+        {% endautoescape %}
+    </div>
+    <div id="sidebar" style="display: none;">
+        <button class="button" onclick="gaweg()"> x </button>
+        <div id="documentation">
+            Hi!
+        </div>
+    </div>
+</div>
 
-{% autoescape off %}
-    {{ file.file }}
-{% endautoescape %}
 <input type="hidden" id="docs" name="docs" value="{{ docs }}">
+
     <form method="post" action="{% url 'progress' %}">
         {% csrf_token %}
         <input type="hidden" value="{{ file.path }}" name="path">
