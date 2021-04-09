@@ -1,182 +1,61 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-
 <head>
-    <!-- load vue, vuetify, stylesheets and fonts -->
-    <link href="{% static 'home/styles.css' %}" rel="stylesheet" type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>Grote Programmeer</title>
+    <link rel="stylesheet" href="{% static 'home/styles.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     {% block head %}{% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+           
+        })
+    </script>
 </head>
 
+<style>
+body {
+  font-family: 'Roboto','Times New Roman', Times, serif;
+}
+
+#loginbtn {
+  margin: 8px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  width: 160px;
+}
+
+#navbaritem {
+  font-weight: bold;
+  width: 100px;
+}
+</style>
+
 <body>
-    <!-- make a div with id="app" to inject vue code inside it-->    
-    <div id="app">  
-    <v-app>
-        <v-container height="88px" width="200%" fluid class="pa-0">
-            <mynavbar v-on:expandlogin="expand_l = !expand_l"></mynavbar>
-        </v-container>
-        <!-- checks if there is an error message from the server 'status_code' gives the type of message-->
- 
-        {% block body %}
-
-        {% endblock %}
-
-        {% if message %}
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                setTimeout(() => {
-                    alert("{{ message }}");
-                }, 500)
-                
-            })
-        </script>
-        {% endif %}
-    </v-app>
+  <div style="background-color: grey; height: 100%; width: 100%; position: fixed;">
+    <div class="ui inverted huge yellow menu" style="margin-top: 20px; margin-left: 10%; margin-right: 10%; max-height: 60px;">
+      <a class="item" id="navbaritem" href="{% url 'index' %}">Logo</a>
+      <a class="item" id="navbaritem" href="{% url 'about-us' %}">About</a>
+      <a class="item" id="navbaritem" href="{% url 'pws' %}">PWS</a>
+      <a class="item" id="navbaritem" href="{% url 'contact' %}">Contact</a>
+      <div class="ui right yellow inverted menu">
+        <button type="button" id="loginbtn" class="ui button">
+          <h1 class="ui yellow header">Login</h1>
+        </button>
+        <button type="button" id="loginbtn" class="ui button">
+          <h1 class="ui yellow header">Register</h1>
+        </button>
+      </div>
     </div>
-
-    <!-- templates for components-->
-    <template id="mynavbar">
-            <v-app-bar color="primary" height="88" elevation="4" style= "width:auto;">
-                <v-toolbar-items>
-                    <v-btn
-                    color="primary"
-                    text
-                    width="180"
-                    href="{% url 'index' %}"
-                    >
-                    <v-img style="margin-top: 0px;" src="{% static 'home/Slide1.png' %}" width="100"></v-img>
-                    </v-btn>
-                    <v-divider vertical></v-divider>
-                    <v-btn 
-                        color="accent2"
-                        text
-                        width="160"
-                        href="{% url 'about-us' %}"
-                    >
-                        <h2>Over ons</h2>
-                    </v-btn>
-                    <v-divider vertical></v-divider>
-                    <v-btn 
-                        color="accent2"
-                        text
-                        width="160"
-                        href="{% url 'pws' %}"
-                    >
-                        <h2>PWS</h2>
-                    </v-btn>
-                    <v-divider vertical></v-divider>
-                    <v-btn 
-                        color="accent2"
-                        text
-                        width="160"
-                        href="{% url 'contact' %}"
-                    >
-                        <h2>Contact</h2>
-                    </v-btn>
-                    <v-divider vertical></v-divider>
-                </v-toolbar-items>
-                <v-spacer></v-spacer>
-                <v-toolbar-items class="pa-0">
-                    <v-container class="my-2" height="100%">
-                        <v-btn 
-                            outlined
-                            elevation="0"
-                            v-on:click="$emit('expandlogin')"
-                            width="160"
-                            height="48"
-                            class="my-auto accent2--text font-weight-black"
-                        ><h2>login</h2></v-btn>
-                    </v-container>
-                    <v-container class="my-2" height="100%">
-                        <v-btn 
-                            outlined
-                            elevation="0"
-                            href="{% url 'register' %}"
-                            width="160"
-                            height="48"
-                            class="accent2--text font-weight-black"
-                        ><h2>register</h2></v-btn>
-                    </v-container>
-                </v-toolbar-items>
-            </v-app-bar>
-    </template>
-    
-    <template id="loginexpansion">
-        <v-expand-transition>
-            <v-sheet class="rounded-bl-lg text-center pa-4" style="position: absolute; left:auto; right: 5px;" color="white" width="400" height="240" v-show="expand_l" elevation="2">
-                <form action="{% url 'login' %}" method="post">
-                    {% csrf_token %}
-            
-                    {% if request.GET.next %}
-                        <input type="hidden" name="next" value="{{ request.GET.next }}">
-                    {% endif %}
-                    <v-text-field class="ma-3" dense type="text" name="username" label="Username" outlined clearable autofocus></v-text-field>
-                    <v-text-field class="ma-3" dense type="password" name="password" label="Password" outlined clearable></v-text-field>
-                    <v-btn elevation="0" color="accent2" type="submit" value="Log in">Submit</v-btn>
-                </form>
-            </v-sheet>
-        </v-expand-transition>
-    </template>
-
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    
-    <script>
-        
-        // define components
-        Navbar = Vue.component('mynavbar', {
-            delimiters: ['[[',']]'],
-            template: '#mynavbar',
-            props: {expand_l: Boolean, expand_r: Boolean},
-        });
-        
-        Loginexpansion = Vue.component('loginexpansion', {
-            delimiters: ['[[',']]'],
-            template: '#loginexpansion',
-            props: {expand_l: Boolean},
-        });
-
-        // vue render function
-        new Vue({
-        // tell vue to render everything with id="app"
-        el: '#app',
-        
-        // add the Vuetify to the vue renderer together with the edits of the default vuetify preset
-        vuetify: new Vuetify({
-            theme: {
-                themes: {
-                    light: {
-                        //light theme colors, dark theme yet to come
-                        primary: '#424242',
-                        primary_d: '#212121',
-                        primary_l: '#616161',
-                        error: '#b71c1c',
-                        accent1: '#fb4789',
-                        accent2: '#fbb947',
-                        accent3: '#89fb47',
-                        on_primary: '#FFFFFF',
-                    },
-                },
-            },
-        }),
-        
-        data(){
-            return {
-                expand_l: false,
-                expand_r: false,
-            }
-        }
-        });
-
-        
-
-    </script>
-
-    
-
+  </div>
+        {% block body %}
+        {% endblock %}
+    {% if message %}
+    <!-- error and succession messages-->
+    {% endif %}
 </body>
+
+
 </html>
