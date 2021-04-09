@@ -18,6 +18,8 @@ class Course(models.Model):
     def __str__(self):
         return "User " + self.user.username + " studies " + str(self.course.name)
 
+    
+
 class Progress(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     path = models.ForeignKey(Filepage, on_delete=models.CASCADE)
@@ -25,6 +27,9 @@ class Progress(models.Model):
 
     def __str__(self):
         return str(self.course.user) + "'s progress for " + self.path.path + " of " + self.course.course.name + " is " + str(self.completed)
+
+    class Meta:
+        unique_together = ('course', 'path')
 
 class OldProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
