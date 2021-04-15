@@ -3,15 +3,21 @@
 <html>
 <head>
     <title>Grote Programmeer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'home/styles.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     {% block head %}{% endblock %}
 </head>
 
 <style>
+:root {
+  --accent1: #fbb947;
+  --accent2: #fb4789;
+  --greytext:  #616161;
+}
+
 body {
   font-family: 'Roboto','Times New Roman', Times, serif;
 }
@@ -40,10 +46,13 @@ body {
 #LoginCard {
   width: 360px;
   height: 200px;
+  right: 10%;
+  top: 88px;
   background-color: white;
   border-radius: 4px;
   padding: 8px;
 }
+
 
 .show_login {
   display: block;
@@ -52,18 +61,20 @@ body {
 
 <body>
   <div style="background-color: grey; height: 100%; width: 100%; position: fixed;">
-    <div class="ui inverted huge yellow menu" style="margin-top: 20px; margin-left: 10%; margin-right: 10%; max-height: 60px;">
+    <div class="ui inverted huge menu" style="margin-top: 20px; margin-left: 10%; margin-right: 10%; max-height: 60px; background-color: var(--accent1);">
       <a class="item" id="navbaritem" href="{% url 'index' %}">Logo</a>
       <a class="item" id="navbaritem" href="{% url 'about-us' %}">About</a>
       <a class="item" id="navbaritem" href="{% url 'pws' %}">PWS</a>
       <a class="item" id="navbaritem" href="{% url 'contact' %}">Contact</a>
-      <div class="ui right yellow inverted menu">
+      <div class="ui right inverted menu" style="background-color: var(--accent1);">
         <button onclick="ExpandLogin()" type="button" id="logregbtn" class="ui button">
-          <h1 class="ui yellow header">Login</h1>
+          <h1 class="ui header" style="color: var(--accent1);">Login</h1>
         </button>
-        <button type="button" id="logregbtn" class="ui button">
-          <h1 class="ui yellow header">Register</h1>
-        </button>
+        <a href="{% url 'register' %}">
+          <button type="button" id="logregbtn" class="ui button">
+            <h1 class="ui header" style="color: var(--accent1);">Register</h1>
+          </button>
+        </a>
         <div id="LoginCard" class="class_login">
           <form action="{% url 'login' %}" method="post">
             <div class="ui form">
@@ -74,22 +85,25 @@ body {
               {% endif %}
 
               <div class="field">
-                <label class="ui yellow">Username</label>
+                <label style="color:var(--greytext);">Username</label>
                 <input type="text" name="username" label="Username" autofocus>
               </div>
               <div class="field">
-                <label>Password</label>
+                <label style="color:var(--greytext);">Password</label>
                 <input type="password" name="password" label="Password">
               </div>
-              <button type="submit" value="Log in" class="ui button">Submit</button>
+              <div style="width: 100%;">
+                <button type="submit" value="Log in" class="ui button">Submit</button>
+                <a style="position:absolute; right: 0px; bottom: 0px; color:var(--greytext);" href="{% url 'login' %}">to login page</a>
+              </div>
             </div>
           </form>
         </div>
       </div>
     </div>
+    {% block body %}
+    {% endblock %}
   </div>
-        {% block body %}
-        {% endblock %}
     {% if message %}
     <!-- error and succession messages-->
     {% endif %}
@@ -101,8 +115,7 @@ body {
   })
   function ExpandLogin() {
     document.getElementById("LoginCard").classList.toggle("show_login");
-    // $('class_login').transition('drop');
-    // Make functional animation
+    $('.class_login').transition('slide down');
   }
 </script>
 
