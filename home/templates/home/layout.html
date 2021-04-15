@@ -7,12 +7,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     {% block head %}{% endblock %}
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-           
-        })
-    </script>
 </head>
 
 <style>
@@ -20,7 +16,16 @@ body {
   font-family: 'Roboto','Times New Roman', Times, serif;
 }
 
-#loginbtn {
+.class_login {
+  display: none;
+  width: 200px;
+  height: 600px;
+  position: fixed;
+  right: 20%;
+  top: 80px;
+}
+
+#logregbtn {
   margin: 8px;
   padding-bottom: 8px;
   padding-top: 8px;
@@ -30,6 +35,18 @@ body {
 #navbaritem {
   font-weight: bold;
   width: 100px;
+}
+
+#LoginCard {
+  width: 360px;
+  height: 200px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.show_login {
+  display: block;
 }
 </style>
 
@@ -41,12 +58,33 @@ body {
       <a class="item" id="navbaritem" href="{% url 'pws' %}">PWS</a>
       <a class="item" id="navbaritem" href="{% url 'contact' %}">Contact</a>
       <div class="ui right yellow inverted menu">
-        <button type="button" id="loginbtn" class="ui button">
+        <button onclick="ExpandLogin()" type="button" id="logregbtn" class="ui button">
           <h1 class="ui yellow header">Login</h1>
         </button>
-        <button type="button" id="loginbtn" class="ui button">
+        <button type="button" id="logregbtn" class="ui button">
           <h1 class="ui yellow header">Register</h1>
         </button>
+        <div id="LoginCard" class="class_login">
+          <form action="{% url 'login' %}" method="post">
+            <div class="ui form">
+              {% csrf_token %}
+
+              {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+              {% endif %}
+
+              <div class="field">
+                <label class="ui yellow">Username</label>
+                <input type="text" name="username" label="Username" autofocus>
+              </div>
+              <div class="field">
+                <label>Password</label>
+                <input type="password" name="password" label="Password">
+              </div>
+              <button type="submit" value="Log in" class="ui button">Submit</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -57,5 +95,15 @@ body {
     {% endif %}
 </body>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+     
+  })
+  function ExpandLogin() {
+    document.getElementById("LoginCard").classList.toggle("show_login");
+    // $('class_login').transition('drop');
+    // Make functional animation
+  }
+</script>
 
 </html>
