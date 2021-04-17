@@ -2,24 +2,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Grote Programmeer</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{% static 'home/styles.css' %}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-    {% block head %}{% endblock %}
+  <title>Grote Programmeer</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static 'home/styles.css' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  {% block head %}
+  
+  {% endblock %}
+  <script>
+
+    //Animates the expansion of the login card
+    function ExpandLogin() {
+      $('.class_login').transition('slide down');
+    }
+  </script>
 </head>
 
 <style>
 :root {
   --accent1: #fbb947;
   --accent2: #fb4789;
+  --darkwhite: #cccccc;
   --greytext:  #616161;
+  --shadow-2: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12);
 }
 
 body {
   font-family: 'Roboto','Times New Roman', Times, serif;
+}
+
+.titles {
+  font-weight: bolder;
+  font-size: 2.5rem;
 }
 
 .class_login {
@@ -31,7 +53,14 @@ body {
   top: 80px;
 }
 
-#logregbtn {
+#logbtn {
+  margin: 8px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  width: 160px;
+}
+
+#regbtn {
   margin: 8px;
   padding-bottom: 8px;
   padding-top: 8px;
@@ -44,6 +73,7 @@ body {
 }
 
 #LoginCard {
+  position: fixed;
   width: 360px;
   height: 200px;
   right: 10%;
@@ -51,23 +81,36 @@ body {
   background-color: white;
   border-radius: 4px;
   padding: 8px;
+  box-shadow: var(--shadow-2);
+  z-index: 9;
 }
 
+#navbar {
+  position: fixed; 
+  width: 80%;
+  margin-top: 20px; 
+  margin-left: 10%; 
+  margin-right: 10%; 
+  max-height: 60px; 
+  background-color: var(--accent1);
+  box-shadow: var(--shadow-2);
+  z-index: 9;
+}
 </style>
 
 <body>
   <div style="background-color: grey; height: 100%; width: 100%; position: fixed;">
-    <div class="ui inverted huge menu" style="margin-top: 20px; margin-left: 10%; margin-right: 10%; max-height: 60px; background-color: var(--accent1);">
-      <a class="item" id="navbaritem" href="{% url 'index' %}">Logo</a>
-      <a class="item" id="navbaritem" href="{% url 'about-us' %}">About</a>
-      <a class="item" id="navbaritem" href="{% url 'pws' %}">PWS</a>
-      <a class="item" id="navbaritem" href="{% url 'contact' %}">Contact</a>
-      <div class="ui right inverted menu" style="background-color: var(--accent1);">
-        <button onclick="ExpandLogin()" type="button" id="logregbtn" class="ui button">
+    <div class="ui inverted huge menu whitenavbar" id="navbar">
+      <a class="item" name="navbaritem" id="navbaritem" href="{% url 'index' %}">Logo</a>
+      <a class="item" name="navbaritem" id="navbaritem" href="{% url 'about-us' %}">About</a>
+      <a class="item" name="navbaritem" id="navbaritem" href="{% url 'pws' %}">PWS</a>
+      <a class="item" name="navbaritem" id="navbaritem" href="{% url 'contact' %}">Contact</a>
+      <div class="ui right inverted menu" id="rightnavbar" style="background-color: var(--accent1);">
+        <button onclick="ExpandLogin()" type="button" id="logbtn" class="ui button">
           <h1 class="ui header" style="color: var(--accent1);">Login</h1>
         </button>
         <a href="{% url 'register' %}">
-          <button type="button" id="logregbtn" class="ui button">
+          <button type="button" id="regbtn" class="ui button">
             <h1 class="ui header" style="color: var(--accent1);">Register</h1>
           </button>
         </a>
@@ -104,14 +147,4 @@ body {
     <!-- error and succession messages-->
     {% endif %}
 </body>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-     
-  })
-  function ExpandLogin() {
-    $('.class_login').transition('slide down');
-  }
-</script>
-
 </html>
