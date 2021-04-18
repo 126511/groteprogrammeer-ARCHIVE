@@ -1,43 +1,53 @@
 {% extends "home/layout.html" %}
 
 {% block head %}
+<script>
+
+    $(document).ready(function() {
+        //hide login button
+        $("#logbtn").hide();
+    })
+</script>
+
 <style>
     #body {
-        width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
+        margin: auto;
+        margin-top: 200px;
+        width: 600px;
+        background-color: white;
         text-align: center;
+        border-radius: 4px;
+        padding: 50px;
+        box-shadow: var(--shadow-2);
     }
 
-    .field {
-        border: 1px solid black;
-        border-radius: 5px;
-    }
-    #submit {
-        border: 2px solid #fbb947;
-        border-radius: 50px;
-        padding: 2px 8px;
-    }
 </style>
 {% endblock %}
 
 {% block body %}
 <div id="body">
-    <h1 class="display-1">Log in</h1><br>
-        <form method="post" action="{% url 'login' %}">
+    <h1 class="titles" style="color: var(--greytext);">Log in</h1><br>
+    <form action="{% url 'login' %}" method="post">
+        <div class="ui form">
             {% csrf_token %}
-            
-                <p>
-                    <label for="id_username">Username:</label> <br> <span class="field"><input type="text" name="username" maxlength="150" autocapitalize="none" autofocus required id="id_username"></span>                   
-                    <br><span style="color: red;">This field is required.</span>
-                </p>
-                <p>
-                    <label for="id_password1">Password:</label> <br> <span class="field"><input type="password" name="password" required id="id_password1"></span>
-                        <br><span style="color: red;">This field is required.</span>
-                </p>
-            <button type="submit" id="submit">Sign up</button>     
-        </form>
+
+            {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+            {% endif %}
+
+            <div class="field" style="max-width: 240px; margin-left: auto; margin-right: auto;">
+            <label style="color:var(--greytext);">Username</label>
+            <input type="text" name="username" label="Username" autofocus>
+            </div>
+            <div class="field" style="max-width: 240px; margin-left: auto; margin-right: auto;">
+            <label style="color:var(--greytext);">Password</label>
+            <input type="password" name="password" label="Password">
+            </div>
+            <div style="width: 100%;">
+            <button type="submit" value="Log in" class="ui button">Submit</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}
 

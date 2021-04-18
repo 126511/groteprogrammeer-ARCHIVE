@@ -1,4 +1,5 @@
 body {
+<<<<<<< HEAD
     font-family: Roboto,sans-serif;
 }
 
@@ -15,3 +16,11 @@ body {
     position: relative;
     margin: 0 auto;
 }
+
+#welcome {
+    color: red;
+}
+=======
+    font-family: 'Roboto','Times New Roman', Times, serif;
+}
+>>>>>>> 41d9c8570c81fcbdafca124d451b8598b6211c41
