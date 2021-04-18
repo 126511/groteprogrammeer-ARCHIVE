@@ -15,3 +15,7 @@ body {
     position: relative;
     margin: 0 auto;
 }
+
+#welcome {
+    color: red;
+}

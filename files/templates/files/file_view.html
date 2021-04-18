@@ -1,4 +1,18 @@
 {% extends "files/layout.html" %}
+{% load static %}
+
+
+{% block head %}
+<script src="{% static 'files/mc-question.js' %}"></script>
+<script src="{% static 'files/open-question.js' %}"></script>
+<link href="{% static 'files/questions.css' %}" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+{% endblock %}
 
 {% block title %} {{file.title }} {% endblock %}
 
@@ -20,11 +34,17 @@
         const d = document.getElementById("sidebar");
         d.style.display = "none";
         const l = document.getElementById("lesson");
-        l.style.width = "100%";
+        l.style.width = "70%";
     }
 
 </script>
 <style>
+    body {
+        margin: 0px;
+        padding: 0px;
+        font-size: 18px;
+        font-family: sans-serif;
+    }
     #documentation {
         padding: 10px;
     }
@@ -37,8 +57,9 @@
         font-weight: bold;
         background-color: transparent;
         border: 0px;
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 16px;
+        margin: 0px;
+        padding: 0px;
+        font-size: 18px;
     }
     #footer {
         position: absolute;
@@ -46,13 +67,34 @@
         right: 10px;
         left: auto;
         top: auto;
-}
+    }
+    #lesson {
+        width: 70%;
+        background-color: white;
+        margin: auto;
+        padding: 10px;
+    }
+    #body {
+        height: 100%;
+        background-color: lightgray;
+        display: flex;
+    }
+    code {
+        border: 1px solid lightgray;
+        background-color: lightgray;
+        
+    }
 </style>
-<div style="display: flex; height: 100%">
+<div id="body">
     <div id="lesson">
         {% autoescape off %}
             {{ file.file }}
         {% endautoescape %}
+        <form method="post" action="{% url 'progress' %}" style=" width: 100px; margin: auto;">
+            {% csrf_token %}
+            <input type="hidden" value="{{ file.path }}" name="path">
+            <input type="submit" value="completed">
+        </form>
     </div>
     <div id="sidebar" style="display: none;">
         <button class="button" onclick="gaweg()"> x </button>
@@ -60,16 +102,11 @@
             Hi!
         </div>
     </div>
+    
 </div>
 
 <input type="hidden" id="docs" name="docs" value="{{ docs }}">
 
-    <form method="post" action="{% url 'progress' %}">
-        {% csrf_token %}
-        <input type="hidden" value="{{ file.path }}" name="path">
-        <input type="submit" value="completed">
-    </form>
-    <footer>
-        <button id="footer" class="button" onclick="getdocs('jitske')">Jitske</button>
-    </footer>
+
+
 {% endblock %}

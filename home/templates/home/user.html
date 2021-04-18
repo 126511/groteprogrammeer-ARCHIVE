@@ -1,8 +1,11 @@
 {% extends "home/layout.html" %}
+{% block head %}
+
+{% endblock %}
 
 {% block body %}
 
-    <h1> Welcome, {{ request.user.username }} </h1>
+    <h1 id="welcome"> Welcome, {{ request.user.username }} </h1>
     <a href="{% url 'logout' %}">Logout</a></br></br>
     <a href="/files">Files</a>
 
