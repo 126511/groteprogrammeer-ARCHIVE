@@ -2,64 +2,95 @@
 {% load static %}
 
 {% block head %}
+<script>
+    
+    //fires when scrolling
+    function ScrollEvent() {
+
+        //create variable which holds the 'onscroll' element
+        var onscroll = document.getElementById("onscroll");
+
+        //check if the user is scrolling between a certain perameter
+        if (onscroll.scrollTop >= 1168 && onscroll.scrollTop <= 1708) {
+            
+            //change css of certain elements when the user is within the perameter
+            $('#navbar').css('background-color', 'white');
+            $('#rightnavbar').css('background-color', 'white');
+            $('a[name="navbaritem"]').css('color', 'var(--accent1)');
+        } else {
+
+            //change it back when
+            $('#navbar').css('background-color', 'var(--accent1)');
+            $('#rightnavbar').css('background-color', 'var(--accent1)');
+            $('a[name="navbaritem"]').css('color', 'white');
+        }
+
+        //Create the parallax effect for the background image
+        $('#parallaximg').css('top', onscroll.scrollTop * -0.5);
+    }
+</script>
+
 <style>
-body {
-    position: relative;
-    max-width: 100%;
-}
-.bg-image {
-    height: 100%;
-    width: 100%;
-    background: url("{% static 'home/bg.jpg' %}") !important;
-    color: white;
-    margin: 0;   
-    left: 0;
-}       
 
-.site-body {
-    width: 1000px;
-    height: auto;
-    position: relative;
-    margin-left: 50px;
-    margin-top: 50px;
-    background: rgba(0, 0, 0, 0.40);
-    padding: 15px;
-}
-html {
-    overflow-y: hidden;
-    overflow-x: auto;
-}
+    #contentsheet {
+        height: 600px; 
+        padding-left: 10%; 
+        padding-right: 10%;
+    }
 
-#footer {
-    color: white;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    left: auto;
-    top: auto;
-}
+    #fatbottom {
+        background-color: var(--greytext);
+        height: 300px
+    }
 
+    #onscroll {
+        overflow-y: scroll; 
+        overflow-x: hidden; 
+        height: 100%; 
+        width: 100%; 
+    }
+
+    #parallaximg {
+        position: fixed;
+        height: 600px;
+        width: 100%;
+        z-index: -1;
+        background: url("{% static 'home/bg.jpg' %}") !important;
+    }
 </style>
 {% endblock %}
 
 {% block body %}
 {% load static %}
-<!-- Put the body here -->
-<div class="">
-    <v-row>
-        <v-spacer></v-spacer>
-        <loginexpansion v-bind:expand_l="expand_l"></loginexpansion>
-    </v-row>
-</div>
-
-<div class="bg-image">
-    <div class="site-body">
-        <div class="display-1">
-            <span class="display-2">Welkom op GroteProgrameer.nl,</span><br> dé website om uw leerlingen te helpen met het leren van informatica. Deze methode is gebaseerd op de nieuwste versie van het examenprogramma informatica voor het VWO. Wij vinden dat informatica leren niet alleen voor bèta-leerlingen moet zijn, daarom is groteprogrammeer.nl voor alle leerlingen een manier om op een toegankelijke en leuke wijze computer science te leren!<br><br>
-            Informatica bestaat niet alleen uit programmeren; het bestaat uit het oplossen van problemen, je kunnen verplaatsen in de klant, maar ook begrijpen waar je mee bezig bent, niet alleen maar code typen en hopen dat het werkt. Wij beginnen bij het begin, bij de basis en dat maakt informatica voor alle leerlingen begrijpelijk, maar bovenal fantastisch leuk!        </div>
+<div id="onscroll" onscroll="ScrollEvent()">
+    <div id="parallaximg"></div>
+    <div id="contentsheet" class="ui two column grid" style="background-color: white; margin-top: 600px;">
+        <div style="padding: 100px;" class="column">
+            <h1 class="titles" style="color: var(--greytext)">Het meest fascinerende vak van het voortgezet onderwijs</h1>
+        </div>
+        <div class="column" style="padding: 100px;">
+            <img style="width: 100%;" src="{% static 'home/Python-logo.png' %}">
+        </div>
     </div>
-    <footer id="footer"><a href="https://besthqwallpapers.com/download/original/87429">source</a></footer>
+    <div id="contentsheet" class="ui two column grid" style="background-color: var(--accent1);">
+        <div style="padding: 100px;" class="column">
+            <h1 class="titles" style="color: white">Leren programmeren met onze geavanceerde software</h1>
+        </div>
+        <div class="column" style="padding: 100px;">
+            <img style="width: 100%;" src="{% static 'home/Python-logo.png' %}">
+        </div>
+    </div>
+    <div id="contentsheet" class="ui two column grid" style="background-color: white;">
+        <div style="padding: 100px;" class="column">
+            <h1 class="titles" style="color: var(--greytext)">Makkelijk op te zetten op grote en kleine schaal</h1>
+        </div>
+        <div class="column" style="padding: 100px;">
+            <img style="width: 100%;" src="{% static 'home/Python-logo.png' %}">
+        </div>
+    </div>
+    <div id="fatbottom">
+        <h1>Dikke legal information hiero en linkjes, misschien wat sources ofzo idfk. Kleur is ook acht tantoe lelijk maar boeie komt goed</h1>
+
+    </div>
 </div>
-
-
 {% endblock %}
