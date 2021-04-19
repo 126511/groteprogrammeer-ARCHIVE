@@ -1,0 +1,124 @@
+<h1>Les 0: Introdcutie</h1>
+
+<p> In hoofdstuk 0 hebben we gekeken naar hoe computers werken en hoe
+    we ze kunnen gebruiken om onze problemen op te lossen. Ook is er 
+    geïntroduceerd hoe programmeren, dit hebben we toen gedaan door het 
+    slepen van blokjes en het invullen van wat waardes: <button class="button" 
+    onclick="getdocs('graphical-programming')">graphical programming</button>. 
+    Dat is heel erg fijn als introductie, maar is niet de 
+    manier waarop ervaren programmeurs werken: zij gebruiken <button class="button" 
+    onclick="getdocs('textbased-programming')">text-based programming</button>. 
+    De naam zegt het al, je gebruikt hier geen blokjes om de computer instructies 
+    te geven, maar ge typte functies. Kijk bijvoorbeeld in het venster onder dit paragraaf, 
+    hier zie je een repl:</p>
+
+   
+<div class="repl">
+    <iframe height="500px" outputonly="1" width="100%" src="https://replit.com/@126511/hallo?lite=true" scrolling="no" frameborder="yes" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
+</div>
+
+<p><strong>Opdracht 1: Druk op de groene pijl bovenin, als het goed 
+    is zie je onderin het donkerblauwe venster "Hallo!" verschijnen.</strong>
+</p>
+
+<p>
+    De code, geschreven in de taal C, heeft als functie het uitprinten van de tekst "Hallo!". 
+    Waarom dit werkt en hoe je zelf zo'n programma maakt leren we in les 1. Voor voorbeelden 
+    van programma's gebruiken we vanaf nu (bijna) altijd ReplIt. Dit is een online IDE 
+    (Integrated Development Environment): een programma waarmee je de bestanden met code kan 
+    aanpassen en waarmee je commando's kan sturen naar de computer om zo je geschreven 
+    programma uit te voeren. Als je weer even naar de Repl hierboven kijkt zie je een wit 
+    venster met daarin 6 regels aan code. Daaronder is een blauw venster met nu "Hallo!" 
+    (dit heb je in Opdracht 1 gedaan). Je ziet dat er voor de output twee commando's staan. 
+    De eerste ziet er ongeveer zo uit: <code>clang-7 -pthread -lm -o main main.c</code> en de 
+    tweede zo <code>./main</code>. 
+</p>
+
+<p>
+    In hoofdstuk 0 hebben we het gehad over de taal die computer spreken: binair. Deze taal 
+    bestond alleen maar uit 1 en 0. Het programma in het witte venster, ook wel de text-editor 
+    genoemd, snapt de computer dus niet. We hebben nu  C-code en dat moet vertaalt worden naar 
+    0 en 1, dit doet een compiler. Je kan het een beetje zien als Google Translate voor 
+    programmeren. Je stopt er een bepaalde taal in (in dit geval C), dit noem je de source code. 
+    De compiler vertaalt dat tot machine code: uitsluitend bestaand uit binaire taal. Dit 
+    begrijpt de computer wel en kan het gaan uitvoeren. De compiler die ReplIt gebruikt heet 
+    <code>Clang</code>. De stukjes tekst erachter zorgen ervoor dat <code>Clang</code> weet wat 
+    hij moet gaan vertalen en hoe hij het nieuwe bestand moet noemen (met daarin de binaire 
+    code). Hoe dit werkt en waarom het werkt maakt voor nu niet uit, de Run-knop doet het 
+    allemaal automatisch voor je! Daarna zie je het commando <code>./main</code> staan. Als je 
+    in de informatica ergens <code>./</code> ziet staan betekent dat bijna altijd "in het 
+    huidige mapje". De <code>main</code> erachteraan betekent dat de computer in het huidige 
+    mapje het bestand "main" moet vinden (dat heeft de compiler zojuist gemaakt). 
+</p>
+
+<div class="open" id="open1">
+    <h3>Hoe heet de vertaler die van source code machine code maakt? Gebruik geen hoofdletters in je antwoord.</h3>
+    <div>
+        <input type="text" id="open1_input">
+        <div class="answer" id="open1_answer">compiler</div>
+    </div>
+    <button class="check" id="open1_check" onclick="open_check('open1')">Check</button>
+    <button class="retry" id="open1_retry" onclick="open_retry('open1')">Retry</button>
+    <button class="show_answer" id="open1_show_answer" onclick="open_show_answer('open1')">Show answer</button>
+    <div class="explanation" id="open1_explanation">Je kan de compiler een beetje zien als Google Translate voor programmeren. Je stopt er een bepaalde taal in (in dit geval C), dit noem je de source code. De compiler vertaalt dat tot machine code: uitsluitend bestaand uit binaire taal. Dit begrijpt de computer wel en kan het gaan uitvoeren.</div>       
+</div>
+
+<p><strong>Opdracht 2: Typ zelf is in de terminal <code>./main</code>: als het goed is zie je als output weer "Hallo!". <br>
+    TIP: Als er een error komt zoals "Permission denied", moet je eerst het programma runnen 
+    via de Run-button. Dan compilet het programma, zodat jij het vervolgens kan 
+    runnen.</strong>
+</p>
+
+<p>
+    Vanaf volgende les gaan we ook zelf programmeren, hiervoor heb je een account nodig bij 
+    ReplIt, dit is volledig gratis. Klik op open in Replit (rechtsboven in de tekst-editor). 
+    Nu kom je op de pagina waar deze Repl (die "Hallo" uitprint) is opgeslagen. Rechtsboven zie 
+    je 'Log in' en 'Sign up'. Als je al een account hebt kan je via 'Log in' inloggen. Zoniet, 
+    druk op 'Sign up'. Bovenin het venster zie je drie symbolen: Google, Github en Facebook. 
+    Wij gaan inloggen via GitHub, dit is een soort Facebook voor programmeurs, hierop delen zij 
+    hun code en vragen anderen om advies. Klik op het zwart-witte logo met een kat erop. Nu kom 
+    je op het inlogscherm van GitHub. Klik onderin op "Create an account" en vul hier je 
+    gegevens in (volledige naam als username en gebruik je schoolemail). Nu moet je jouw 
+    emailadres even bevestigen. Dit doe je door naar jouw email te gaan en op de link te klikken 
+    in het mailtje van GitHub. Er staat dan als het goed is "Your email has been verified". Nu 
+    kan je weer naar replit.com en inloggen met je GitHub account. Je moet ReplIt toegang geven 
+    tot je GitHub account (door op de groene knop te drukken met "Authorize".
+</p>
+
+<p>
+    Je hebt nu je eigen ReplIt account! Als eerste kom je op een pagina waar nog om wat 
+    gegevens worden gevraagd, vul deze even in. Als je die vragen niet wilt beantwoorden kan je 
+    op Home drukken.
+</p>
+
+<p>
+    <strong>Opdracht 3: Voer de stappen hierboven uit zodat jij vanaf nu ook zelf kan gaan 
+    programmeren!</strong>
+</p>
+
+<p>
+    Als je nu weer op open in ReplIt drukt kan je op "fork" drukken. Fork betekent dat jij de 
+    Repl die wij voor je hebben gemaakt kopieert, zodat je hem zelf kan aanpassen. Ook hier kan 
+    je op Run drukken en in de terminal commando's typen. Je kan nu ook de code aanpassen. 
+    Vervang <code>printf("Hallo!\n");</code> door <code>printf("Welkom!\n");</code>. Als je nu 
+    op Run drukt zie je dat het programma "Welkom!" uitprint.
+</p>
+
+<div class="mc" id="mc1">
+    <h3>Welke term drukt het kopieren van een stuk code uit zodat jij het voor jezelf kan aanpassen?</h3>
+
+    <div><input name="mc1" type="radio" id="mc1_1" >Copy</div>
+    <div id="mc1_answer"><input name="mc1" type="radio" id="mc1_2">Fork</div>
+    <div><input name="mc1" type="radio"id="mc1_3">Insert</div>
+    <div><input name="mc1" type="radio" id="mc1_4">Repl</div>
+
+    <button class="check" id="mc1_check" onclick="mc_check('mc1', '2')">Check</button>
+    <button class="retry" id="mc1_retry" onclick="mc_retry('mc1')">Retry</button>
+    <button class="show_answer" id="mc1_show_answer" onclick="mc_show_answer('mc1')">Show answer</button>
+    <div class="explanation" id="mc1_explanation">Fork betekent dat jij de Repl die wij voor je hebben gemaakt kopieert, zodat je hem zelf kan aanpassen.</div>       
+</div>
+
+<p>
+    <strong>Opdracht 4: Fork onze Repl zodat jij hem kan aanpassen en pas het aan zodat hij 
+    niet meer "Hallo!" print maar "Welkom!"</strong>
+</p>
