@@ -1,4 +1,17 @@
-{% extends "home/layout.html" %}
+{% extends "home/userlayout.html" %}
+{% load static %}
+
+{% block head %}
+
+<script>
+    $(document).ready( function() {
+        $('.navbtn').eq(0).css({"background-color": "var(--accent1)", "color": "white"});
+
+    })
+</script>
+
+{% endblock %}
+
 
 {% block body %}
 

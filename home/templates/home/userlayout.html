@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +13,159 @@
   {% block head %}
   
   {% endblock %}
+  <script>
+    
+    $(document).ready( function() {
+      
+      //Hide the navbar once the DOM has loaded
+      $('#expandednav').hide();
+
+      //Triggers on every mouse move
+      $(document).mousemove(function() {
+        
+        //Is the user hovering on the navbar?
+        if ($('#verticalnav').is(':hover') || $('#expandednav').is(':hover')) {
+          ExpandNav();
+        } else {
+          CloseNav();
+        }
+      });
+    });
+
+    //Expand the navbar
+    function ExpandNav() {
+      if ($('#expandednav').is(':hidden') && $('#expandednav').transition('is animating') == false) {
+        $('#expandednav').transition('slide right');
+        $('#verticalnav').css('box-shadow', '0 0px 0px');
+      }
+    }
+
+    //Close the navbar
+    function CloseNav() {
+      if ($('#expandednav').is(':visible') && $('#expandednav').transition('is animating') == false) {
+        $('#expandednav').transition('slide right');
+        $('#verticalnav').css('box-shadow', 'var(--shadow-2)');
+      }
+    }
+    
+  </script>
+
+  <style>
+  :root {
+    --accent1: #fbb947;
+    --accent2: #fb4789;
+    --darkwhite: #cccccc;
+    --greytext:  #616161;
+    --shadow-2: 0 1px 1px rgba(0,0,0,0.12), 
+                0 2px 2px rgba(0,0,0,0.12), 
+                0 4px 4px rgba(0,0,0,0.12), 
+                0 8px 8px rgba(0,0,0,0.12),
+                0 16px 16px rgba(0,0,0,0.12);
+  }
+
+  .navtext {
+    font-weight: bolder;
+    font-size: 1.5rem;
+    text-align: left;
+  }
+
+  #verticalnav {
+    position: absolute;
+    height: 100%;
+    width: 64px;
+    background-color: var(--accent1);
+    border-radius: 0px;
+    box-shadow: var(--shadow-2);
+    z-index: 9;
+  }
+
+  #expandednav {
+    position: absolute;
+    left: 63px;
+    height: 100%;
+    width: 196px;
+    background-color: white;
+    border-radius: 0px 16px 16px 0px;
+    box-shadow: var(--shadow-2);
+  }
+
+  .navitem {
+    height: 64px;
+    width: 64px;
+    color: white;
+  }
+
+  div.ui.navbtn {
+    background-color: white;
+    height: 64px;
+    width: 100%;
+    padding-top:16px;
+    text-align: left;
+  }
+
+  div.ui.navbtn:hover {
+    background-color: var(--accent1);
+    color: white !important;
+  }
+
+  </style>
 </head>
 <body>
-
+  <div style="height: 100%; width: 100%; position: fixed; background-color: grey;">
+    <div class="ui inverted vertical menu grid" id="verticalnav">
+      <div class="navitem row">
+        <i class="icon home" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
+      </div>
+      <div class="navitem row">
+        <i class="icon compass" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
+      </div>
+      <div class="navitem row">
+        <i class="icon book" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
+      </div>
+      <div class="row" style="height: calc(100% - 320px);"></div>
+      <div class="navitem row">
+        <i class="arrow alternate circle left icon" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
+      </div>
+      <div class="navitem row">
+        <i class="cog icon" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
+      </div>
+    </div>
+    <div id="expandednav">
+      <div class="ui vertical buttons" style="width: 100%;">
+        <a href="{% url 'user' %}">
+          <div class="ui button navbtn" style="border-radius: 0px 16px 0px 0px;">
+            <h2 class="navtext">Home</h2>
+          </div>
+        </a>
+        <a href="{% url 'index' %}">
+          <div class="ui button navbtn" style="border-radius: 0px 0px 0px 0px;">
+            <h2 class="navtext">Lessen</h2>
+          </div>
+        </a>
+        <a href="{% url 'user' %}">
+          <div class="ui button navbtn" style="border-radius: 0px 0px 16px 0px;">
+            <h2 class="navtext">Documentatie</h2>
+          </div>
+        </a>
+      </div>
+      <div style="height: calc(100% - 320px); width: 100%;"></div>
+      <div class="ui vertical buttons" style="width:100%;">
+        <a href="{% url 'logout' %}">
+          <div class="ui button navbtn" style="border-radius: 0px 16px 0px 0px;">
+            <h2 class="navtext">Log uit</h2>
+          </div>
+        </a>
+        <a href="{% url 'user' %}">
+          <div class="ui button navbtn" style="border-radius: 0px 0px 16px 0px;">
+            <h2 class="navtext">Opties</h2>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div style="padding:100px;">
+    {% block body %}
+    {% endblock %}
+    </div>
+  </div>
 </body>
 </html>
