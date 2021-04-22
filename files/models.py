@@ -32,12 +32,7 @@ class LatestPage(models.Model):
     def __str__(self):
         return str(self.user) + " has " + self.chapterpath + "/" + self.path
 
-class Term(models.Model):
-    term = models.CharField(max_length=64)
-    definition = models.TextField(max_length=1024)
 
-    def __str__(self):
-        return str(self.term)
     
 
 

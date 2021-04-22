@@ -2,6 +2,13 @@
 
 {% block title %} List of files {% endblock %}
 
+{% block head %}
+
+{% endblock %}
+
+
+
+
 {% block body %}
 
 {% if lptrue %}
@@ -20,5 +27,8 @@
        </ul>
     {% endfor %}
 </ul>
+<button onclick="get_html()">kijk!</button>
+
+<div id="fetch"></div>
 
 {% endblock %}

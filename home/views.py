@@ -38,7 +38,7 @@ def login_view(request):
         else:
             # Let them try again and shout at them
             return render(request, "home/login.html", {
-                "message": "That's not valid input you blithering idiot!!!!!!!",
+                "message": "Deze gegevens kloppen niet, probeer het nog een keer",
                 "status_code":-1
             })
 
@@ -51,7 +51,7 @@ def logout_view(request):
     # Log the user out and redirect to the main page, providing a message of success
     logout(request)
     return render(request, "home/index.html", {
-        "message": "We logged you out.",
+        "message": "Je bent nu uitgelogd",
         "status_code":1
     })
 
@@ -152,7 +152,7 @@ def register(request):
 
         # Render their own user page and a corresponding message of success
         return render(request, 'home/user.html', {
-            "message":"We have created your account!",
+            "message":"We hebben jouw account aangemaakt!",
             "status_code":1
         })
     

@@ -1,0 +1,13 @@
+{% extends "docs/layout.html" %}
+
+
+
+{% block body %}
+<button onclick="get_html(`index`)">naar index</button>
+<h1>{{ term.term }}</h1>
+<div>
+    {% autoescape off %}
+    {{ term.definition }}
+    {% endautoescape %}
+</div>
+{% endblock %}
