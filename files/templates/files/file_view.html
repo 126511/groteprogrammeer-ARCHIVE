@@ -38,6 +38,7 @@
     }
 
 </script>
+
 <style>
     body {
         margin: 0px;
@@ -87,6 +88,7 @@
 </style>
 <div id="body">
     <div id="lesson">
+        <button onclick="get_html(`index`)">kijk!</button>
         {% autoescape off %}
             {{ file.file }}
         {% endautoescape %}
@@ -98,6 +100,7 @@
     </div>
     <div id="sidebar" style="display: none;">
         <button class="button" onclick="gaweg()"> x </button>
+        <div ><a id="link2docs" href="">open in page</a></div>
         <div id="documentation">
             Hi!
         </div>
@@ -107,6 +110,24 @@
 
 <input type="hidden" id="docs" name="docs" value="{{ docs }}">
 
+<script>
+    function get_html(url) {
+        fetch(`/docs/${url}`).then(function (response) {
+            const r = response.text()
+	        return r
+        }).then(function (html) {
+            console.log(html)
+            document.getElementById("documentation").innerHTML = html;
+            document.getElementById("link2docs").href = `/docs/link/${url}`;
+        }).catch(function (err) {
+	        console.warn('Something went wrong.', err);
+        });
 
+        const documentation = document.getElementById("sidebar")
+        documentation.style.display = "block";
+        const lesson = document.getElementById("lesson")
+        lesson.style.width = "75%";
+    }
+</script>
 
 {% endblock %}

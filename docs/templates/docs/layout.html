@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function get_html(url) {
+            fetch(`/docs/${url}`).then(function (response) {
+                const r = response.text()
+                console.log(`${r}`)
+                return r
+            }).then(function (html) {
+                document.getElementById("documentation").innerHTML = html;
+            }).catch(function (err) {
+                console.warn('Something went wrong.', err);
+            });
+        }
+    </script>
+    {% block head %} {% endblock %}
+    <title>Docs</title>
+</head>
+<body>
+    {% block body %} {% endblock %}
+</body>
+</html>

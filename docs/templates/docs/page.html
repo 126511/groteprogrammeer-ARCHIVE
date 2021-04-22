@@ -1,0 +1,21 @@
+{% extends "docs/layout.html" %}
+
+{% block head %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const redirect = "{{ redirect }}"
+        if (redirect) {
+            get_html(`${redirect}`)
+            return
+        }
+        get_html(`index`)
+    })
+
+</script>
+{% endblock %}
+
+{% block body %}
+    <div id="documentation"></div>
+{% endblock %}
+
+

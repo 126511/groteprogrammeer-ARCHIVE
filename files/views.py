@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
-from .models import Filepage, LatestPage, Term
+from .models import Filepage, LatestPage
+from docs.models import Term
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import json
