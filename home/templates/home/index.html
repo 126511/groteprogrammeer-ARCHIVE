@@ -4,28 +4,54 @@
 {% block head %}
 <script>
     
-    //fires when scrolling
-    function ScrollEvent() {
+    // Dynamically change the colors of the navbar buttons, fires when mouse is entered
+    $(document).on('mouseenter','#navbaritem', function() {
 
-        //create variable which holds the 'onscroll' element
+        // Create variable which hold the 'onscroll' element
         var onscroll = document.getElementById("onscroll");
 
-        //check if the user is scrolling between a certain perameter
+        // Check if the user is scrolling between a certain perameter and change the colors accordingly
+        if (onscroll.scrollTop >= 1168 && onscroll.scrollTop <= 1708) {
+            $(this).css('background-color', 'var(--white-darken)')
+        } else {
+            $(this).css('background-color', 'var(--accent1-lighten)')
+        }
+    })
+    
+    // Same as the above, but changes the colors back when the mouse leaves
+    $(document).on('mouseleave','#navbaritem', function() {
+
+        var onscroll = document.getElementById("onscroll");
+        
+        if (onscroll.scrollTop >= 1168 && onscroll.scrollTop <= 1708) {
+            $(this).css('background-color', 'white')
+        } else {
+            $(this).css('background-color', 'var(--accent1)')
+        }
+    })
+
+    // Fires when scrolling
+    function ScrollEvent() {
+
+        // Create variable which holds the 'onscroll' element
+        var onscroll = document.getElementById("onscroll");
+
+        // Check if the user is scrolling between a certain perameter
         if (onscroll.scrollTop >= 1168 && onscroll.scrollTop <= 1708) {
             
-            //change css of certain elements when the user is within the perameter
+            // Change css of certain elements when the user is within the perameter
             $('#navbar').css('background-color', 'white');
             $('#rightnavbar').css('background-color', 'white');
-            $('a[name="navbaritem"]').css('color', 'var(--accent1)');
+            $('a[name="navbaritem"]').css({'color': 'var(--accent1)', 'background-color': 'white'});
         } else {
 
-            //change it back when
+            // Change it back when
             $('#navbar').css('background-color', 'var(--accent1)');
             $('#rightnavbar').css('background-color', 'var(--accent1)');
-            $('a[name="navbaritem"]').css('color', 'white');
+            $('a[name="navbaritem"]').css({'color': 'white', 'background-color': 'var(--accent1)'});
         }
 
-        //Create the parallax effect for the background image
+        // Create the parallax effect for the background image
         $('#parallaximg').css('top', onscroll.scrollTop * -0.5);
     }
 </script>

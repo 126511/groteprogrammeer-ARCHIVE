@@ -1,11 +1,8 @@
-{% extends "files/layout.html" %}
+{% extends "home/userlayout.html" %}
 {% load static %}
 
 
 {% block head %}
-<script src="{% static 'files/mc-question.js' %}"></script>
-<script src="{% static 'files/open-question.js' %}"></script>
-<link href="{% static 'files/questions.css' %}" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
 
@@ -19,6 +16,17 @@
 {% block body %}
 
 <script type="text/javascript">
+
+    // Fires when the DOM has finished loading
+    $(document).ready( function() {
+        
+        // Changes the background color of the second vertical navbar item
+        $('.navbtn').eq(1).css({"background-color": "var(--accent1)", "color": "white"});
+    })
+
+    // ------------------------- To Import The Lessons-----------------------------------------------
+    // ------------------------- Needs To Change ----------------------------------------------------
+
     function getdocs(term) {
         const docs = document.getElementById("docs").value;
         o = JSON.parse(`${docs}`)
@@ -35,6 +43,134 @@
         d.style.display = "none";
         const l = document.getElementById("lesson");
         l.style.width = "70%";
+    }
+
+    // --------------------------- For Multiple Choice Question Card ----------------------------------
+
+    // Fires when user hits the 'check' button
+    function checkmc() {
+        
+        // Creates a variable which holds the value of wether the user is right or not
+        var correct
+
+        // Loops through all the possible answers
+        $("[name='mcquestion']").each( function() {
+
+            // If the user is correct, change the value of 'correct' to be true
+            if (this.value == "correct" && this.checked) {
+                correct = true;
+            }
+
+            // Set all the possibilities to disabled so the user can not answer again
+            $(this).attr('disabled', true);
+        })
+
+        // If the answer is correct
+        if (correct === true) {
+
+            // Execute some CSS
+            $('.multiplechoice').css('background-color', 'var(--success)');
+            $('#showanswer').hide();
+            $('#retryanswer').hide();
+
+            // Also show the correct answer
+            $('.correctanswer').show();
+        } else {
+
+            // Else, execute different css
+            $('.multiplechoice').css('background-color', 'var(--error)')
+            $('#showanswer').show();
+            $('#retryanswer').show();
+        }
+
+        $('#checkanswer').hide()
+        
+    }
+
+    // Fires when the user hits the 'retry' button
+    function retrymc() {
+
+        // For each possible answer
+        $("[name='mcquestion']").each( function() {
+
+            // Set it to be disabled so the user can not change its answer
+            $(this).attr('disabled', false);
+        })
+
+        // Do some CSS
+        $('.multiplechoice').css('background-color', 'var(--accent1)');
+        $('#showanswer').hide();
+        $('#checkanswer').show();
+        $('#retryanswer').hide();
+        
+    }
+
+    // Fires when the user hits the 'show answer' button
+    function showanswer() {
+
+        // Do some CSS
+        $('.correctanswer').show();
+        $(this).attr('disabled', true);
+        $('.multiplechoice').css('background-color', 'var(--accent1)');
+        $('#retryanswer').hide();
+        $('#showanswer').hide();
+
+        // Also set the indicator to the correct answer and change some of its CSS
+        $("[value='correct']").prop('checked', true);
+        $("[value='correct']").attr('disabled', false);
+        $("[value='correct']").siblings().css('font-weight', 'bold');
+
+    }
+
+    // -------------------------------- For Open Question Card --------------------------------
+
+    // Fires when the user wants to check its answer
+    function checkoc() {
+
+        // Check if the user's answer is correct
+        if ($('#ocanswer').val() === $('#checkocanswer').val()) {
+            
+            // Execute some CSS
+            $('.openquestion').css('background-color', 'var(--success)');
+            $('#showocanswer').hide();
+            $('#retryocanswer').hide();
+        } else {
+
+            // Execute other CSS
+            $('.openquestion').css('background-color', 'var(--error)');
+            $('#showocanswer').show();
+            $('#retryocanswer').show();
+        }
+
+        $('#ocanswer').attr('disabled', true);
+        $('#checkocanswer').hide()
+    }
+
+    // Fires when the user wants to retry
+    function retryoc() {
+        // Clear the user's answer and enable the form again
+        $('#ocanswer').val('');
+        $('#ocanswer').attr('disabled', false);
+
+        // Do some CSS
+        $('#checkocanswer').show();
+        $('#showocanswer').hide();
+        $('#retryocanswer').hide();
+    }
+
+    // Fires when the user wants to see the answer
+    function showoc() {
+        // Clear the user's answer
+        $('#ocanswer').val($('#checkocanswer').val());
+
+        // Execute some CSS
+        $('#ocanswer').attr('disabled', true);
+        $('#showocanswer').hide();
+        $('#retryocanswer').hide();
+        $('#checkocanswer').hide();
+        $('.openquestion').css('background-color', 'var(--accent1)');
+        $('.correctocanswer').show();
+
     }
 
 </script>
@@ -78,15 +214,63 @@
         height: 100%;
         background-color: lightgray;
         display: flex;
+        overflow: scroll;
     }
     code {
         border: 1px solid lightgray;
         background-color: lightgray;
         
     }
+
+    .multiplechoice {
+        background-color: var(--accent1);
+        width: 100%;
+        height:100%;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: var(--shadow-1);
+        position: relative;
+    }
+
+    .correctanswer {
+        display: none;
+        color: white;
+        font-size: 1.2rem;
+    }
+
+    .questiontitle {
+        color: white;
+        font-size: 2rem;
+    }
+
+    #checkboxtext {
+        color: white;
+        font-size: 1rem;
+        font-weight: normal;
+    }
+
+    .openquestion {
+        background-color: var(--accent1);
+        width: 100%;
+        height:100%;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: var(--shadow-1);
+        position: relative;
+    }
+
+    .correctocanswer {
+        display: none;
+        color: white;
+        font-size: 1.2rem;
+    }
+
 </style>
 <div id="body">
+    
+
     <div id="lesson">
+        
         {% autoescape off %}
             {{ file.file }}
         {% endautoescape %}

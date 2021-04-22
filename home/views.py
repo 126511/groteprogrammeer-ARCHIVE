@@ -152,7 +152,8 @@ def register(request):
 
         # Render their own user page and a corresponding message of success
         return render(request, 'home/user.html', {
-            "message":"We have created your account!"
+            "message":"We have created your account!",
+            "status_code":1
         })
     
     else:

@@ -14,6 +14,21 @@
   
   {% endblock %}
   <script>
+
+    function closemsg() {
+          $('#msg').hide();
+        }
+
+        $('#msg').ready( function() {
+          var msgtype = $('#msg').attr('value')
+          if (msgtype == 1) {
+            $('#msg').css('background-color', 'var(--success)');
+          } else if (msgtype == 0) {
+            $('#msg').css('background-color', 'var(--accent1)');
+          } else {
+            $('#msg').css('background-color', 'var(--error)')
+          }
+        })
     
     $(document).ready( function() {
       
@@ -52,15 +67,29 @@
 
   <style>
   :root {
-    --accent1: #fbb947;
-    --accent2: #fb4789;
-    --darkwhite: #cccccc;
-    --greytext:  #616161;
-    --shadow-2: 0 1px 1px rgba(0,0,0,0.12), 
-                0 2px 2px rgba(0,0,0,0.12), 
-                0 4px 4px rgba(0,0,0,0.12), 
-                0 8px 8px rgba(0,0,0,0.12),
-                0 16px 16px rgba(0,0,0,0.12);
+  --accent1: #fbb947;
+  --accent1-lighten:#fccd7d;
+  --accent1-darken: #fba918;
+  --accent2: #fb4789;
+  --white-darken: #f0f0f0;
+  --greytext:  #616161;
+  --success: rgb(37, 199, 86);
+  --error: rgb(255, 72, 0);
+  --shadow-1: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12);
+  --shadow-2: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12);
+  --shadow-3: 0 1px 1px rgba(0,0,0,0.12), 
+              0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12),
+              0 32px 32px rgba(0,0,0,0.12);
   }
 
   .navtext {
@@ -108,11 +137,34 @@
     color: white !important;
   }
 
+  #closemsg {
+  color: white;
+  font-size: 1.5rem;
+  position:absolute;
+  right: 0px;
+  top: 8px;
+}
+
+  #closemsg:hover {
+    font-size: 2rem;
+  }
+
+  #msg {
+    background-color: red;
+    color: white;
+    position: absolute;
+    width: 360px;
+    left: 10%;
+    top: 80px;
+    box-shadow: var(--shadow-3);
+  }
+
+  
   </style>
 </head>
 <body>
   <div style="height: 100%; width: 100%; position: fixed; background-color: grey;">
-    <div class="ui inverted vertical menu grid" id="verticalnav">
+    <div class="ui inverted vertical menu grid" id="verticalnav" style="z-index: 9;">
       <div class="navitem row">
         <i class="icon home" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
       </div>
@@ -130,14 +182,14 @@
         <i class="cog icon" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
       </div>
     </div>
-    <div id="expandednav">
+    <div id="expandednav" style="z-index: 8;">
       <div class="ui vertical buttons" style="width: 100%;">
         <a href="{% url 'user' %}">
           <div class="ui button navbtn" style="border-radius: 0px 16px 0px 0px;">
             <h2 class="navtext">Home</h2>
           </div>
         </a>
-        <a href="{% url 'index' %}">
+        <a href="/files">
           <div class="ui button navbtn" style="border-radius: 0px 0px 0px 0px;">
             <h2 class="navtext">Lessen</h2>
           </div>
@@ -162,10 +214,19 @@
         </a>
       </div>
     </div>
-    <div style="padding:100px;">
+    
     {% block body %}
     {% endblock %}
+
+    {% if message %}
+    <!-- error and succession messages-->
+    <div class="ui message" id="msg" value="{{ status_code }}">
+      <h4>{{ message }}</h4>
+      <a onclick="closemsg()" id="closemsg">
+        <i class="ui icon close"></i>
+      </a>
     </div>
+    {% endif %}
   </div>
 </body>
 </html>

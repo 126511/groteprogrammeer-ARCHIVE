@@ -16,24 +16,74 @@
   {% endblock %}
   <script>
 
-    //Animates the expansion of the login card
+    // Animates the expansion of the login card
     function ExpandLogin() {
       $('.class_login').transition('slide down');
     }
+
+    // Closes the logincard by clicking outside the logincard, fires when the user clicks
+    $(document).click( function(event) {
+      
+      // If the target of the click was not the login card and the login card is visible and not animating --> close the login card
+      if (!$(event.target).closest('.class_login').length && !$('.class_login').transition('is animating') && $('.class_login').is(':visible')) {
+        $('.class_login').transition('slide down');
+      }
+    })
+
+    // Hide the message once the 'x' is clicked
+    function closemsg() {
+      $('#msg').hide();
+    }
+
+    // Change the close button on the message
+    $(document).on('mouseenter','#closemsg', function() {
+      $('#closemsg i').removeClass('outline');
+    })
+    
+    // Change the close button on the message
+    $(document).on('mouseleave', '#closemsg', function() {
+      $('#closemsg i').addClass('outline');
+    })
+
+    // Change the color of the message according to the message type
+    $('#msg').ready( function() {
+
+      // Get the value attribute of #msg and store it, which is the value passed from the backend
+      var msgtype = $('#msg').attr('value')
+
+      // Color the message according to the value of msgtype
+      if (msgtype == 1) {
+        $('#msg').css('background-color', 'var(--success)');
+      } else if (msgtype == 0) {
+        $('#msg').css('background-color', 'var(--accent1)');
+      } else {
+        $('#msg').css('background-color', 'var(--error)')
+      }
+    })
+
   </script>
 </head>
 
 <style>
 :root {
   --accent1: #fbb947;
+  --accent1-lighten:#fccd7d;
+  --accent1-darken: #fba918;
   --accent2: #fb4789;
-  --darkwhite: #cccccc;
+  --white-darken: #f0f0f0;
   --greytext:  #616161;
+  --success: rgb(37, 199, 86);
+  --error: rgb(255, 72, 0);
   --shadow-2: 0 1px 1px rgba(0,0,0,0.12), 
               0 2px 2px rgba(0,0,0,0.12), 
               0 4px 4px rgba(0,0,0,0.12), 
               0 8px 8px rgba(0,0,0,0.12),
               0 16px 16px rgba(0,0,0,0.12);
+  --shadow-3: 0 2px 2px rgba(0,0,0,0.12), 
+              0 4px 4px rgba(0,0,0,0.12), 
+              0 8px 8px rgba(0,0,0,0.12), 
+              0 16px 16px rgba(0,0,0,0.12),
+              0 32px 32px rgba(0,0,0,0.12);
 }
 
 body {
@@ -56,21 +106,38 @@ body {
 
 #logbtn {
   margin: 8px;
+  height: 44px;
   padding-bottom: 8px;
   padding-top: 8px;
   width: 160px;
+  background-color: white;
+}
+
+#logbtn:hover {
+  background-color: var(--white-darken);
 }
 
 #regbtn {
   margin: 8px;
+  height: 44px;
   padding-bottom: 8px;
   padding-top: 8px;
   width: 160px;
+  background-color: white;
+}
+
+#regbtn:hover {
+  background-color: var(--white-darken);
 }
 
 #navbaritem {
   font-weight: bold;
   width: 100px;
+  background-color: var(--accent1);
+}
+
+#navbaritem:hover {
+  background-color: var(--accent1-lighten);
 }
 
 #LoginCard {
@@ -86,6 +153,19 @@ body {
   z-index: 9;
 }
 
+#msg {
+  background-color: red;
+  color: white;
+  position: fixed;
+  width: 360px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  top: 80px;
+  box-shadow: var(--shadow-3);
+}
+
 #navbar {
   position: fixed; 
   width: 80%;
@@ -97,6 +177,15 @@ body {
   box-shadow: var(--shadow-2);
   z-index: 9;
 }
+
+#closemsg {
+  color: white;
+  font-size: 1.5rem;
+  position:absolute;
+  right: 0px;
+  top: 8px;
+}
+
 </style>
 
 <body>
@@ -146,6 +235,12 @@ body {
   </div>
     {% if message %}
     <!-- error and succession messages-->
+    <div class="ui message" id="msg" value="{{ status_code }}">
+      <h4>{{ message }}</h4>
+      <a onclick="closemsg()" id="closemsg">
+        <i class="ui icon window outline close"></i>
+      </a>
+    </div>
     {% endif %}
 </body>
 </html>
