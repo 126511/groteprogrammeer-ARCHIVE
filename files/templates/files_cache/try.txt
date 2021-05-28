@@ -1,0 +1,32 @@
+{ "mcquestions" : [ 
+    { 
+        "options" : ["2", "3", "69", "21"], 
+        "questions" : [false, false, false, true], 
+        "ans" : "19 you STUPIDDD", 
+        "title" : "Whats 9 + 10" 
+    }, 
+    { 
+        "options" : ["its wednesday my dudes", "what the dawg doin", "papa musk"], 
+        "questions" : [false, true, false], 
+        "ans" : "not papa musk", 
+        "title" : "Why are you running?"
+    } ]}
+
+
+{ "mcquestions" : [ { "options" : ["2", "3", "69", "21"], "questions" : [false, false, false, true], "ans" : "19 you STUPIDDD", "title" : "Whats 9 + 10" }, { "options" : ["its wednesday my dudes", "what the dawg doin", "papa musk"], "questions" : [false, true, false], "ans" : "not papa musk", "title" : "Why are you running?"} ]}
+
+
+{ "ocquestions" : [
+    {
+        "ans" : "yeet",
+        "explanation" : "it must be yeet",
+        "title" : "ya ... (fill in the gap)"
+    },
+    {
+        "ans" : "jolle",
+        "explanation" : "joole becayuse he cool af",
+        "title" : "who is long boi?"
+    }
+]}
+
+{ "ocquestions" : [ {"ans" : "yeet", "explanation" : "it must be yeet", "title" : "ya ... (fill in the gap)"}, {"ans" : "jolle", "explanation" : "joole becayuse he cool af", "title" : "who is long boi?" } ] }
