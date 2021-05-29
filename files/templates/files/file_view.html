@@ -47,6 +47,14 @@
         $('.openquestion').eq(qnum).append(`<div class="correctanswer">${qobj.ocquestions[qnum].explanation}</div>`);
     };
 
+    function getcorrect(qnum) {
+        for (i in Object.keys(qobj.mcquestions[qnum].questions)) {
+            if (qobj.mcquestions[qnum].questions[i] === true) {
+                return i;
+            };
+        };
+    };
+
     // Fires when the DOM has finished loading
     $(document).ready( function() {
         
@@ -129,6 +137,8 @@
                 $(this).siblings('.correctanswer').show();
                 $(this).siblings('.show').hide();
                 $(this).parent().css('background-color', 'var(--success)');
+                $(this).siblings('.radio').eq( getcorrect(qnum) ).children('input').prop('disabled', false);
+                $(this).siblings('.radio').eq( getcorrect(qnum) ).children('label').css('font-weight', 'bold');
             } else {
                 $(this).siblings('.retry').show();
                 $(this).siblings('.show').show();
@@ -154,13 +164,17 @@
             var qnum = getqnum($(this).siblings('.radio').eq(0).children('input').attr('name'));
 
             for (i in Object.keys(qobj.mcquestions[qnum].questions)) {
-                $(this).siblings('.radio').eq(i).children('input').prop('disabled', true)
+                $(this).siblings('.radio').eq(i).children('input').prop('disabled', true);
+                $(this).siblings('.radio').eq(i).children('input').prop('checked', false);
             };
             $(this).hide();
             $(this).siblings('.check').hide();
             $(this).siblings('.retry').hide();
             $(this).siblings('.correctanswer').show();
             $(this).parent().css('background-color', 'var(--accent1)');
+            $(this).siblings('.radio').eq( getcorrect(qnum) ).children('input').prop('disabled', false);
+            $(this).siblings('.radio').eq( getcorrect(qnum) ).children('label').css('font-weight', 'bold');
+            $(this).siblings('.radio').eq(i).children('input').prop('checked', true);
         });
     });
 
