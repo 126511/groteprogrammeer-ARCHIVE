@@ -17,7 +17,7 @@
 
 <script type="text/javascript">
 
-    var qobj = '{ "mcquestions" : [ { "options" : ["2", "3", "69", "21"], "questions" : [false, false, false, true], "ans" : "19 you STUPIDDD", "title" : "Whats 9 + 10" }, { "options" : ["its wednesday my dudes", "what the dawg doin", "papa musk"], "questions" : [false, true, false], "ans" : "not papa musk", "title" : "Why are you running?"} ], "ocquestions" : [ {"ans" : "yeet", "explanation" : "it must be yeet", "title" : "ya ... (fill in the gap)"}, {"ans" : "jolle", "explanation" : "joole becayuse he cool af", "title" : "who is long boi?" } ] }'
+    var qobj = '{ "mcquestions" : [ { "options" : ["Copy", "Fork", "Insert", "Repl"], "questions" : [false, true, false, false], "ans" : "Fork betekent dat jij de Repl die wij voor je hebben gemaakt kopieert, zodat je hem zelf kan aanpassen.", "title" : "Welke term drukt het kopieren van een stuk code uit zodat jij het voor jezelf kan aanpassen?"} ],"ocquestions" : [{"ans" : "compiler","explanation" : "Je kan de compiler een beetje zien als Google Translate voor programmeren. Je stopt er een bepaalde taal in (in dit geval C), dit noem je de source code. De compiler vertaalt dat tot machine code: uitsluitend bestaand uit binaire taal. Dit begrijpt de computer wel en kan het gaan uitvoeren.","title" : "Hoe heet de vertaler die van source code machine code maakt?" }],"usedterms" : ["graphical programming", "text-based programming", "GitHub", "Facebook"]}'
 
     // Builds the question card from JSON
     function buildmcquestion(qnum) {
@@ -72,6 +72,51 @@
         for (i in Object.keys(qobj.ocquestions)) {
             buildocquestion(i);
         }
+
+        // Copy function, deselects everything, then selects the target, copies, then deselects
+        $('code').click( function(e) {
+            var range = document.createRange()
+            range.selectNode(this);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+
+            // Animation for copying
+            $(this).append(`<div class="copymsg" style="top:${e.pageY - 48}px; left:${e.pageX}px">Gekopieerd!</div>`)
+            $(this).children('.copymsg').transition({animation : 'fade up', duration : '3s', onComplete : function() {
+                $(this).remove();
+            } }).animate({top: e.pageY - 96, duration : 3000});
+        });
+
+        // Replaces terms in the lesson so the buttons work
+        $('#lesson').children('p').each( function() {
+            var htmltext = $(this).html().toString();
+
+            // Loop through the declared terms
+            for (i in Object.keys(qobj.usedterms)) {
+                
+                // Search for the term, store the location
+                var n = htmltext.indexOf(qobj.usedterms[i]);
+
+                // Convert term to lowercase and add dashes, making it a slug I think
+                var convertterm = qobj.usedterms[i].replace(/\s+/g, '-').toLowerCase();
+
+                // Store the length of the term
+                var termlength = qobj.usedterms[i].length;
+
+                // Check wether the term exists, keep looping until all terms have been found
+                while (n != -1) {
+
+                    // Insert the button html on the right place
+                    htmltext = htmltext.substr(0, n) + `<button class="terms" onclick="getdocs('${convertterm}')">${qobj.usedterms[i]}</button>` + htmltext.substr(n + termlength);
+                    $(this).html(htmltext);
+
+                    // Look for the term again behind the one just found
+                    n = htmltext.indexOf(qobj.usedterms[i], n + termlength + 54);
+                };
+            };
+        });
 
         // Checks if the user answered correctly
         $('.checkoc').click( function() {
@@ -214,6 +259,12 @@
         font-size: 18px;
         font-family: sans-serif;
     }
+
+    p {
+        margin: 16px;
+        color: var(--greytext);
+    }
+
     #documentation {
         padding: 10px;
     }
@@ -221,10 +272,23 @@
     #sidebar {
         width: 35%;
     }
+    
+    .copymsg {
+        position: fixed;
+        width: 100px;
+        text-align: center;
+        padding: 0px;
+        height: 24px;
+        border-radius: 4px;
+        z-index: 10;
+        font-size: 1rem;
+        background-color: var(--success);
+    }
 
-    .button {
+    .terms {
         font-weight: bold;
         background-color: transparent;
+        color: var(--accent2);
         border: 0px;
         margin: 0px;
         padding: 0px;
@@ -238,31 +302,37 @@
         top: auto;
     }
     #lesson {
-        width: 70%;
+        width: 60%;
         background-color: white;
         margin: auto;
-        padding: 10px;
+        padding: 64px;
     }
     #body {
         height: 100%;
-        background-color: lightgray;
+        background-color: var(--white-darken);
         display: flex;
         overflow: scroll;
     }
     code {
-        border: 1px solid lightgray;
-        background-color: lightgray;
+        background-color:  var(--accent2-lighten);
+        border-style: solid;
+        border-width: 1px;
+        border-color: var(--accent2-lighten);
+        border-radius: 4px;
+        color: white;
+        box-shadow: var(--shadow-1);
         
     }
 
     .multiplechoice {
         background-color: var(--accent1);
-        width: 100%;
+
         height:100%;
         border-radius: 8px;
         padding: 16px;
         box-shadow: var(--shadow-1);
         position: relative;
+        margin: 16px;
     }
 
     .correctanswer {
@@ -284,12 +354,13 @@
 
     .openquestion {
         background-color: var(--accent1);
-        width: 100%;
+
         height:100%;
         border-radius: 8px;
         padding: 16px;
         box-shadow: var(--shadow-1);
         position: relative;
+        margin: 16px;
     }
 
     .correctocanswer {
@@ -298,29 +369,160 @@
         font-size: 1.2rem;
     }
 
+    .exercise {
+        background-color: var(--accent1);
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: var(--shadow-1);
+        color: white;
+        margin: 16px;
+        font-size: 1.5rem;
+    }
+
+    #completebutton {
+        background-color: var(--accent2);
+        font-size: 1.7rem;
+        color: white;
+        box-shadow: var(--shadow-2);
+    }
+
+    #completebutton:hover {
+        background-color: var(--accent2-lighten);
+    }
+
 </style>
 <div id="body">
     <div id="lesson">
-        <div class="openquestion">
-
-        </div>
-        <div class="openquestion">
-            
-        </div>
-        <div class="multiplechoice">
-
-        </div>
-        <div class="multiplechoice">
-
-        </div>
         <button onclick="get_html(`index`)">kijk!</button>
         {% autoescape off %}
             {{ file.file }}
+
+
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+
+<h1>Les 0: Introdcutie</h1>
+
+<p>In hoofdstuk 0 hebben we gekeken naar hoe computers werken en hoe
+we ze kunnen gebruiken om onze problemen op te lossen. Ook is er 
+geïntroduceerd hoe programmeren, dit hebben we toen gedaan door het 
+slepen van blokjes en het invullen van wat waardes: graphical programming. 
+Dat is heel erg fijn als introductie, maar is niet de 
+manier waarop ervaren programmeurs werken: zij gebruiken text-based programming. 
+De naam zegt het al, je gebruikt hier geen blokjes om de computer instructies 
+te geven, maar getypte functies. Kijk bijvoorbeeld in het venster onder dit paragraaf, 
+hier zie je een repl:</p>
+
+<div class="repl">
+    <iframe height="500px" outputonly="1" width="100%" src="https://replit.com/@126511/hallo?embed=true" scrolling="no" frameborder="yes" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
+</div>
+
+<div class="exercise">Opdracht 1: Druk op de groene pijl bovenin, als het goed 
+    is zie je onderin het donkerblauwe venster "Hallo!" verschijnen.
+</div>
+
+<p>
+    De code, geschreven in de taal C, heeft als functie het uitprinten van de tekst "Hallo!". 
+    Waarom dit werkt en hoe je zelf zo'n programma maakt leren we in les 1. Voor voorbeelden 
+    van programma's gebruiken we vanaf nu (bijna) altijd ReplIt. Dit is een online IDE 
+    (Integrated Development Environment): een programma waarmee je de bestanden met code kan 
+    aanpassen en waarmee je commando's kan sturen naar de computer om zo je geschreven 
+    programma uit te voeren. Als je weer even naar de Repl hierboven kijkt zie je een wit 
+    venster met daarin 6 regels aan code. Daaronder is een blauw venster met nu "Hallo!" 
+    (dit heb je in Opdracht 1 gedaan). Je ziet dat er voor de output twee commando's staan. 
+    De eerste ziet er ongeveer zo uit: <code>clang-7 -pthread -lm -o main main.c</code> en de 
+    tweede zo <code>./main</code>. 
+</p>
+
+<p>
+    In hoofdstuk 0 hebben we het gehad over de taal die computer spreken: binair. Deze taal 
+    bestond alleen maar uit 1 en 0. Het programma in het witte venster, ook wel de text-editor 
+    genoemd, snapt de computer dus niet. We hebben nu  C-code en dat moet vertaalt worden naar 
+    0 en 1, dit doet een compiler. Je kan het een beetje zien als Google Translate voor 
+    programmeren. Je stopt er een bepaalde taal in (in dit geval C), dit noem je de source code. 
+    De compiler vertaalt dat tot machine code: uitsluitend bestaand uit binaire taal. Dit 
+    begrijpt de computer wel en kan het gaan uitvoeren. De compiler die ReplIt gebruikt heet 
+    <code>Clang</code>. De stukjes tekst erachter zorgen ervoor dat <code>Clang</code> weet wat 
+    hij moet gaan vertalen en hoe hij het nieuwe bestand moet noemen (met daarin de binaire 
+    code). Hoe dit werkt en waarom het werkt maakt voor nu niet uit, de Run-knop doet het 
+    allemaal automatisch voor je! Daarna zie je het commando <code>./main</code> staan. Als je 
+    in de informatica ergens <code>./</code> ziet staan betekent dat bijna altijd "in het 
+    huidige mapje". De <code>main</code> erachteraan betekent dat de computer in het huidige 
+    mapje het bestand "main" moet vinden (dat heeft de compiler zojuist gemaakt). 
+</p>
+
+<div class="openquestion"></div>
+
+<div class="exercise">Typ zelf is in de terminal <code>./main</code>: als het goed is zie je als output weer "Hallo!". <br>
+    TIP: Als er een error komt zoals "Permission denied", moet je eerst het programma uitvoeren 
+    via de Run-button. Dan compilet het programma, zodat jij het vervolgens kan 
+    runnen.
+</div>
+
+<p>
+    Vanaf volgende les gaan we ook zelf programmeren, hiervoor heb je een account nodig bij 
+    ReplIt, dit is volledig gratis. Klik op open in Replit (rechtsboven in de tekst-editor). 
+    Nu kom je op de pagina waar deze Repl (die "Hallo" uitprint) is opgeslagen. Rechtsboven zie 
+    je 'Log in' en 'Sign up'. Als je al een account hebt kan je via 'Log in' inloggen. Zoniet, 
+    druk op 'Sign up'. Bovenin het venster zie je drie symbolen: Google, Github en Facebook. 
+    Wij gaan inloggen via GitHub, dit is een soort Facebook voor programmeurs, hierop delen zij 
+    hun code en vragen anderen om advies. Klik op het zwart-witte logo met een kat erop. Nu kom 
+    je op het inlogscherm van GitHub. Klik onderin op "Create an account" en vul hier je 
+    gegevens in (volledige naam als username en gebruik je schoolemail). Nu moet je jouw 
+    emailadres even bevestigen. Dit doe je door naar jouw email te gaan en op de link te klikken 
+    in het mailtje van GitHub. Er staat dan als het goed is "Your email has been verified". Nu 
+    kan je weer naar replit.com en inloggen met je GitHub account. Je moet ReplIt toegang geven 
+    tot je GitHub account (door op de groene knop te drukken met "Authorize".
+</p>
+
+<p>
+    Je hebt nu je eigen ReplIt account! Als eerste kom je op een pagina waar nog om wat 
+    gegevens worden gevraagd, vul deze even in. Als je die vragen niet wilt beantwoorden kan je 
+    op Home drukken.
+</p>
+
+<div class="exercise">
+    Opdracht 3: Voer de stappen hierboven uit zodat jij vanaf nu ook zelf kan gaan 
+    programmeren!
+    </div>
+
+<p>
+    Als je nu weer op open in ReplIt drukt kan je op "fork" drukken. Fork betekent dat jij de 
+    Repl die wij voor je hebben gemaakt kopieert, zodat je hem zelf kan aanpassen. Ook hier kan 
+    je op Run drukken en in de terminal commando's typen. Je kan nu ook de code aanpassen. 
+    Vervang <code>printf("Hallo!\n");</code> door <code>printf("Welkom!\n");</code>. Als je nu 
+    op Run drukt zie je dat het programma "Welkom!" uitprint.
+</p>
+
+<div class="multiplechoice"></div>
+
+<div class="exercise">
+    Opdracht 4: Fork onze Repl zodat jij hem kan aanpassen en pas het aan zodat hij 
+    niet meer "Hallo!" print maar "Welkom!"
+</div>
+
+
+
+
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+
         {% endautoescape %}
         <form method="post" action="{% url 'progress' %}" style=" width: 100px; margin: auto;">
             {% csrf_token %}
             <input type="hidden" value="{{ file.path }}" name="path">
-            <input type="submit" value="completed">
+            
+            <button class="ui circular icon button" id="completebutton" type="submit" value="completed"><i class="check icon" ></i></button>
         </form>
     </div>
     <div id="sidebar" style="display: none;">
