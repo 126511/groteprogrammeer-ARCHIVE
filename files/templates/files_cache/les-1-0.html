@@ -1,0 +1,58 @@
+<h1>Les 0: Programmeren in C</h1>
+
+<p>In hoofdstuk 0 hebben we gekeken naar hoe computers werken en hoe we ze kunnen gebruiken om onze problemen op te lossen. Ook is er geïntroduceerd hoe je programeert, dit hebben we toen gedaan door het slepen van blokjes en het invullen van wat waardes. Nu gaan we werken met ons toetsenbord, dit doen we in dit hoofdstuk in de programeertaal C. Kijk bijvoorbeeld in het venster onder dit paragraaf, hier zie je een programma geschreven in de taal C:
+</p>
+
+<div class="repl">
+    <iframe height="500px" outputonly="1" width="100%" src="https://replit.com/@126511/les00-hallo?lite=true" scrolling="no" frameborder="yes" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
+</div>
+
+<div class="exercise">
+    Opdracht 1: Druk op de groene pijl bovenin, als het goed is zie je onderin het donkerblauwe venster <code>Hallo!</code>verschijnen.
+</div>
+
+<p><strong>Programmeren en uitvoeren</strong><br>
+    De code, geschreven in de taal C, heeft als functie het uitprinten van de tekst <code>Hallo!</code>. Waarom dit werkt en hoe je zelf zo'n programma maakt leren we in Les 1. Voor programma's gebruiken we vanaf nu (bijna) altijd ReplIt. Dit is een online IDE (Integrated Development Environment): een programma waarmee je de code kan aanpassen en je met commando's je programma uitvoeren. Als je weer even naar de Repl hierboven kijkt zie je een wit venster (de editor) met daarin 6 regels aan code. Daaronder is een blauw venster (de terminal) met nu <code>Hallo!</code> (dit heb je in Opdracht 1 gedaan). Je ziet dat er voor de output twee commando's staan. De eerste ziet er ongeveer zo uit: <code>clang-7 -o main main.c</code> en de tweede zo <code>./main</code>. 
+</p>
+
+<p>
+    In Hoofdstuk 0 hebben we het gehad over de taal die computers spreken: binair. Deze taal bestond alleen maar uit 1 en 0. Het programma in het witte venster, ook wel de text-editor genoemd, snapt de computer dus niet. We hebben nu C-code en dat moet vertaald worden naar 0 en 1, dit doet een compiler. Je stopt er een bepaalde taal in, dit noem je de source code. De compiler vertaalt dat tot machine code: enen en nullen. Dit begrijpt de computer wel.
+    De compiler die ReplIt gebruikt heet <code>Clang</code>. De stukjes tekst erachter zorgen ervoor dat <code>Clang</code> weet wat hij moet gaan vertalen en hoe hij het nieuwe bestand moet noemen (met daarin de binaire code). Hoe dit werkt en waarom het werkt maakt voor nu niet uit, de Run-knop doet het allemaal automatisch voor je! Daarna zie je het commando <code>./main</code> staan. De computer zoekt in het huidige mapje het bestand <code>main</code> (dat heeft de compiler zojuist gemaakt) en voert het uit. 
+</p>
+
+<div><code>TODO: open question</code></div>
+
+<div class="exercise">
+    Opdracht 2: Typ zelf is in de terminal <code>./main</code>: als het goed is zie je als output weer <code>Hallo!</code>>.<br>
+    TIP: Als er een error komt zoals <code>Permission denied</code>>, moet je eerst het programma uitvoeren via de Run-button. Dan compilet het programma, zodat jij het vervolgens kan runnen.
+</div>
+
+<div class="exercise">
+    Opdracht 3: Vanaf volgende les gaan we ook zelf programmeren, hiervoor heb je een account nodig bij ReplIt, dit is volledig gratis. Voer de stappen op <code>TODO: deze</code> pagina uit zodat jij vanaf nu ook zelf kan gaan programmeren!
+</div>
+
+<p style="text-decoration: underline;">
+    Om de volgende lessen te kunnen doen, MOET je een ReplIt account hebben. Die maak je aan in opdracht 3.
+</p>
+
+<p>
+    Als je nu weer op "open in Replit" drukt kan je op "fork" drukken. Fork betekent dat jij de Repl die wij voor je hebben gemaakt kopieert, zodat je hem zelf kan aanpassen. Ook hier kan je op Run drukken en in de terminal commando's typen. Je kan nu ook de code aanpassen. Vervang <code>printf("Hallo!\n");</code> door <code>printf("Welkom!\n");</code>. Als je nu op Run drukt zie je dat het programma <code>Welkom!</code>> uitprint.
+</p>
+
+<div><code>TODO: multiplechoice question</code></div>
+
+<p><strong>Het programmeerproces</strong><br>
+    Dadelijk ga je aan de slag met je allereerste programmeeropdracht! Tijdens het programmeren is het belangrijk om dit stappenplan in je achterhoofd te houden.
+    <ol>
+        <li>De broncode (source code) schrijven.</li>
+        <li>De broncode compileren.</li>
+        <li>Fouten verbeteren en stap 1 en 2 herhalen.</li>
+        <li>De broncode uitvoeren.</li>
+        <li>Fouten en ongewenst gedrag (bugs) verbeteren en het hele proces herhalen.</li>
+    </ol>
+    Hoe je de broncode schrijft leer je in de komende lessen. Het compileren van de broncode die je via de Run button in Replit. Het kan zijn dat er een foutje in je code zit, waardoor de compiler het programma niet snapt, er komt dan een error. Deze errors zijn vaak cryptisch omschreven, probeer er chocola van te maken of vraag je docent om hulp. Later gaan we in meer detail kijken naar foutmeldingen. Als er geen foutmeldingen zijn (gefeliciteerd!) voert de Run button je broncode uit. Nu is het aan jou de taak om erachter te komen of het programma werkt zoals het hoort. Dit doe je door te bedenken wat de output zou moeten zijn en vervolgens kijkt wat de daadwerkelijke output is: testen.
+</p>
+
+<div class="exercise">
+    Opdracht 4: Fork onze Repl zodat jij hem kan aanpassen en pas het aan zodat hij niet meer <code>Hallo!</code>> print maar <code>Gegroet, gebruiker!</code> Lever deze opdracht in. Weet je niet hoe dat moet? Kijk dan op <code>TODO: link naar /inleveren</code> deze pagina.
+</div>

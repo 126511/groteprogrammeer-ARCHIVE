@@ -25,7 +25,7 @@ SECRET_KEY = 'awsaxbg=au4vr*8$p*f-4qo1=4=ng078=4iiq%&_0&s1e_u6+r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*", "0.0.0.0", "3030"]
 
 
 # Application definition

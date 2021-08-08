@@ -62,31 +62,38 @@ def index(request):
 
 # Render a page specific for a user, where they can jump back into their course, or sign up for one
 @login_required
-def user(request, message = None, status_code = None):
+def user(request):
+    try:
+        message = request.session['message']
+        status_code = request.session['status_code']
+    except KeyError:
+        message = None
+        status_code = None
+        
+    request.session['message'] = None
+    request.session['status_code'] = None
+
     # If they've signed up, save their data
     if request.method == "POST":
-        uid = request.user.id
-        user = User.objects.get(id=uid)
-        chosencourse = request.POST["chosen_course"]
-        course = Courselist.objects.get(name=chosencourse)
-
-        # Try to get data from previous sign-ups for this course
-        try:
-            olds = OldProgress.objects.filter(user=user, course=course)
-        except:
-            pass
+        user = User.objects.get(id=request.user.id)
+        course = Courselist.objects.get(name=request.POST["chosen_course"])
 
         # Save their new course 
         c = Course(user=user, course=course)
         c.save()
 
-        # If they've ever signed up for this course
-        if olds:
+        # Try to get data from previous sign-ups for this course
+        try:
+            olds = OldProgress.objects.filter(user=user, course=course)
+            
             # Find their old data
             for old in olds:
                 progress = Progress(course=c, path=old.path, completed=old.completed)
                 progress.save()
-        else:  
+        except: 
+            olds = None
+        
+        if not olds:
             # Otherwise, set setup all progress (with default=False)
             pathslist = []
             for p in Filepage.objects.filter(chapterpath=c.course.start.chapterpath):
@@ -100,25 +107,23 @@ def user(request, message = None, status_code = None):
 
         # Redirect them to their user page
         return HttpResponseRedirect("/user")
+
     # If they want to see the page
     else:
         # Save their data
-        uid = request.user.id
-        user = User.objects.get(id=uid)
-        course = None
-
-        # Generate a list of all courses
-        courselist = Courselist.objects.all()
-
-        # Find out whether they have a course
-        c = Course.objects.filter(user=user).first()
-        if c:
-            course = c
-        else:
+        user = User.objects.get(id=request.user.id)
+       
+        try:
+            course = Course.objects.get(user=user)
+        except:
             # Render their page, with the correct course
+            courselist = Courselist.objects.all()
+
             return render(request, "home/user.html", {
-                "course":course,
+                "course":None,
                 "courselist":courselist,
+                "message":message,
+                "status_code":status_code
             })
 
         # A function that return an int of the path, so that it can be sorted
@@ -126,13 +131,16 @@ def user(request, message = None, status_code = None):
             return int(progress.path.path)
 
         # Make a list of all progress (paragraphs) and sort it
-        pathslist = Progress.objects.filter(course=c)
+        pathslist = Progress.objects.filter(course=course)
         pathslist = sorted(pathslist, key=makeKey)
+        print(pathslist)
 
         # Render their page, with the correct course
         return render(request, "home/user.html", {
             "course":course,
             "pathslist":pathslist,
+            "message":message,
+            "status_code":status_code
         })
 
 # Register a user
@@ -151,10 +159,9 @@ def register(request):
         login(request, user)
 
         # Render their own user page and a corresponding message of success
-        return render(request, 'home/user.html', {
-            "message":"We hebben jouw account aangemaakt!",
-            "status_code":1
-        })
+        request.session['message'] = "Je account is aangemaakt!"
+        request.session['status_code'] = 1
+        return HttpResponseRedirect(reverse("user"))
     
     else:
         # Render the template with the form

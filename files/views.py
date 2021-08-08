@@ -7,6 +7,7 @@ from docs.models import Term
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import json
+from home.models import Course, Courselist
 
 # Create your views here.
 
@@ -84,7 +85,7 @@ def file_view(request, chapterpath, path):
     docs = dict()
 
     for every in d:
-       docs[every.term] = every.definition
+       docs[every.link] = every.definition
     
     jsonobj = json.dumps(docs) 
 
@@ -98,14 +99,12 @@ def file_view(request, chapterpath, path):
 @login_required
 def latestpage(request):
     # Save the user's id
-    uid = request.user.id
-    user = User.objects.get(id=uid)
+    user = User.objects.get(id=request.user.id)
 
     # Try to find the user's latest page 
-    latestpage = user.latestpage
-    lpath = latestpage.path
-    lchapterpath = latestpage.chapterpath
-
-
-    # Return a redirect to the correct path (/files/chapterpath/path)
-    return HttpResponseRedirect("/files/" + lchapterpath + "/" + lpath)
+    try:
+        return HttpResponseRedirect("/files/" + user.latestpage.chapterpath + "/" + user.latestpage.path)
+    # If it does not exist, redirect to the course's start
+    except:
+        course = Course.objects.get(user=user)
+        return HttpResponseRedirect("/files/" + course.course.start.chapterpath + "/" + course.course.start.path)

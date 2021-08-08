@@ -15,11 +15,20 @@
                 console.warn('Something went wrong.', err);
             });
         }
+        document.addEventListener("DOMContentLoaded", () => {
+        const redirect = "{{ redirect }}"
+        if (redirect) {
+            get_html(`${redirect}`)
+            return
+        }
+    })
     </script>
     {% block head %} {% endblock %}
     <title>Docs</title>
 </head>
 <body>
+    <div id="documentation">
     {% block body %} {% endblock %}
+    </div>
 </body>
 </html>

@@ -14,7 +14,7 @@ class Term(models.Model):
     # Format: year-chapterchapter-lessonlesson, so chapter 4, lesson 2 in year 5 makes 50402
     lesson = models.BigIntegerField(default=0)
     tags = models.CharField(max_length=2, choices=Tags.choices, default=None, blank=True)
-    link = models.CharField(max_length=96, default="hoii")
+    link = models.CharField(max_length=96)
 
     def __str__(self):
         return str(self.term + "learned on " + str(self.lesson) + ": " + self.tags)
