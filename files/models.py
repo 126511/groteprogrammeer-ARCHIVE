@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 # Stores a file to be viewed
 class Filepage(models.Model):
     # The path of its url
-    chapterpath = models.CharField(max_length=16, default="h1")
+    chapterpath = models.CharField(max_length=16, default="h1", null=True, blank=True)
     path = models.CharField(max_length=16, default="1")
 
     # It's title and file itself
@@ -25,9 +25,8 @@ class Filepage(models.Model):
 # Saves the latest chapterpath and path a user's visited
 class LatestPage(models.Model):
     # Link to the Users table Django made 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    chapterpath = models.CharField(max_length=16, default="h1")
-    path = models.CharField(max_length=16, default="1")
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    filepage = models.ForeignKey(Filepage, on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):
         return str(self.user) + " has " + self.chapterpath + "/" + self.path

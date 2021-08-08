@@ -21,20 +21,19 @@ class Course(models.Model):
     
 
 class Progress(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    path = models.ForeignKey(Filepage, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
+    filepage = models.ForeignKey(Filepage, on_delete=models.PROTECT, blank=True, null=True)
     completed = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.course.user) + "'s progress for " + self.path.path + " of " + self.course.course.name + " is " + str(self.completed)
 
-    class Meta:
-        unique_together = ('course', 'path')
+    #class Meta:
+     #   unique_together = ('user', 'filepage')
 
 class OldProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    course = models.ForeignKey(Courselist, on_delete=models.CASCADE, null=True, blank=True)
-    path = models.ForeignKey(Filepage, on_delete=models.CASCADE, null=True, blank=True)
+    filepage = models.ForeignKey(Filepage, on_delete=models.PROTECT)
     completed = models.BooleanField(default=False)
 
     def __str__(self):

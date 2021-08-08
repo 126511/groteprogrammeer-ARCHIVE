@@ -1,7 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
-
 # Create your models here.
 class Term(models.Model):
     class Tags(models.TextChoices):
