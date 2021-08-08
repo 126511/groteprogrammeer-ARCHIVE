@@ -2,33 +2,21 @@
 
 {% block title %} List of files {% endblock %}
 
-{% block head %}
-
-{% endblock %}
-
-
-
-
 {% block body %}
-
-{% if lptrue %}
+<div id="body" style="margin-left: 80px;">
     <h2>Jump back to your <a href="{% url 'latestpage' %}">latest page</a>!</h2>
-{% endif %}
 
-<h1>A list of the files</h1>
+    <h1>A list of the files</h1>
 
-<ul>
-    {% for chapterpath, tuples in pagedict.items %}
-       <li>{{ chapterpath }}</li>
-       <ul>
-            {% for tuple in tuples %}
-                <li><a href="{% url 'fileview' chapterpath tuple.0 %}">{{ tuple.1 }}</a></li>
-            {% endfor %}
-       </ul>
-    {% endfor %}
-</ul>
-<button onclick="get_html()">kijk!</button>
-
-<div id="fetch"></div>
-
+    <ul>
+        {% for chapterpath, tuples in pagedict.items %}
+        <li>{{ chapterpath }}</li>
+        <ul>
+                {% for tuple in tuples %}
+                    <li><a href="{% url 'fileview' chapterpath tuple.0 %}">{{ tuple.1 }}</a></li>
+                {% endfor %}
+        </ul>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

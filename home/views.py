@@ -173,8 +173,7 @@ def register(request):
 def progress(request):
     if request.method == "POST":
         # Save their data
-        uid = request.user.id
-        user = User.objects.get(id=uid)
+        user = User.objects.get(id=request.user.id)
         path = request.POST["path"]
 
         # Get the course and the page they've completed
@@ -192,8 +191,7 @@ def progress(request):
 # If they want to leave a course, this function runs
 def leavecourse(request):
     # Save their data
-    uid = request.user.id
-    user = User.objects.get(id=uid)
+    user = User.objects.get(id=request.user.id)
 
     # Find their course
     course = Course.objects.get(user=user)
@@ -201,15 +199,17 @@ def leavecourse(request):
     # Find all their progress for this course
     progresses = Progress.objects.filter(course=course)
     for progress in progresses:
-        # move it to the oldprogress table, if it already exists there, do nothing
+        # Move it to the oldprogress table, if it already exists there, do nothing
         try:
             old = OldProgress.objects.get(user=progress.course.user, course=progress.course.course, path=progress.path)
             old.completed = progress.completed
         except OldProgress.DoesNotExist:
             old = OldProgress(user=progress.course.user, course=progress.course.course, path=progress.path, completed=progress.completed)
         old.save()
+    
     # Delete the current course
     course.delete()
+    
     # Redirect them to their homepage
     return HttpResponseRedirect("/user")
 
