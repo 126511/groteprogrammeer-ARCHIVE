@@ -8,10 +8,11 @@ def docsindex(request):
     docs = set()
 
     terms = Term.objects.all()
-    for t in terms:
-        docs.add(slugify(t.term))
 
-    docs = sorted(docs)
+    for t in terms:
+        docs.add(t)
+
+    docs = sorted(docs, key=lambda doc: doc.term)
 
     return render(request, "docs/index.html", {
         "docs":docs

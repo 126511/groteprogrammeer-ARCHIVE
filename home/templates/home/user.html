@@ -58,7 +58,7 @@
         {% if course %}
         <div class="four wide column" id="ifcourse">
             <p>Leuk dat je al een les van ons volgt!</p>
-            <p>Klik <a href="{% url 'latestpage' %}">hier</a> om naar je laatste pagina te gaan</p>
+            <p>Klik <a href="{% url 'latestpage' %}">hier</a> om direct te gaan leren!</p>
         </div>
         {% else %}
         <div class="four wide column" id="elsecourse">
@@ -81,10 +81,10 @@
         
         <div class="four wide column" id="tolesson">
             <ul>
-            {% for path in pathslist %}
+            {% for page, completed in lessons.items %}
                 <li>
-                    <a href="{% url 'fileview' path.path.chapterpath path.path.path %}">{{ path.path.title }}</a>
-                    {% if path.completed %} (completed) {% else %} {% endif %}
+                    <a href="{% url 'fileview' page.chapterpath page.path %}">{{ page.title }}</a>
+                    {% if completed %} (completed) {% endif %}
                 </li>
             {% endfor %}
             </ul>

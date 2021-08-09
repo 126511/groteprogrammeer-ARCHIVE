@@ -5,7 +5,7 @@
     <ul>
         {% for term in docs %}
             <li>
-                <button onclick="get_html('{{ term }}')">{{ term }}</button>
+                <button onclick="get_html('{{ term.link }}')">{{ term.term }}</button>
             </li>
         {% endfor %}
     </ul>

@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -14,7 +15,7 @@ class Filepage(models.Model):
     title = models.CharField(max_length=32, default="title")
     # This stores just text, but should be HTML code, 
     # the view and template make sure it'll be seen as HTML, not raw text
-    file = models.TextField()
+    file = RichTextField()
 
     def slug(self):
         return slugify(self.path), slugify(self.chapterpath)
@@ -25,11 +26,11 @@ class Filepage(models.Model):
 # Saves the latest chapterpath and path a user's visited
 class LatestPage(models.Model):
     # Link to the Users table Django made 
-    user = models.OneToOneField(User, on_delete=models.PROTECT)
-    filepage = models.ForeignKey(Filepage, on_delete=models.PROTECT, null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    filepage = models.ForeignKey(Filepage, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return str(self.user) + " has " + self.chapterpath + "/" + self.path
+        return str(self.user) + " has " + str(self.filepage)
 
 
     

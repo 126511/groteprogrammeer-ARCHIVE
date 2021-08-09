@@ -4,7 +4,7 @@
 
 {% block head %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script> 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/googlecode.min.css">
 
 <script>
     hljs.initHighlightingOnLoad();
@@ -17,7 +17,7 @@
 
 <script type="text/javascript">
 
-    var qobj = '{ "mcquestions" : [ { "options" : ["Copy", "Fork", "Insert", "Repl"], "questions" : [false, true, false, false], "ans" : "Fork betekent dat jij de Repl die wij voor je hebben gemaakt kopieert, zodat je hem zelf kan aanpassen.", "title" : "Welke term drukt het kopieren van een stuk code uit zodat jij het voor jezelf kan aanpassen?"} ],"ocquestions" : [{"ans" : "compiler","explanation" : "Je kan de compiler een beetje zien als Google Translate voor programmeren. Je stopt er een bepaalde taal in (in dit geval C), dit noem je de source code. De compiler vertaalt dat tot machine code: uitsluitend bestaand uit binaire taal. Dit begrijpt de computer wel en kan het gaan uitvoeren.","title" : "Hoe heet de vertaler die van source code machine code maakt?" }],"usedterms" : ["graphical programming", "text-based programming", "GitHub", "Facebook"]}'
+    var qobj = '{ "mcquestions" : [ { "options" : ["Copy", "Fork", "Insert", "Repl"], "questions" : [false, true, false, false], "ans" : "Fork betekent dat jij de Repl die wij voor je hebben gemaakt kopieert, zodat je hem zelf kan aanpassen.", "title" : "Welke term drukt het kopieren van een stuk code uit zodat jij het voor jezelf kan aanpassen?"} ],"ocquestions" : [{"ans" : "compiler","explanation" : "Je kan de compiler een beetje zien als Google Translate voor programmeren. Je stopt er een bepaalde taal in (in dit geval C), dit noem je de source code. De compiler vertaalt dat tot machine code: uitsluitend bestaand uit binaire taal. Dit begrijpt de computer wel en kan het gaan uitvoeren.","title" : "Hoe heet de vertaler die van source code machine code maakt?" }],"usedterms" : ["functie", "error", "C"]}'
 
     // Builds the question card from JSON
     function buildmcquestion(qnum) {
@@ -281,9 +281,9 @@
         font-family: sans-serif;
     }
 
-    p {
+    p, ol, ul {
         margin: 16px;
-        color: var(--greytext);
+        color: var(--greytext);   
     }
 
     #documentation {
@@ -327,7 +327,7 @@
         background-color: white;
         margin: auto;
         padding: 64px;
-        padding-right: 0px;
+        /*padding-right: 0px;  ~vincent */
         margin-right: auto;
         margin-left: auto;
     }
@@ -417,7 +417,7 @@
 </style>
 <div id="body">
     <div id="lesson">
-        <button onclick="get_html(`index`)">kijk!</button>
+        <button onclick="get_html(`index`)">Open docs</button>
         {% autoescape off %}
             {{ file.file }}
 

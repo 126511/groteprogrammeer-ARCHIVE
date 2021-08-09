@@ -49,13 +49,12 @@ def file_view(request, chapterpath, path):
     
     # Save the latestpage, if possible
     try:
-        user.latestpage.path = path
-        user.latestpage.chapterpath = chapterpath
+        user.latestpage.filepage = file
         user.latestpage.save()
 
     # The above raises an error if the user has no latestpage, then create one
     except ObjectDoesNotExist:
-        page = LatestPage(user=user, path=path, chapterpath=chapterpath)
+        page = LatestPage(user=user, filepage=file)
         page.save()
 
     # Get all documentation from the database and put in JSON format
@@ -81,7 +80,7 @@ def latestpage(request):
 
     # Try to find the user's latest page 
     try:
-        return HttpResponseRedirect("/files/" + user.latestpage.chapterpath + "/" + user.latestpage.path)
+        return HttpResponseRedirect("/files/" + user.latestpage.filepage.chapterpath + "/" + user.latestpage.filepage.path)
     # If it does not exist, redirect to the course's start
     except:
         course = Course.objects.get(user=user)

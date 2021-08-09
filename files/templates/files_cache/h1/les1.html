@@ -1,0 +1,43 @@
+<h1>Les 1 - Commando&#39;s</h1>
+
+<p>In de vorige les hebben we het gehad over hoe je een C-programma runt en hoe je een Replit account aanmaakt. Ook voor deze les is het belangrijk dat je zo een account hebt. Heb je die nog niet? Ga dan terug naar Opdracht 3 in Les 0. In deze les kijken we naar de structuur van programma&#39;s in C en schrijven we ons eerste programma.</p>
+
+<h3>Structuur van C</h3>
+
+<p>Je programmeert door verschillende opdrachten achter elkaar uit te voeren. Zo een opdracht kan verschillende dingen zijn. Soms is het een berekening, een functie uitvoeren of iets anders. Alle opdrachten eindigen in C op een puntkomma ;. Zo weet C wanneer een opdracht klaar is en de volgende begint. Soms is het handig om verschillende opdrachten te groeperen, omdat ze een gemeenschappelijk doel hebben. Voor het groeperen van opdrachten gebruik je accolades {}.</p>
+
+<p>Elk programma in C begint met het maken van een functie, hierover later meer. De syntaxis (wat je moet typen) hiervoor is hieronder aangegeven.</p>
+
+<pre>
+<code class="language-c">int main(void)
+{
+
+}</code></pre>
+
+<p>Tussen die twee accolades komt de code van dit programma. Als je op run drukt in Replit dan wordt de functie main standaard uitgevoerd. Dat betekent dat de computer regel voor regel alle opdrachten afgaat totdat hij bij het einde van het bestand komt.</p>
+
+<h3>Functies</h3>
+
+<p>Functies zijn stukjes code die je kan uitvoeren. Soms gebruik je functies die je zelf maakt, maar meestal gebruik je functies van anderen. Een voorbeeld van zo een functie is <code>printf</code> (print formatted). Een functie heeft een bepaalde input, doet daar iets mee en maakt daarmee een output. De input voor printf is een stukje tekst. Vervolgens &quot;print&quot; (toont) hij dat stukje tekst in je terminal. Om een printf de tekst Hallo te laten printen typ je dit.</p>
+
+<pre>
+<code class="language-c">printf("Hallo");</code></pre>
+
+<p>Je typt dus eerst de naam van de functie en zet de input vervolgens tussen haakjes erachter. Het geheel eindigt met een puntkomma. Als je tekst letterlijk zo wilt uitprinten gebruik je dubbele aanhalingstekens. De tekst tussen aanhalingsteken is een argument voor deze functie (een deel van de input). Een functie kan meerdere argumenten hebben; zo zou een functie die twee waardes optelt, die twee waardes als input hebben. Als je twee waardes moet specifi&euml;ren in de input, gebruik je komma&#39;s.</p>
+
+<pre>
+<code class="language-c">optellen(3, 5);</code></pre>
+
+<p>*Optellen is geen echte functie; dit is een voorbeeld.</p>
+
+<div class="exercise">
+<p>Opdracht 1: In de Repl hieronder zie je een programma dat Hallo uitprint. Bekijk de code goed: herken de int main(void) op regel 3 met de accolades op 4 en 6. Herken de functie printf met de dubbele aanhalingstekens op regel 5. Voer het programma uit door op de Run button te drukken.</p>
+</div>
+
+<p><iframe class="repl" frameborder="0" height="500px" name="Les01-hallo" scrolling="yes" src="https://replit.com/@126511/les01-hallo?lite=true" title="les01-hallo" width="100%"></iframe></p>
+
+<p>Misschien is er je iets opgevallen toen je het programma uitvoerde: de computer print de tekst niet op een losse regel, maar gaat daarna verder op dezelfde regel! Dit komt omdat de computer jou heel erg letterlijk neemt; jij zei niet dat het op een losse regel moest en dus doet hij dat ook niet! Om dat wel te doen gebruik je een escape character. Dit is een karakter dat de betekenis heeft van een toets op je toetsenbord dat je niet zomaar kan intypen, zoals de Enter-toets. De escape character voor een nieuwe regel is <code>\n</code> (n voor nieuwe regel). &nbsp;Zo een escape character zet je gewoon in de aanhalingstekens!</p>
+
+<div class="exercise">
+<p>Opdracht 2: Fork de Repl van opdracht 1 en zorg dat de computer Hallo op een losse regel print. Gebruik hierbij \n.</p>
+</div>
