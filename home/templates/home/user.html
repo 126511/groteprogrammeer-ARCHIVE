@@ -2,62 +2,98 @@
 {% load static %}
 
 {% block head %}
-
 <script>
+
+    // Fires when the DOM has finished loading
     $(document).ready( function() {
+
+        // Changes the background color of the first vertical navbar item
         $('.navbtn').eq(0).css({"background-color": "var(--accent1)", "color": "white"});
 
     })
 </script>
 
+<style>
+    #welcome-div {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        border-radius: 4px;
+        margin: 8px;
+    }
+
+    #ifcourse {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        border-radius: 4px;
+        margin: 8px;
+    }
+
+    #elsecourse {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        border-radius: 4px;
+        margin: 8px;
+    }
+
+    #tolesson {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        border-radius: 4px;
+        margin: 8px;
+    }
+</style>
 {% endblock %}
 
 
 {% block body %}
+    <div class="ui grid" style="margin-left: 80px; margin-right: 80px; margin-top: 40px; margin-bottom: 40px;">
+        <div class="four wide column" id="welcome-div">
+            <h1> Welkom, {{ request.user.username }} </h1>
+        </div>
 
-    <h1 id="welcome"> Welcome, {{ request.user.username }} </h1>
-    <a href="{% url 'logout' %}">Logout</a></br></br>
-    <a href="/files">Files</a>
+        {% if course %}
+        <div class="four wide column" id="ifcourse">
+            <p>Leuk dat je al een les van ons volgt!</p>
+            <p>Klik <a href="{% url 'latestpage' %}">hier</a> om direct te gaan leren!</p>
+        </div>
+        {% else %}
+        <div class="four wide column" id="elsecourse">
+            <p>Helaas! Je volgt nog geen lessen van ons.</p>
+            <p>
+                <form action="{% url 'user' %}" method="post">
+                    {% csrf_token %}
+                    <select id="choose_course" name="chosen_course">
+                        <option selected="true" disabled="disabled">Kies een les</option>
+                        {% for c in courselist %}
+                            <option value="{{ c.name }}" >{{ c.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Start de les</button>
+                </form>
+            </p>
+        </div>
+        {% endif %}
 
-    {% if course %}
-        <p>How fun! You are already following a course of ours!</p>
-        <p>Click <a href="{% url 'latestpage' %}">here</a> to go back to your latest page!</p>
-    {% else %}
-        <p>Pity! You're not following a course of ours, yet...</p>
-        <p>
-            <form action="{% url 'user' %}" method="post">
-                {% csrf_token %}
-                <select id="choose_course" name="chosen_course">
-                    <option selected="true" disabled="disabled">Choose a course</option>
-                    {% for c in courselist %}
-                        <option value="{{ c.name }}" >{{ c.name }}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit">Start course</button>
+        
+        <div class="four wide column" id="tolesson">
+            <ul>
+            {% for page, completed in lessons.items %}
+                <li>
+                    <a href="{% url 'fileview' page.chapterpath page.path %}">{{ page.title }}</a>
+                    {% if completed %} (completed) {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+
+            {% if course %}
+            <form method="get" action="{% url 'leavecourse' %}">
+                <button type="submit">Maak de les af</button>
             </form>
-        </p>
-    {% endif %}
-
-    <ul>
-    {% for path in pathslist %}
-        <li>
-            <a href="{% url 'fileview' path.path.chapterpath path.path.path %}">{{ path.path.title }}</a>
-            {% if path.completed %} (completed) {% else %} {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
-
-    {% if course %}
-    <form method="get" action="{% url 'leavecourse' %}">
-        <button type="submit">Finish course</button>
-    </form>
-    {% endif %}
-
-    {% if teacher %}
-    <div>
-        <br>You're a teacher and therefore have access to our Teacher Home Page. <br>
-        Click <a href="/teacher">here</a> to visit it.
+            {% endif %}
+        </div>
     </div>
-    {% endif %}
-
 {% endblock %}

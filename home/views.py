@@ -10,17 +10,21 @@ from files.models import Filepage
 
 # Create your views here.
 
-# Decide whether the default path redirects to /user or /index
 def home_index(request):
+    """ Decides whether to render index or user """
+
     # If the user's not logged in, go to /index, otherwise to /user
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/index")
     return HttpResponseRedirect("/user")
 
-# Render a form for the user to log in
+
 def login_view(request):
+    """ Logs a user in, as long as they provide valid credentials """
+
     # Logs the user in via a form
     if request.method == "POST":
+
         # Cache the data provided and check the validity of the credentials
         username = request.POST["username"]
         password = request.POST["password"]
@@ -28,12 +32,18 @@ def login_view(request):
 
         # If the user's credentials are valid
         if user is not None:
-            # Log the user in and redirect to /user, unless provided an extra argument 'next'
+
+            # Log the user in
             login(request, user)
+
+            # Redirect to 'next' attribute
             next = request.POST.get('next')
             if next:
-               return HttpResponseRedirect(next)
+                return HttpResponseRedirect(next)
+            
+            # If there is no next, redirect to user
             return HttpResponseRedirect("/user")
+
         # If the user's credentials are not valid
         else:
             # Let them try again and shout at them
@@ -46,88 +56,112 @@ def login_view(request):
     else:
         return render(request, "home/login.html")
 
-# Log users out
+
 def logout_view(request):
-    # Log the user out and redirect to the main page, providing a message of success
+    """ Logs the user out """
+
+    # Log the user out
     logout(request)
+
+    # Render template with message
     return render(request, "home/index.html", {
         "message": "Je bent nu uitgelogd",
         "status_code":1
     })
 
-# General home-page
+
 def index(request):
-    # Render the corresponding template
+    """ Render the template for the index page"""
+    
     return render(request, "home/index.html")
 
-# Render a page specific for a user, where they can jump back into their course, or sign up for one
+
 @login_required
-def user(request, message = None, status_code = None):
+def user(request):
+    """ Renders a user-specific template, as their dashboard """
+
+    # Try to get the messages from session
+    try:
+        message = request.session['message']
+        status_code = request.session['status_code']
+
+    # If they are not their, make them None
+    except KeyError:
+        message = None
+        status_code = None
+        
+    # Clear session
+    request.session['message'] = None
+    request.session['status_code'] = None
+
     # If they've signed up, save their data
     if request.method == "POST":
-        uid = request.user.id
-        user = User.objects.get(id=uid)
-        chosencourse = request.POST["chosen_course"]
-        course = Courselist.objects.get(name=chosencourse)
-
-        # Try to get data from previous sign-ups for this course
-        try:
-            olds = OldProgress.objects.filter(user=user, course=course)
-        except:
-            pass
+        user = User.objects.get(id=request.user.id)
+        course = Courselist.objects.get(name=request.POST["chosen_course"])
 
         # Save their new course 
         c = Course(user=user, course=course)
         c.save()
 
-        # If they've ever signed up for this course
-        if olds:
-            # Find their old data
-            for old in olds:
-                progress = Progress(course=c, path=old.path, completed=old.completed)
-                progress.save()
-        else:  
-            # Otherwise, set setup all progress (with default=False)
-            pathslist = []
-            for p in Filepage.objects.filter(chapterpath=c.course.start.chapterpath):
-                # and put them in a list as a tuple
-                pathslist.append(p.path)
-            
-            for q in pathslist:
-                path = Filepage.objects.get(chapterpath=c.course.start.chapterpath, path=q)
-                progress = Progress(course=c, path=path)
-                progress.save()
+        # Try to get data from previous sign-ups for this course
+        pages = Filepage.objects.filter(chapterpath=course.start.chapterpath)
+
+        # For each file page in this course,
+        for page in pages:
+
+            # Try to get the old progress and turn into new progress
+            try:
+                old = OldProgress.objects.get(user=user, filepage=page)
+                progress = Progress(user=user, filepage=page, completed=old.completed)
+
+            # Otherwise, make a new progress with compeleted false (as default)
+            except:
+                progress = Progress(user=user, filepage=page)
+
+            # Save changes
+            progress.save()
 
         # Redirect them to their user page
         return HttpResponseRedirect("/user")
+
     # If they want to see the page
     else:
         # Save their data
-        uid = request.user.id
-        user = User.objects.get(id=uid)
-        course = None
-
-        # Generate a list of all courses
-        courselist = Courselist.objects.all()
-
-        # Find out whether they have a course
-        c = Course.objects.filter(user=user).first()
-        if c:
-            course = c
-        else:
+        user = User.objects.get(id=request.user.id)
+       
+        try:
+            course = Course.objects.get(user=user)
+        except:
             # Render their page, with the correct course
+            courselist = Courselist.objects.all()
+
             return render(request, "home/user.html", {
-                "course":course,
+                "course":None,
                 "courselist":courselist,
+                "message":message,
+                "status_code":status_code
             })
 
-        # A function that return an int of the path, so that it can be sorted
-        def makeKey(progress):
-            return int(progress.path.path)
-
         # Make a list of all progress (paragraphs) and sort it
-        pathslist = Progress.objects.filter(course=c)
-        pathslist = sorted(pathslist, key=makeKey)
+        pages = Filepage.objects.filter(chapterpath=course.course.start.chapterpath)
+        pages = sorted(pages, key=lambda page : int(page.path))
+
+        # Prepare for storing lessons
+        lessons = dict()
+
+        # For each page, 
+        for page in pages:
+
+            # Try to get the completed status
+            try:
+                progress = Progress.objects.get(user=user, filepage=page).completed
+
+            # If it does not exist (lesson is made after user signed up for course), set to false
+            except:
+                progress = False
+            
+            # Add to lessons
+            lessons[page] = progress
 
         # Found out whether a user is a teacher
         teacher = False
@@ -144,12 +178,19 @@ def user(request, message = None, status_code = None):
         # Render their page, with the correct course and other data
         return render(request, "home/user.html", {
             "course":course,
+<<<<<<< HEAD
             "pathslist":pathslist,
             "teacher":teacher
+=======
+            "lessons": lessons,
+            "message":message,
+            "status_code":status_code
+>>>>>>> chris_main
         })
 
-# Register a user
+
 def register(request):
+    """ Register a user """
     # Create a form with which the user can log in
     form = UserCreationForm(request.POST)
     # If the user's provided a valid form
@@ -164,10 +205,9 @@ def register(request):
         login(request, user)
 
         # Render their own user page and a corresponding message of success
-        return render(request, 'home/user.html', {
-            "message":"We hebben jouw account aangemaakt!",
-            "status_code":1
-        })
+        request.session['message'] = "Je account is aangemaakt!"
+        request.session['status_code'] = 1
+        return HttpResponseRedirect(reverse("user"))
     
     else:
         # Render the template with the form
@@ -175,12 +215,14 @@ def register(request):
             'form':form
         })
 
-# Updates the progress of a user
+
 def progress(request):
+    """ Update the db that a user's finished a lesson"""
+
     if request.method == "POST":
+
         # Save their data
-        uid = request.user.id
-        user = User.objects.get(id=uid)
+        user = User.objects.get(id=request.user.id)
         path = request.POST["path"]
 
         # Get the course and the page they've completed
@@ -188,37 +230,49 @@ def progress(request):
         page = Filepage.objects.get(chapterpath=course.course.start.chapterpath, path=path)
 
         # Update the progress
-        p = Progress.objects.get(course=course, path=page)
+        p = Progress.objects.get(user=user, filepage=page)
         p.completed = True
         p.save()
 
         # Redirect them to their homepage
         return HttpResponseRedirect("/user")
 
-# If they want to leave a course, this function runs
+
 def leavecourse(request):
+    """ Update the db that a user's left a course """
+
     # Save their data
-    uid = request.user.id
-    user = User.objects.get(id=uid)
+    user = User.objects.get(id=request.user.id)
 
     # Find their course
     course = Course.objects.get(user=user)
     
     # Find all their progress for this course
-    progresses = Progress.objects.filter(course=course)
+    progresses = Progress.objects.filter(user=user)
+
+    # For each lesson
     for progress in progresses:
-        # move it to the oldprogress table, if it already exists there, do nothing
+        
+        # Try to get the old progress and update it
         try:
-            old = OldProgress.objects.get(user=progress.course.user, course=progress.course.course, path=progress.path)
+            old = OldProgress.objects.get(user=user, filepage=progress.filepage)
             old.completed = progress.completed
+
+        # If that does not exist, make a new one
         except OldProgress.DoesNotExist:
-            old = OldProgress(user=progress.course.user, course=progress.course.course, path=progress.path, completed=progress.completed)
+            old = OldProgress(user=user, filepage=progress.filepage, completed=progress.completed)
+
+        # Save updates and delete progress for Progress table
         old.save()
+        progress.delete()
+    
     # Delete the current course
     course.delete()
+    
     # Redirect them to their homepage
     return HttpResponseRedirect("/user")
 
+<<<<<<< HEAD
 # Render correct template
 def about_us(request):
     return render(request, "home/about-us.html")
@@ -228,6 +282,17 @@ def pws(request):
     return render(request, "home/pws.html")
 
 # Render correct template
+=======
+
+def about_us(request):
+    return render(request, "home/about-us.html")
+
+
+def pws(request):
+    return render(request, "home/pws.html")
+
+
+>>>>>>> chris_main
 def contact(request):
     return render(request, "home/contact.html")
 

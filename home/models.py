@@ -28,35 +28,49 @@ class Course(models.Model):
 
 # Model that stores the user's current progress
 class Progress(models.Model):
+<<<<<<< HEAD
     # Storing their course,
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     # the page of the progress were saving
     path = models.ForeignKey(Filepage, on_delete=models.CASCADE)
     # and whether it's completed or not
+=======
+    user = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
+    filepage = models.ForeignKey(Filepage, on_delete=models.PROTECT, blank=True, null=True)
+>>>>>>> chris_main
     completed = models.BooleanField(default=False)
 
     # Define this model's name for the admin page
     def __str__(self):
-        return str(self.course.user) + "'s progress for " + self.path.path + " of " + self.course.course.name + " is " + str(self.completed)
+        return str(self.user) + "'s progress for " + str(self.filepage) + " is " + str(self.completed)
 
+<<<<<<< HEAD
     # Make sure the same course and path can never be together: a user can never have 2 progresses for the same page
     class Meta:
         unique_together = ('course', 'path')
+=======
+    #class Meta:
+     #   unique_together = ('user', 'filepage')
+>>>>>>> chris_main
 
 # Model that stores progress of courses user are not currently signed in to
 class OldProgress(models.Model):
     # Storing the user,
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+<<<<<<< HEAD
     # the course it belongs to
     course = models.ForeignKey(Courselist, on_delete=models.CASCADE, null=True, blank=True)
     # the page it belongs to
     path = models.ForeignKey(Filepage, on_delete=models.CASCADE, null=True, blank=True)
     # and whether it's completed
+=======
+    filepage = models.ForeignKey(Filepage, on_delete=models.PROTECT, null=True, blank=True)
+>>>>>>> chris_main
     completed = models.BooleanField(default=False)
 
     # Define this model's name for the admin page
     def __str__(self):
-        return str(self.user) + "'s progress for " + self.path.path + " of " + self.course.name + " is " + str(self.completed)
+        return str(self.user) + "'s progress for " + str(self.filepage) + " is " + str(self.completed)
 
 # Model that stores what users are teachers
 class Teachers(models.Model):
