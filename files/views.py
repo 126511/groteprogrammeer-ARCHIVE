@@ -84,7 +84,7 @@ def file_view(request, chapterpath, path):
     docs = dict()
 
     for every in d:
-       docs[every.term] = every.definition
+       docs[every.link] = every.definition
     
     jsonobj = json.dumps(docs) 
 

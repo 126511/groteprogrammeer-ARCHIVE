@@ -5,7 +5,7 @@ from django.urls import reverse, resolve
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Course, Courselist, Progress, OldProgress
+from .models import Course, Courselist, Progress, OldProgress, Teachers
 from files.models import Filepage
 
 # Create your views here.
@@ -129,10 +129,23 @@ def user(request, message = None, status_code = None):
         pathslist = Progress.objects.filter(course=c)
         pathslist = sorted(pathslist, key=makeKey)
 
-        # Render their page, with the correct course
+        # Found out whether a user is a teacher
+        teacher = False
+        try:
+            # Get their data from the teacher's model
+            t = Teachers.objects.get(user=user)
+            # If they are a teacher, set it to true
+            if t.teacher:
+                teacher = True
+        # Else keep it false
+        except:
+            pass
+
+        # Render their page, with the correct course and other data
         return render(request, "home/user.html", {
             "course":course,
             "pathslist":pathslist,
+            "teacher":teacher
         })
 
 # Register a user
@@ -206,11 +219,34 @@ def leavecourse(request):
     # Redirect them to their homepage
     return HttpResponseRedirect("/user")
 
+# Render correct template
 def about_us(request):
     return render(request, "home/about-us.html")
 
+# Render correct template
 def pws(request):
     return render(request, "home/pws.html")
 
+# Render correct template
 def contact(request):
     return render(request, "home/contact.html")
+
+# Homepage for all teachers
+def teacher(request):
+    # Get their user ids
+    uid = request.user.id
+    user = User.objects.get(id=uid)
+
+    # Found out whether they are teachers
+    try:
+        # Get their data from teachers model
+        t = Teachers.objects.get(user=user)
+        # If their are not a teacher: redirect to correct page
+        if t.teacher == False:
+            return HttpResponseRedirect("/user")
+    # If we didn't find them in the system, also redirect
+    except:
+        return HttpResponseRedirect("/user")
+
+    # Render the correct page with corresponding data
+    return render(request, "home/teacher.html")

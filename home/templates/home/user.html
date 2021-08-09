@@ -38,8 +38,6 @@
         </p>
     {% endif %}
 
-    
-
     <ul>
     {% for path in pathslist %}
         <li>
@@ -53,6 +51,13 @@
     <form method="get" action="{% url 'leavecourse' %}">
         <button type="submit">Finish course</button>
     </form>
+    {% endif %}
+
+    {% if teacher %}
+    <div>
+        <br>You're a teacher and therefore have access to our Teacher Home Page. <br>
+        Click <a href="/teacher">here</a> to visit it.
+    </div>
     {% endif %}
 
 {% endblock %}
