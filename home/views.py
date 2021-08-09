@@ -178,14 +178,9 @@ def user(request):
         # Render their page, with the correct course and other data
         return render(request, "home/user.html", {
             "course":course,
-<<<<<<< HEAD
-            "pathslist":pathslist,
-            "teacher":teacher
-=======
             "lessons": lessons,
             "message":message,
             "status_code":status_code
->>>>>>> chris_main
         })
 
 
@@ -272,17 +267,6 @@ def leavecourse(request):
     # Redirect them to their homepage
     return HttpResponseRedirect("/user")
 
-<<<<<<< HEAD
-# Render correct template
-def about_us(request):
-    return render(request, "home/about-us.html")
-
-# Render correct template
-def pws(request):
-    return render(request, "home/pws.html")
-
-# Render correct template
-=======
 
 def about_us(request):
     return render(request, "home/about-us.html")
@@ -292,7 +276,6 @@ def pws(request):
     return render(request, "home/pws.html")
 
 
->>>>>>> chris_main
 def contact(request):
     return render(request, "home/contact.html")
 

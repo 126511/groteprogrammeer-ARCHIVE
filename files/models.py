@@ -22,6 +22,9 @@ class Filepage(models.Model):
 
     def __str__(self):
         return self.title + " on /" + self.chapterpath + "/" + self.path
+    
+    class Meta:
+        ordering = ['chapterpath', 'path']
 
 # Saves the latest chapterpath and path a user's visited
 class LatestPage(models.Model):

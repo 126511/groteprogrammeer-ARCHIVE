@@ -66,10 +66,18 @@ def file_view(request, chapterpath, path):
     
     jsonobj = json.dumps(docs) 
 
+    course = Course.objects.get(user=user)
+    coursefiles = Filepage.objects.filter(chapterpath=course.course.start.chapterpath)
+
+    file_in_course = False
+    if file in coursefiles:
+        file_in_course = True
+
     # Render the template with the corresponding file
     return render(request, 'files/file_view.html', {
         'file':file,
         'docs':jsonobj,
+        'file_in_course':file_in_course
     })
 
 # Redirect a user to their latest page

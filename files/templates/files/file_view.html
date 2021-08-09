@@ -17,7 +17,7 @@
 
 <script type="text/javascript">
 
-    var qobj = '{ "mcquestions" : [ { "options" : ["Copy", "Fork", "Insert", "Repl"], "questions" : [false, true, false, false], "ans" : "Fork betekent dat jij de Repl die wij voor je hebben gemaakt kopieert, zodat je hem zelf kan aanpassen.", "title" : "Welke term drukt het kopieren van een stuk code uit zodat jij het voor jezelf kan aanpassen?"} ],"ocquestions" : [{"ans" : "compiler","explanation" : "Je kan de compiler een beetje zien als Google Translate voor programmeren. Je stopt er een bepaalde taal in (in dit geval C), dit noem je de source code. De compiler vertaalt dat tot machine code: uitsluitend bestaand uit binaire taal. Dit begrijpt de computer wel en kan het gaan uitvoeren.","title" : "Hoe heet de vertaler die van source code machine code maakt?" }],"usedterms" : ["functie", "error", "C"]}'
+    var qobj = '{ "mcquestions" : [ { "options" : ["Copy", "Fork", "Insert", "Repl"], "questions" : [false, true, false, false], "ans" : "Fork betekent dat jij de Repl die wij voor je hebben gemaakt kopieert, zodat je hem zelf kan aanpassen.", "title" : "Welke term drukt het kopieren van een stuk code uit zodat jij het voor jezelf kan aanpassen?"} ],"ocquestions" : [{"ans" : "compiler","explanation" : "Je kan de compiler een beetje zien als Google Translate voor programmeren. Je stopt er een bepaalde taal in (in dit geval C), dit noem je de source code. De compiler vertaalt dat tot machine code: uitsluitend bestaand uit binaire taal. Dit begrijpt de computer wel en kan het gaan uitvoeren.","title" : "Hoe heet de vertaler die van source code machine code maakt?" }],"usedterms" : ["Github"]}'
 
     // Builds the question card from JSON
     function buildmcquestion(qnum) {
@@ -418,6 +418,7 @@
 <div id="body">
     <div id="lesson">
         <button onclick="get_html(`index`)">Open docs</button>
+        <h1>{{ file.title }}</h1>
         {% autoescape off %}
             {{ file.file }}
 
@@ -443,12 +444,15 @@
 
 
         {% endautoescape %}
+
+        {% if file_in_course %}
         <form method="post" action="{% url 'progress' %}" style=" width: 100px; margin: auto;">
             {% csrf_token %}
             <input type="hidden" value="{{ file.path }}" name="path">
             
             <button class="ui circular icon button" id="completebutton" type="submit" value="completed"><i class="check icon" ></i></button>
         </form>
+        {% endif %}
     </div>
     <div id="sidebar" style="display: none;">
         <button style="position: fixed;" class="button" onclick="gaweg()"> x </button><br>
