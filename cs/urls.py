@@ -21,4 +21,4 @@ urlpatterns = [
     path('files/', include("files.urls")),
     path('', include("home.urls")),
     path('docs/', include("docs.urls"))
-]
+] 
