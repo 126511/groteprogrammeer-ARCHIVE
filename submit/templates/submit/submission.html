@@ -1,0 +1,46 @@
+{% extends "home/userlayout.html" %}
+
+{% load extra_dict %}
+
+{% block title %}Jouw scores{% endblock %}
+
+{% block head %}
+<style>
+    #body {
+        width: 70%;
+        background-color: white;
+        margin: auto;
+        padding: 64px;
+        /*padding-right: 0px;  ~vincent */
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div id="body">
+    <h1>Scores van {{ user.username }} voor {{ problem }}</h1>
+
+    {% for input in inputs %}
+
+        <h3> results {{input.pk}}: </h3>
+        <ul>
+        {% for test in input.result|get_item:"results" %}
+            {% if test|get_item:"passed" %}
+            <span style="color: green">
+            {% else %}
+            <span style="color: red">
+            {% endif %}
+                <li>{{ test|get_item:"name" }} --> {{ test|get_item:"description" }}<br>
+                    {% for line in test|get_item:"log" %}
+                        <code>{{ line }}</code>
+                    {% endfor %}
+                </li>
+            </span>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+
+</div>
+{% endblock %}
