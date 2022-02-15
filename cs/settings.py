@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'files',
     'home',
     'docs',
-    'submit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
