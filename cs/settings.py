@@ -133,10 +133,14 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': ','.join(
             [
                 'codesnippet',
-            ])
+            ]),
+        'codeSnippet_languages': {
+            'javascript':'Javascript',
+            'c': 'C',
+            'python':'Python',
+            'html':'HTML',
+            'css':'CSS'
+        },
+        'codeSnippet_theme':'base16/google-dark'
     },
-    'codeSnippet_languages': {
-        'javascript':'Javascript',
-        'c': 'C'
-    }
 }

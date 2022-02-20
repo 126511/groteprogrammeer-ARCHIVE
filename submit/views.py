@@ -136,7 +136,11 @@ def check_key(key):
 
 def submission(request, username, problem):
     user = User.objects.get(username=username)
-    inputs = Input.objects.filter(user=user, slug=problem)
+    
+    inputs = []
+    for input in Input.objects.filter(user=user, slug=problem).order_by('-datetime'):
+        files = File.objects.filter(input=input)
+        inputs.append((input, files))
 
     return render(request, "submit/submission.html", {
         'user':user,

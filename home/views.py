@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Course, Courselist, Progress, OldProgress, Teachers
 from files.models import Filepage
+from django.contrib import messages
 
 # Create your views here.
 
@@ -176,6 +177,8 @@ def user(request):
             pass
 
         # Render their page, with the correct course and other data
+        messages.add_message(request, messages.INFO, 'Welkom!')
+
         return render(request, "home/user.html", {
             "course":course,
             "lessons": lessons,

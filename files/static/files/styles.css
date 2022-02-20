@@ -1,0 +1,139 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font-size: 18px;
+    font-family: sans-serif;
+}
+
+p, ol, ul {
+    margin: 16px;
+    color: var(--greytext);   
+}
+
+#documentation {
+    padding: 10px;
+}
+
+#sidebar {
+    width: 25%;
+}
+
+.copymsg {
+    position: fixed;
+    width: 100px;
+    text-align: center;
+    padding: 0px;
+    height: 24px;
+    border-radius: 4px;
+    z-index: 10;
+    font-size: 1rem;
+    background-color: var(--success);
+}
+
+.terms {
+    font-weight: bold;
+    background-color: transparent;
+    color: var(--accent2);
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    font-size: 18px;
+}
+#footer {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    left: auto;
+    top: auto;
+}
+#lesson {
+    width: 70%;
+    background-color: white;
+    margin: auto;
+    padding: 64px;
+    /*padding-right: 0px;  ~vincent */
+    margin-right: auto;
+    margin-left: auto;
+}
+#body {
+    height: 100%;
+    background-color: var(--white-darken);
+    display: flex;
+    overflow: scroll;
+}
+code {
+    background-color:  var(--accent2-lighten);
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--accent2-lighten);
+    border-radius: 4px;
+    color: white;
+    box-shadow: var(--shadow-1);
+    
+}
+
+.multiplechoice {
+    background-color: var(--accent1);
+
+    height:100%;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: var(--shadow-1);
+    position: relative;
+    margin: 16px;
+}
+
+.correctanswer {
+    display: none;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.questiontitle {
+    color: white;
+    font-size: 2rem;
+}
+
+#checkboxtext {
+    color: white;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.openquestion {
+    background-color: var(--accent1);
+
+    height:100%;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: var(--shadow-1);
+    position: relative;
+    margin: 16px;
+}
+
+.correctocanswer {
+    display: none;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.exercise {
+    background-color: var(--accent1);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: var(--shadow-1);
+    color: white;
+    margin: 16px;
+    font-size: 1.5rem;
+}
+
+#completebutton {
+    background-color: var(--accent2);
+    font-size: 1.7rem;
+    color: white;
+    box-shadow: var(--shadow-2);
+}
+
+#completebutton:hover {
+    background-color: var(--accent2-lighten);
+}

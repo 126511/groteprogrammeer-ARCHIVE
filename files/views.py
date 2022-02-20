@@ -26,12 +26,10 @@ def index(request):
     # For every chapterpath, find the corresponding paths and titles
     for chapterpath in sorted(chapterpaths):
         pathslist = list()
-        for p in Filepage.objects.filter(chapterpath=chapterpath):
+        for p in Filepage.objects.filter(chapterpath=chapterpath).order_by('path'):
             # and put them in a list as a tuple
             curpage = (p.path, p.title)
             pathslist.append(curpage)
-        # that is sorted, by the paths
-        pathslist = sorted(pathslist, key=lambda tuplein : int(tuplein[0]))
         # and then connect the chapterpath to that list in pagedict
         pagedict[chapterpath] = pathslist
 
