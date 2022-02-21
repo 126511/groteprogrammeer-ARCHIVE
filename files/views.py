@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import json
 from home.models import Course, Courselist
+from django.contrib import messages
 
 # Create your views here.
 
@@ -42,8 +43,13 @@ def index(request):
 @login_required
 def file_view(request, chapterpath, path):
     # Query for the file and save the user's id
-    file = Filepage.objects.get(chapterpath=chapterpath, path=path)
-    user = User.objects.get(id=request.user.id)
+    try:
+        file = Filepage.objects.get(chapterpath=chapterpath, path=path)
+    except ObjectDoesNotExist:
+        messages.add_message(request, messages.WARNING, 'Dat bestand bestaat niet!')
+        return HttpResponseRedirect("/")
+    
+    user = request.user
     
     # Save the latestpage, if possible
     try:
@@ -82,7 +88,7 @@ def file_view(request, chapterpath, path):
 @login_required
 def latestpage(request):
     # Save the user's id
-    user = User.objects.get(id=request.user.id)
+    user = request.user
 
     # Try to find the user's latest page 
     try:

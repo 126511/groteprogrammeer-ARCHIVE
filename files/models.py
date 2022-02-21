@@ -12,7 +12,7 @@ class Filepage(models.Model):
     path = models.CharField(max_length=16, default="1")
 
     # It's title and file itself
-    title = models.CharField(max_length=32, default="title")
+    title = models.CharField(max_length=128, default="title")
     # This stores just text, but should be HTML code, 
     # the view and template make sure it'll be seen as HTML, not raw text
     file = RichTextField()

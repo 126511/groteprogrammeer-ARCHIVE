@@ -2,6 +2,20 @@
 
 {% block title %} List of files {% endblock %}
 
+{% block head %}
+<style>
+    #body {
+        width: 70%;
+        background-color: white;
+        margin: auto;
+        padding: 64px;
+        /*padding-right: 0px;  ~vincent */
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
+{% endblock %}
+
 {% block body %}
 <div id="body" style="margin-left: 80px;">
     <h2>Jump back to your <a href="{% url 'latestpage' %}">latest page</a>!</h2>

@@ -1,4 +1,6 @@
+from urllib.error import HTTPError
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponsePermanentRedirect
 from django.http.request import HttpHeaders, HttpRequest
 from django.http.response import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -6,7 +8,7 @@ from .models import Input, Score, File, Key
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-import pytz
+from django.contrib import messages
 
 # Create your views here.
 
@@ -44,7 +46,7 @@ def input(request):
             k = Key.objects.get(key=request.POST['key'])
             k.delete()
         else:
-            raise Http404("Key not found or invalid") 
+            raise Http404("De geheime sleutel is correct.") 
 
         # Get the user, based on the username given via POST
         u = User.objects.get(username=request.POST['username'])
@@ -79,9 +81,9 @@ def input(request):
             f = File(input=i, name=file_name, file=files[file_name])
             f.save()
         
-        return HttpResponse("Success")
+        return HttpResponse("Gelukt!")
 
-    return HttpResponse("Input")
+    return HttpResponse("Ik ben bang dat je verdwaald bent")
 
 def check_username(request, username):
     """ Function that returns 200 if the username exists in the database and 404 is it does not. """
@@ -89,9 +91,9 @@ def check_username(request, username):
     try:
         u = User.objects.get(username=username)
     except:
-        raise Http404("Username not found")
+        raise HTTPError("Gebruikersnaam niet gevonden.")
     
-    return HttpResponse("found")
+    return HttpResponse("Gevonden!")
 
 def generate_key(request):
     """ Returns a key that can be sent along with the request to ensure a safe transaction. """
@@ -105,7 +107,7 @@ def generate_key(request):
     
     key = create_key()
 
-    response = HttpResponse('sent')
+    response = HttpResponse('Verstuurd.')
     response.set_cookie('key', key)
 
     k = Key(key=key, when_requested=timezone.now())
@@ -152,7 +154,8 @@ def files(request, input_pk, filename):
     try:
         i = Input.objects.get(pk=input_pk)
     except:
-        raise Http404("That is not a valid input")
+        messages.add_message(request, messages.WARNING, 'Invalide link')
+        return HttpResponseRedirect("/submit")
 
     if filename == "index":
 
@@ -163,15 +166,15 @@ def files(request, input_pk, filename):
                 'f':f
             })
         except:
-            raise Http404("No files found")
-
-              
-
+            messages.add_message(request, messages.INFO, 'Geen bestanden gevonden.')
+            return HttpResponseRedirect("/submit")
+      
     try:
         f = File.objects.get(input=i, name=filename)
     except:
-        raise Http404("That file does not exist")
-    
+        messages.add_message(request, messages.WARNING, 'Dat bestand bestaat niet!')
+        return HttpResponsePermanentRedirect("/submit")
+     
     return render(request, "submit/file.html", {
         'user':request.user,
         'f':f

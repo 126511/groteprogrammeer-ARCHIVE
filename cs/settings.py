@@ -139,8 +139,8 @@ CKEDITOR_CONFIGS = {
             'c': 'C',
             'python':'Python',
             'html':'HTML',
-            'css':'CSS'
+            'css':'CSS',
+            'plaintext':'Geen highlighting (gewone tekst)'
         },
-        'codeSnippet_theme':'base16/google-dark'
     },
 }

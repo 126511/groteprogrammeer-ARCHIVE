@@ -1,5 +1,31 @@
+{% extends "home/userlayout.html" %}
 
-<span style="font-family: monospace;">
-    <h2>{{ f.name }}</h2>
-    <pre>{{ f.file }}</pre>
-</span>
+{% block title %}Jouw scores{% endblock %}
+
+{% block head %}
+<style>
+    #body {
+        width: 70%;
+        background-color: white;
+        margin: auto;
+        padding: 64px;
+        /*padding-right: 0px;  ~vincent */
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/googlecode.min.css"> 
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+{% endblock %}
+
+{% block body %}
+<div id="body">
+    <span style="font-family: monospace; font-size: 16px;">
+        <h2>{{ f.name }}</h2>
+        <pre><code>{{ f.file }}</code></pre>
+    </span>
+</div>
+{% endblock %}
