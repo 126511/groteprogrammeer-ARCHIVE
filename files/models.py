@@ -6,13 +6,13 @@ from ckeditor.fields import RichTextField
 # Create your models here.
 
 # Stores a file to be viewed
-class Filepage(models.Model):
+class Lesson(models.Model):
     # The path of its url
-    chapterpath = models.CharField(max_length=16, default="h1", null=True, blank=True)
-    path = models.CharField(max_length=16, default="1")
+    chapterpath = models.CharField(max_length=16)
+    path = models.CharField(max_length=128)
 
     # It's title and file itself
-    title = models.CharField(max_length=128, default="title")
+    title = models.CharField(max_length=128)
     # This stores just text, but should be HTML code, 
     # the view and template make sure it'll be seen as HTML, not raw text
     file = RichTextField()
@@ -27,13 +27,13 @@ class Filepage(models.Model):
         ordering = ['chapterpath', 'path']
 
 # Saves the latest chapterpath and path a user's visited
-class LatestPage(models.Model):
+class LatestVisit(models.Model):
     # Link to the Users table Django made 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    filepage = models.ForeignKey(Filepage, on_delete=models.CASCADE, null=True, blank=True)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.user) + " has " + str(self.filepage)
+        return self.user.username + " has visited " + self.lesson.title + " last"
 
 
     

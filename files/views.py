@@ -1,13 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView
-from .models import Filepage, LatestPage
+from .models import Lesson, LatestVisit
 from docs.models import Term
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import json
-from home.models import Course, Courselist
+from home.models import UserToChapter
 from django.contrib import messages
 
 # Create your views here.
@@ -20,17 +18,17 @@ def index(request):
     pagedict = dict()
 
     # Populate the set of chapterpaths
-    files = Filepage.objects.all()
-    for file in files:
-        chapterpaths.add(file.chapterpath)
+    lessons = Lesson.objects.all()
+    for lesson in lessons:
+        chapterpaths.add(lesson.chapterpath)
 
     # For every chapterpath, find the corresponding paths and titles
     for chapterpath in sorted(chapterpaths):
         pathslist = list()
-        for p in Filepage.objects.filter(chapterpath=chapterpath).order_by('path'):
+        for lesson in Lesson.objects.filter(chapterpath=chapterpath).order_by('path'):
             # and put them in a list as a tuple
-            curpage = (p.path, p.title)
-            pathslist.append(curpage)
+            current_lesson = (lesson.path, lesson.title)
+            pathslist.append(current_lesson)
         # and then connect the chapterpath to that list in pagedict
         pagedict[chapterpath] = pathslist
 
@@ -44,21 +42,21 @@ def index(request):
 def file_view(request, chapterpath, path):
     # Query for the file and save the user's id
     try:
-        file = Filepage.objects.get(chapterpath=chapterpath, path=path)
+        lesson = Lesson.objects.get(chapterpath=chapterpath, path=path)
     except ObjectDoesNotExist:
-        messages.add_message(request, messages.WARNING, 'Dat bestand bestaat niet!')
+        messages.add_message(request, messages.WARNING, 'Die les bestaat niet!')
         return HttpResponseRedirect("/")
     
     user = request.user
     
     # Save the latestpage, if possible
     try:
-        user.latestpage.filepage = file
-        user.latestpage.save()
+        user.latestvisit.lesson = lesson
+        user.latestvisit.save()
 
     # The above raises an error if the user has no latestpage, then create one
     except ObjectDoesNotExist:
-        page = LatestPage(user=user, filepage=file)
+        page = LatestVisit(user=user, lesson=lesson)
         page.save()
 
     # Get all documentation from the database and put in JSON format
@@ -70,16 +68,18 @@ def file_view(request, chapterpath, path):
     
     jsonobj = json.dumps(docs) 
 
-    course = Course.objects.get(user=user)
-    coursefiles = Filepage.objects.filter(chapterpath=course.course.start.chapterpath)
+    user2chapter = UserToChapter.objects.get(user=user)
+    coursefiles = Lesson.objects.filter(chapterpath=user2chapter.chapter.path)
 
     file_in_course = False
-    if file in coursefiles:
+    if lesson in coursefiles:
         file_in_course = True
+    
+    print(file_in_course)
 
     # Render the template with the corresponding file
     return render(request, 'files/file_view.html', {
-        'file':file,
+        'file':lesson,
         'docs':jsonobj,
         'file_in_course':file_in_course
     })
@@ -92,8 +92,10 @@ def latestpage(request):
 
     # Try to find the user's latest page 
     try:
-        return HttpResponseRedirect("/files/" + user.latestpage.filepage.chapterpath + "/" + user.latestpage.filepage.path)
+        lesson = user.latestvisit.lesson
+        return HttpResponseRedirect("/files/" + lesson.chapterpath + "/" + lesson.path)
     # If it does not exist, redirect to the course's start
     except:
-        course = Course.objects.get(user=user)
-        return HttpResponseRedirect("/files/" + course.course.start.chapterpath + "/" + course.course.start.path)
+        chapter = UserToChapter.objects.get(user=user).chapter
+        lesson = Lesson.objects.filter(chapterpath=chapter.path).order_by('path')[0]
+        return HttpResponseRedirect("/files/" + lesson.chapterpath + "/" + lesson.path)

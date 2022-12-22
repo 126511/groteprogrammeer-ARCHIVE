@@ -82,9 +82,10 @@ def user(request):
     if request.method == "POST":
         user = request.user
         chapterpath = request.POST['chosen_chapter']
+        chapter = Chapter.objects.get(path=chapterpath)
 
         # Save their new course 
-        c = Chapter(user=user, path=chapterpath)
+        c = UserToChapter(user=user, chapter=chapter)
         c.save()
 
         # Try to get data from previous sign-ups for this course
@@ -115,7 +116,7 @@ def user(request):
         user = request.user
        
         try:
-            chapter = UserToChapter.objects.get(user=user)
+            chapter = UserToChapter.objects.get(user=user).chapter
         except ObjectDoesNotExist:
             # Render their page, with the correct course
             chapters = Chapter.objects.all()
@@ -147,7 +148,7 @@ def user(request):
         # Render their page, with the correct course and other data
         return render(request, "home/user.html", {
             "chapter":chapter,
-            "lessons": lessons,
+            "progresses": progresses,
         })
 
 

@@ -1,6 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
-from files.models import Filepage
+from files.models import Lesson
 
 # Create your models here.
 
@@ -16,7 +16,7 @@ class Term(models.Model):
     term = models.CharField(max_length=64)
     # its definition,
     definition = models.TextField(max_length=1024)
-    lesson = models.ForeignKey(Filepage, on_delete=models.PROTECT)
+    lesson = models.ForeignKey(Lesson, on_delete=models.PROTECT)
     tags = models.CharField(max_length=2, choices=Tags.choices, default=None, blank=True)
     link = models.CharField(max_length=96)
 

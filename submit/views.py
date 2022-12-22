@@ -1,7 +1,6 @@
 from urllib.error import HTTPError
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponsePermanentRedirect
-from django.http.request import HttpHeaders, HttpRequest
 from django.http.response import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from .models import Input, Score, File, Key

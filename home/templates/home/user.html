@@ -48,6 +48,7 @@
 </style>
 {% endblock %}
 
+{% block title %} Welkom! {% endblock %}
 
 {% block body %}
     <div class="ui grid" style="margin-left: 80px; margin-right: 80px; margin-top: 40px; margin-bottom: 40px;">
@@ -55,7 +56,7 @@
             <h1> Welkom, {{ request.user.username }} </h1>
         </div>
 
-        {% if course %}
+        {% if chapter %}
         <div class="four wide column" id="ifcourse">
             <p>Leuk dat je al een les van ons volgt!</p>
             <p>Klik <a href="{% url 'latestpage' %}">hier</a> om direct te gaan leren!</p>
@@ -68,7 +69,7 @@
                     {% csrf_token %}
                     <select id="choose_course" name="chosen_chapter">
                         <option selected="true" disabled="disabled">Kies een les</option>
-                        {% for c in courselist %}
+                        {% for c in chapters %}
                             <option value="{{ c.path }}" >{{ c.name }}</option>
                         {% endfor %}
                     </select>
@@ -81,7 +82,7 @@
         
         <div class="four wide column" id="tolesson">
             <ul>
-            {% for page, completed in lessons.items %}
+            {% for page, completed in progresses.items %}
                 <li>
                     <a href="{% url 'fileview' page.chapterpath page.path %}">{{ page.title }}</a>
                     {% if completed %} (completed) {% endif %}
@@ -89,7 +90,7 @@
             {% endfor %}
             </ul>
 
-            {% if course %}
+            {% if chapter %}
             <form method="get" action="{% url 'leavecourse' %}">
                 <button type="submit">Maak de les af</button>
             </form>

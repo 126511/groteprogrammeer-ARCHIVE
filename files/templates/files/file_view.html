@@ -21,12 +21,11 @@
 <div id="body">
     <div id="lesson">
         <button onclick="get_html(`index`)">Open docs</button>
-        <h1>{{ file.title }}</h1>
 
             {{ file.file|safe }}
 
 
-        {% if file_in_course %}
+        <!-- {% if file_in_course %} -->    
             <form method="post" action="{% url 'progress' %}" style=" width: 100px; margin: auto;">
                 {% csrf_token %}
                 <input type="hidden" value="{{ file.path }}" name="path">
