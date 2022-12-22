@@ -16,6 +16,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 LOGIN_URL = '/login'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -25,7 +26,7 @@ SECRET_KEY = 'awsaxbg=au4vr*8$p*f-4qo1=4=ng078=4iiq%&_0&s1e_u6+r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*", "0.0.0.0", "3030"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -108,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'nl-nl'
 
 TIME_ZONE = 'UTC'
 
@@ -126,21 +127,3 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'extraPlugins': ','.join(
-            [
-                'codesnippet',
-            ]),
-        'codeSnippet_languages': {
-            'javascript':'Javascript',
-            'c': 'C',
-            'python':'Python',
-            'html':'HTML',
-            'css':'CSS',
-            'plaintext':'Geen highlighting (gewone tekst)'
-        },
-    },
-}
