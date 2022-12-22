@@ -66,10 +66,10 @@
             <p>
                 <form action="{% url 'user' %}" method="post">
                     {% csrf_token %}
-                    <select id="choose_course" name="chosen_course">
+                    <select id="choose_course" name="chosen_chapter">
                         <option selected="true" disabled="disabled">Kies een les</option>
                         {% for c in courselist %}
-                            <option value="{{ c.name }}" >{{ c.name }}</option>
+                            <option value="{{ c.path }}" >{{ c.name }}</option>
                         {% endfor %}
                     </select>
                     <button type="submit">Start de les</button>

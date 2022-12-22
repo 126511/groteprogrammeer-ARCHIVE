@@ -1,12 +1,11 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import *
+from django.contrib.auth.decorators import *
+from django.contrib.auth.forms import *
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse, resolve
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from .models import Course, Courselist, Progress, OldProgress, Teachers
-from files.models import Filepage
+from django.urls import reverse
+from .models import Chapter, UserToChapter, Progress, OldProgress, Teacher
+from files.models import Lesson
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -15,10 +14,10 @@ from django.core.exceptions import ObjectDoesNotExist
 def home_index(request):
     """ Decides whether to render index or user """
 
-    # If the user's not logged in, go to /index, otherwise to /user
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect("/index")
-    return HttpResponseRedirect("/user")
+    # If the user's logged in, go to /user, otherwise to /index
+    if request.user.is_authenticated:
+        return HttpResponseRedirect("/user")
+    return HttpResponseRedirect("/index")
 
 
 def login_view(request):
@@ -82,37 +81,32 @@ def user(request):
     # If they've signed up, save their data
     if request.method == "POST":
         user = request.user
-
-        try:
-            course = Courselist.objects.get(name=request.POST["chosen_course"])
-        except ObjectDoesNotExist:
-            messages.add_message(request, messages.WARNING, 'Je probeert je in te schrijven voor een hoofdstuk dat niet bestaat')
-            return HttpResponseRedirect("/user")
+        chapterpath = request.POST['chosen_chapter']
 
         # Save their new course 
-        c = Course(user=user, course=course)
+        c = Chapter(user=user, path=chapterpath)
         c.save()
 
         # Try to get data from previous sign-ups for this course
-        pages = Filepage.objects.filter(chapterpath=course.start.chapterpath)
+        lessons = Lesson.objects.filter(chapterpath=chapterpath)
 
         # For each file page in this course,
-        for page in pages:
+        for lesson in lessons:
 
             # Try to get the old progress and turn into new progress
             try:
-                old = OldProgress.objects.get(user=user, filepage=page)
-                progress = Progress(user=user, filepage=page, completed=old.completed)
+                old = OldProgress.objects.get(user=user, lesson=lesson)
+                progress = Progress(user=user, lesson=lesson, completed=old.completed)
 
             # Otherwise, make a new progress with compeleted false (as default)
             except ObjectDoesNotExist:
-                progress = Progress(user=user, filepage=page)
+                progress = Progress(user=user, lesson=lesson)
 
             # Save changes
             progress.save()
 
         # Redirect them to their user page
-        messages.add_message(request, messages.SUCCESS, f'We hebben je ingeschreven voor {course.name}')
+        messages.add_message(request, messages.SUCCESS, f'We hebben je ingeschreven voor je nieuwe hoofdstuk!')
         return HttpResponseRedirect("/user")
 
     # If they want to see the page
@@ -121,39 +115,38 @@ def user(request):
         user = request.user
        
         try:
-            course = Course.objects.get(user=user)
+            chapter = UserToChapter.objects.get(user=user)
         except ObjectDoesNotExist:
             # Render their page, with the correct course
-            courselist = Courselist.objects.all()
+            chapters = Chapter.objects.all()
 
             return render(request, "home/user.html", {
-                "course":None,
-                "courselist":courselist,
+                "chapters":chapters,
             })
 
-        # Make a list of all progress (paragraphs) and sort it
-        pages = Filepage.objects.filter(chapterpath=course.course.start.chapterpath).order_by('path')
+        # Make a list of all progress (lessons) and sort it
+        lessons = Lesson.objects.filter(chapterpath=chapter.path).order_by('path')
 
         # Prepare for storing lessons
-        lessons = dict()
+        progresses = dict()
 
         # For each page, 
-        for page in pages:
+        for lesson in lessons:
 
             # Try to get the completed status
             try:
-                progress = Progress.objects.get(user=user, filepage=page).completed
+                progress = Progress.objects.get(user=user, lesson=lesson).completed
 
             # If it does not exist (lesson is made after user signed up for course), set to false
             except ObjectDoesNotExist:
                 progress = False
             
             # Add to lessons
-            lessons[page] = progress
+            progresses[lesson] = progress
 
         # Render their page, with the correct course and other data
         return render(request, "home/user.html", {
-            "course":course,
+            "chapter":chapter,
             "lessons": lessons,
         })
 
@@ -194,20 +187,20 @@ def progress(request):
         path = request.POST["path"]
 
         # Get the course and the page they've completed
-        course = Course.objects.get(user=user)
-        page = Filepage.objects.get(chapterpath=course.course.start.chapterpath, path=path)
+        chapter = UserToChapter.objects.get(user=user).chapter
+        lesson = Lesson.objects.get(chapterpath=chapter.path, path=path)
 
         # Update the progress
         try:
-            p = Progress.objects.get(user=user, filepage=page)
+            p = Progress.objects.get(user=user, lesson=lesson)
             p.completed = True
         except ObjectDoesNotExist:
-            p = Progress(user=user, filepage=page, completed=True)
+            p = Progress(user=user, lesson=lesson, completed=True)
         
         p.save()
 
         # Redirect them to their homepage
-        messages.add_message(request, messages.INFO, f'Je hebt {page.title} afgemaakt!')
+        messages.add_message(request, messages.INFO, f'Je hebt {lesson.title} afgemaakt!')
         return HttpResponseRedirect("/user")
     
     return HttpResponse('Ik ben bang dat je verdwaald bent...')
@@ -221,7 +214,7 @@ def leavecourse(request):
 
     # Find their course
     try:
-        course = Course.objects.get(user=user)
+        user2chapter = UserToChapter.objects.get(user=user)
     except ObjectDoesNotExist:
         messages.add_message(request, messages.WARNING, 'Je bent niet ingeschreven voor een hoofdstuk en kan je dus ook niet uitschrijven.')
         return HttpResponseRedirect("/user")
@@ -234,22 +227,22 @@ def leavecourse(request):
         
         # Try to get the old progress and update it
         try:
-            old = OldProgress.objects.get(user=user, filepage=progress.filepage)
+            old = OldProgress.objects.get(user=user, lesson=progress.lesson)
             old.completed = progress.completed
 
         # If that does not exist, make a new one
         except ObjectDoesNotExist:
-            old = OldProgress(user=user, filepage=progress.filepage, completed=progress.completed)
+            old = OldProgress(user=user, lesson=progress.lesson, completed=progress.completed)
 
         # Save updates and delete progress for Progress table
         old.save()
         progress.delete()
     
     # Delete the current course
-    course.delete()
+    user2chapter.delete()
     
     # Redirect them to their homepage
-    messages.add_message(request, messages.SUCCESS, f'We hebben je uitgeschreven voor {course.course.name}')
+    messages.add_message(request, messages.SUCCESS, f'We hebben je uitgeschreven voor {user2chapter.chapter.name}')
     return HttpResponseRedirect("/user")
 
 
@@ -267,13 +260,12 @@ def contact(request):
 # Homepage for all teachers
 def teacher(request):
     # Get their user ids
-    uid = request.user.id
-    user = User.objects.get(id=uid)
+    user = request.user
 
     # Found out whether they are teachers
     try:
         # Get their data from teachers model
-        t = Teachers.objects.get(user=user)
+        t = Teacher.objects.get(user=user)
         # If their are not a teacher: redirect to correct page
         if t.teacher == True:
                 # Render the correct page with corresponding data

@@ -1,66 +1,63 @@
 from django.db import models
 from django.contrib.auth.models import User
-from files.models import LatestPage, Filepage
+from files.models import Lesson
 
 # Create your models here.
 
-# Model lists all courses
-class Courselist(models.Model):
+# Model that stores the name and chapterpath of each chapter
+class Chapter(models.Model):
     # Storing their name (e.g. Chapter 1)
     name = models.CharField(max_length=64)
-    # and their starting page (e.g. Paragraph 1)
-    start = models.ForeignKey(Filepage, on_delete=models.CASCADE, null=True, blank=True)
+    # and their chapterpath (e.g. h1)
+    path = models.CharField(max_length=64)
 
     # Define this model's name for the admin page
     def __str__(self):
-        return "Course " + self.name + " at /" + self.start.chapterpath
+        return "Chapter " + self.name + " at /" + self.path
 
 # Model that combines a course with a user
-class Course(models.Model):
+class UserToChapter(models.Model):
     # Storing the user
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # and their course
-    course = models.ForeignKey(Courselist, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
 
     # Define this model's name for the admin page
     def __str__(self):
-        return "User " + self.user.username + " studies " + str(self.course.name)
+        return "User " + self.user.username + " studies " + self.chapter.name
 
 # Model that stores the user's current progress
 class Progress(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    filepage = models.ForeignKey(Filepage, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
 
     # Define this model's name for the admin page
     def __str__(self):
-        return str(self.user) + "'s progress for " + str(self.filepage) + " is " + str(self.completed)
-
-    #class Meta:
-     #   unique_together = ('user', 'filepage')
+        return self.user.username + "'s progress for " + self.lesson.title + " is " + str(self.completed)
 
 # Model that stores progress of courses user are not currently signed in to
 class OldProgress(models.Model):
     # Storing the user,
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    filepage = models.ForeignKey(Filepage, on_delete=models.PROTECT, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.PROTECT)
     completed = models.BooleanField(default=False)
 
     # Define this model's name for the admin page
     def __str__(self):
-        return str(self.user) + "'s progress for " + str(self.filepage) + " is " + str(self.completed)
+        return self.user.username + "'s progress for " + self.lesson.title + " is " + str(self.completed)
 
 # Model that stores what users are teachers
-class Teachers(models.Model):
+class Teacher(models.Model):
     # Storing the user
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     # and a bool whether they're teacher
     teacher = models.BooleanField(default=False)
 
     # Define this model's name for the admin page
     def __str__(self):
         if self.teacher:
-            return str(self.user) + " is a teacher"
+            return self.user.username + " is a teacher"
         else:
-            return str(self.user) + " is a student"
+            return self.user.username + " is a student"
 
