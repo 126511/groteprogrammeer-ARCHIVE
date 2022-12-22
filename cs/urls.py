@@ -22,6 +22,5 @@ urlpatterns = [
     path('files/', include("files.urls")),
     path('', include("home.urls")),
     path('docs/', include("docs.urls")),
-    path('submit/', include("submit.urls")),
-    path('accounts/', include('allauth.urls')),
+    path('submit/', include("submit.urls"))
 ] 

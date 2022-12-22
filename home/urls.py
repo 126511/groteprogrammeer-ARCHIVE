@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 # Define all urls for the home webapp
@@ -10,7 +10,7 @@ urlpatterns = [
     # Page where users can log out of their accounts
     path("logout", views.logout_view, name="logout"),
     # Page for all visitor of the site, even those without an account
-    path("index", views.index, name="index"),
+    path("index", views.index, name="main_index"),
     # Homepage for all users
     path("user", views.user, name="user"),
     # Homepage for all teachers, only visible if they are a teacher
@@ -26,5 +26,7 @@ urlpatterns = [
     # PAge that tells about the school thesis
     path("pws", views.pws, name="pws"),
     # Page that holds contact information
-    path("contact", views.contact, name="contact")
+    path("contact", views.contact, name="contact"),
+
+    path('accounts/', include('allauth.urls')),
 ]

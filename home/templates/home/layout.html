@@ -1,47 +1,50 @@
 {% load static %}
+{% load cache_bust %}
 
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Grote Programmeer</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <title>Grote Programmeer - {% block title %} {% endblock %}</title>
+  
+  {% block head %}
+  
+  {% endblock %}
 
+  <!-- 3rd party stylesheets, scripts, and fonts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="{% static 'home/styles.css' %}">
-  <script src="{% static 'home/script.js' %}"></script>
-
-  {% block head %}
   
-  {% endblock %}
+  <!-- Custom stylesheets and scripts -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'home/styles.css' %}?{% cache_bust %}">
+  <script src="{% static 'home/script.js' %}?{% cache_bust %}"></script>
+
+
 </head>
 
-<style>
-
-
-</style>
-
 <body>
-  <div style="background-color: grey; height: 100%; width: 100%; position: fixed;">
-    <div class="ui inverted huge menu whitenavbar" id="navbar">
-      <a class="item" name="navbaritem" id="navbaritem" style="width: 195px;" href="{% url 'index' %}">Grote Programmeer</a>
-      <a class="item" name="navbaritem" id="navbaritem" href="{% url 'about-us' %}">About</a>
-      <a class="item" name="navbaritem" id="navbaritem" href="{% url 'pws' %}">PWS</a>
-      <a class="item" name="navbaritem" id="navbaritem" href="{% url 'contact' %}">Contact</a>
-      <div class="ui right inverted menu" id="rightnavbar" style="background-color: var(--accent1);">
-        <button onclick="ExpandLogin()" type="button" id="logbtn" class="ui button">
-          <h1 class="ui header" style="color: var(--accent1);">Login</h1>
+    <div class="ui inverted huge menu" id="navbar">
+
+      <a class="item" style="width: 195px;" href="{% url 'main_index' %}">Grote Programmeer</a>
+      <a class="item" href="{% url 'about-us' %}">About</a>
+      <a class="item" href="{% url 'pws' %}">PWS</a>
+      <a class="item" href="{% url 'contact' %}">Contact</a>
+
+
+      <div class="navbarright">
+        <button onclick="ExpandLogin()" type="button" class="navbarrightitem">
+          <h1>Login</h1>
         </button>
         <a href="{% url 'register' %}">
-          <button type="button" id="regbtn" class="ui button">
-            <h1 class="ui header" style="color: var(--accent1);">Register</h1>
+          <button type="button" class="navbarrightitem" class="ui button">
+            <h1>Register</h1>
           </button>
         </a>
+
         <div id="LoginCard" class="class_login">
           <form action="{% url 'login' %}" method="post">
             <div class="ui form">
@@ -68,9 +71,12 @@
         </div>
       </div>
     </div>
+    
     {% block body %}
     {% endblock %}
-  </div>
+
+    <div id="bottom-padding"></div>
+
     {% if messages %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
@@ -79,15 +85,6 @@
       {% endfor %}
     </script>
     {% endif %}
-    {% if message %}
-      {{message}}
-    <!-- error and succession messages-->
-    <div class="ui message" id="msg" value="{{ status_code }}">
-      <h4>{{ message }}</h4>
-      <a onclick="closemsg()" id="closemsg">
-        <i class="ui icon window outline close"></i>
-      </a>
-    </div>
-    {% endif %}
+
 </body>
 </html>

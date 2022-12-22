@@ -2,83 +2,27 @@
 {% load static %}
 
 {% block head %}
-<script>
-    
-    // Dynamically change the colors of the navbar buttons, fires when mouse is entered
-    $(document).on('mouseenter','#navbaritem', function() {
 
-        // Create variable which hold the 'onscroll' element
-        var onscroll = document.getElementById("onscroll");
 
-        // Check if the user is scrolling between a certain perameter and change the colors accordingly
-        if (onscroll.scrollTop >= 1168 && onscroll.scrollTop <= 1708) {
-            $(this).css('background-color', 'var(--white-darken)')
-        } else {
-            $(this).css('background-color', 'var(--accent1-lighten)')
-        }
-    })
-    
-    // Same as the above, but changes the colors back when the mouse leaves
-    $(document).on('mouseleave','#navbaritem', function() {
-
-        var onscroll = document.getElementById("onscroll");
-        
-        if (onscroll.scrollTop >= 1168 && onscroll.scrollTop <= 1708) {
-            $(this).css('background-color', 'white')
-        } else {
-            $(this).css('background-color', 'var(--accent1)')
-        }
-    })
-
-    // Fires when scrolling
-    function ScrollEvent() {
-
-        // Create variable which holds the 'onscroll' element
-        var onscroll = document.getElementById("onscroll");
-
-        // Check if the user is scrolling between a certain perameter
-        if (onscroll.scrollTop >= 1168 && onscroll.scrollTop <= 1708) {
-            
-            // Change css of certain elements when the user is within the perameter
-            $('#navbar').css('background-color', 'white');
-            $('#rightnavbar').css('background-color', 'white');
-            $('a[name="navbaritem"]').css({'color': 'var(--accent1)', 'background-color': 'white'});
-        } else {
-
-            // Change it back when
-            $('#navbar').css('background-color', 'var(--accent1)');
-            $('#rightnavbar').css('background-color', 'var(--accent1)');
-            $('a[name="navbaritem"]').css({'color': 'white', 'background-color': 'var(--accent1)'});
-        }
-
-        // Create the parallax effect for the background image
-        $('#parallaximg').css('top', onscroll.scrollTop * -0.5);
-    }
-</script>
 
 <style>
+
+    #bottom-padding {
+        display:none;
+    }
 
     #contentsheet {
         height: 600px; 
         padding-left: 10%; 
         padding-right: 10%;
+        background-color: white;
     }
 
-    #fatbottom {
-        background-color: var(--greytext);
-        height: 300px
-    }
-
-    #onscroll {
-        overflow-y: scroll; 
-        overflow-x: hidden; 
-        height: 100%; 
-        width: 100%; 
-    }
 
     #parallaximg {
         position: fixed;
-        height: 600px;
+        top: 0;
+        height: 100%;
         width: 100%;
         z-index: -1;
         background: url("{% static 'home/bg.jpg' %}") !important;
@@ -93,13 +37,13 @@
 
 {% block body %}
 {% load static %}
-<div id="onscroll" onscroll="ScrollEvent()">
     <div id="parallaximg"></div>
-    <div id="contentsheet" class="ui two column grid" style="background-color: white; margin-top: 600px;">
+    <div >
+    <div id="contentsheet" class="ui two column grid" style="margin-top: 600px;">
         <div style="padding: 100px;" class="column">
             <h1 class="titles" style="color: var(--greytext)"><br>Ontdek het vak informatica met de interactieve taal Scratch</h1>
         </div>
-        <div class="column" style="padding: 100px; text-align: center;">
+        <div class="column" style="padding: 100px;">
             <img style="height: 450px;" src="{% static 'home/logo-scratch.png' %}">
         </div>
     </div>
@@ -118,10 +62,10 @@
         <div class="column" style="padding: 100px; text-align: center;"><br>
             <img style="width: 100%;" src="{% static 'home/Python-logo.png' %}">
         </div>
-    </div>
+    </div></div>
     <!--<div id="fatbottom">
         <h1>Dikke legal information hiero en linkjes, misschien wat sources ofzo idfk. Kleur is ook acht tantoe lelijk maar boeie komt goed</h1>
 
     </div>-->
-</div>
+
 {% endblock %}
