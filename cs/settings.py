@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'markdownify.apps.MarkdownifyConfig',
 ]
 
 MIDDLEWARE = [
