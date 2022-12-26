@@ -15,7 +15,7 @@ class Lesson(models.Model):
     title = models.CharField(max_length=128)
     # This stores just text, but should be HTML code, 
     # the view and template make sure it'll be seen as HTML, not raw text
-    file = RichTextField()
+    file = models.TextField()
 
     def slug(self):
         return slugify(self.path), slugify(self.chapterpath)

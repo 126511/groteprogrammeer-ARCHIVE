@@ -22,13 +22,13 @@
 body {
   font-family: 'Roboto','Times New Roman', Times, serif;
   background-color: grey;
-  margin: 0;
+  margin: 0px;
   padding: 0;
   /* weird fix to avoid scrolling when page fits on screen */
   height: 70%;
 }
 
-#body {
+#center_body {
   margin: 200px auto 0px auto;
   width: 600px;
   background-color: white;

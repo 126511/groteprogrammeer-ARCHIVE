@@ -1,32 +1,12 @@
-{% load static %}
-{% load cache_bust %}
+{% extends 'home/base.html' %}
 
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Grote Programmeer - {% block title %} {% endblock %}</title>
+{% block page_title %} Grote Programmeer - {% block title %} {% endblock %} {% endblock %}
   
-  {% block head %}
-  
-  {% endblock %}
+{% block page_head %}
+  {% block head %} {% endblock %}
+{% endblock %}
 
-  <!-- 3rd party stylesheets, scripts, and fonts -->
-  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-  
-  <!-- Custom stylesheets and scripts -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'home/styles.css' %}?{% cache_bust %}">
-  <script src="{% static 'home/script.js' %}?{% cache_bust %}"></script>
-
-
-</head>
-
-<body>
+{% block page_body %}
     <div class="ui inverted huge menu" id="navbar">
 
       <a class="item" style="width: 195px;" href="{% url 'main_index' %}">Grote Programmeer</a>
@@ -39,24 +19,24 @@
         <button onclick="ExpandLogin()" type="button" class="navbarrightitem">
           <h1>Login</h1>
         </button>
-        <a href="{% url 'register' %}">
+        <a href="{% url 'account_signup' %}">
           <button type="button" class="navbarrightitem" class="ui button">
             <h1>Register</h1>
           </button>
         </a>
 
         <div id="LoginCard" class="class_login">
-          <form action="{% url 'login' %}" method="post">
+          <form action="{% url 'account_login' %}" method="post">
             <div class="ui form">
               {% csrf_token %}
 
-              {% if request.GET.next %}
-                <input type="hidden" name="next" value="{{ request.GET.next }}">
+              {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
               {% endif %}
 
               <div class="field">
                 <label style="color:var(--greytext);">Username</label>
-                <input type="text" name="username" label="Username" autofocus>
+                <input type="text" name="login" label="Username" autofocus>
               </div>
               <div class="field">
                 <label style="color:var(--greytext);">Password</label>
@@ -64,7 +44,7 @@
               </div>
               <div style="width: 100%;">
                 <button type="submit" value="Log in" class="ui button">Submit</button>
-                <a style="position:absolute; right: 0px; bottom: 0px; color:var(--greytext);" href="{% url 'login' %}">to login page</a>
+                <a style="position:absolute; right: 0px; bottom: 0px; color:var(--greytext);" href="{% url 'account_login' %}">to login page</a>
               </div>
             </div>
           </form>
@@ -78,13 +58,11 @@
     <div id="bottom-padding"></div>
 
     {% if messages %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    
     <script>
       {% for message in messages %}
       toastr.{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}('{{ message|safe }}');
       {% endfor %}
     </script>
     {% endif %}
-
-</body>
-</html>
+{% endblock %}

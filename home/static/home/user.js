@@ -13,11 +13,6 @@ function closemsg() {
     }
   })
 
-$(document).ready( function() {
-
-//Hide the navbar once the DOM has loaded
-$('#expandednav').hide();
-
 //Triggers on every mouse move
 $(document).mousemove(function() {
   
@@ -27,7 +22,6 @@ $(document).mousemove(function() {
   } else {
     CloseNav();
   }
-});
 });
 
 //Expand the navbar

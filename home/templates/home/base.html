@@ -1,0 +1,43 @@
+{% load static %}
+{% load cache_bust %}
+
+<!DOCTYPE html>
+<html lang="nl" id="overwrite-html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block page_title %} {% endblock %}</title>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    
+    <!-- Third party fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  
+    <!-- Semantic framework -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+    <!-- Toastr (message framework) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    
+    <!-- Custom scripts -->
+    <script src="{% static 'home/user.js' %}?{% cache_bust %}"></script>
+    <script src="{% static 'home/script.js' %}?{% cache_bust %}"></script>
+
+    <!-- Custom stylesheets -->
+    <link rel="stylesheet" href="{% static 'home/user.css' %}?{% cache_bust %}">
+    <link rel="stylesheet" href="{% static 'home/styles.css' %}?{% cache_bust %}">
+
+    {% block page_head %} {% endblock %}
+    
+</head>
+<body id="overwrite-body">
+    {% block page_body %} {% endblock %}
+</body>
+</html>

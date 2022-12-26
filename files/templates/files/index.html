@@ -1,26 +1,28 @@
 {% extends "home/userlayout.html" %}
 
-{% block title %} List of files {% endblock %}
+{% block title %} Alle lessen {% endblock %}
 
 {% block head %}
-<style>
-    #body {
-        width: 70%;
-        background-color: white;
-        margin: auto;
-        padding: 64px;
-        /*padding-right: 0px;  ~vincent */
-        margin-right: auto;
-        margin-left: auto;
-    }
-</style>
+<script>
+
+    // Fires when the DOM has finished loading
+    $(document).ready( function() {
+        // Changes the background color of the first vertical navbar item
+        $('.navbtn').eq(1).css({"background-color": "var(--accent1)", "color": "white"});
+        $('.navlink').eq(1).addClass('disabled');
+        $('.navlink').eq(1).click(function(e) { e.preventDefault(); });
+    })
+</script>
+
+
+
 {% endblock %}
 
 {% block body %}
-<div id="body" style="margin-left: 80px;">
-    <h2>Jump back to your <a href="{% url 'latestpage' %}">latest page</a>!</h2>
+<div id="body" >
+    <h2><a href="{% url 'latestpage' %}">Terug naar mijn laatste les</a></h2>
 
-    <h1>A list of the files</h1>
+    <h1>Alle lessen</h1>
 
     <ul>
         {% for chapterpath, tuples in pagedict.items %}

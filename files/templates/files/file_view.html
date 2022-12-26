@@ -1,16 +1,26 @@
 {% extends "home/userlayout.html" %}
 {% load static %}
+{% load cache_bust %}
+{% load markdownify %}
+
+
 
 {% block head %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script> 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/googlecode.min.css">
 
-<script src="{% static 'files/script.js' %}"></script>
-<link rel="stylesheet" href="{% static 'files/styles.css'%}">
+<style>
+    #overwrite-html, #overwrite-body {
+        padding: 0;
+    }
+</style>
 
-<script>
-    hljs.initHighlightingOnLoad();
-</script>
+
+
+<script src="{% static 'files/script.js' %}?{% cache_bust %}"></script>
+<link rel="stylesheet" href="{% static 'files/styles.css'%}?{% cache_bust %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
 
 {% endblock %}
 
@@ -18,11 +28,12 @@
 
 
 {% block body %}
-<div id="body">
     <div id="lesson">
-        <button onclick="get_html(`index`)">Open docs</button>
+        <button onclick="get_html(`index`)">Open documentatie</button>
 
-            {{ file.file|safe }}
+        {% autoescape off %}
+            {{ file.file }}
+        {% endautoescape %}
 
 
         <!-- {% if file_in_course %} -->    
@@ -41,7 +52,6 @@
         <div id="documentation" style="position: fixed; margin-top: 10px;"></div>
     </div>
     
-</div>
 
 <input type="hidden" id="docs" name="docs" value="{{ docs }}">
 {% endblock %}

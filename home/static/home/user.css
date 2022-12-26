@@ -1,52 +1,3 @@
-body {
-    font-family: 'Roboto','Times New Roman', Times, serif;
-}
-
-.bg-image {
-    width: 100%;
-    height: 700px;
-    background-color: red;
-    color: blue;
-}
-
-.site-body {
-    width: 1000px;
-    height: 700px;
-    position: relative;
-    margin: 0 auto;
-}
-
-#welcome {
-    color: red;
-}
-
-:root {
-    --accent1: #fbb947;
-    --accent1-lighten:#fccd7d;
-    --accent1-darken: #fba918;
-    --accent2: #fb4789;
-    --accent2-lighten: #fc69a0;
-    --white-darken: #f0f0f0;
-    --greytext:  #616161;
-    --success: rgb(37, 199, 86);
-    --error: rgb(255, 72, 0);
-    --shadow-1: 0 1px 1px rgba(0,0,0,0.12), 
-                0 2px 2px rgba(0,0,0,0.12), 
-                0 4px 4px rgba(0,0,0,0.12), 
-                0 8px 8px rgba(0,0,0,0.12);
-    --shadow-2: 0 1px 1px rgba(0,0,0,0.12), 
-                0 2px 2px rgba(0,0,0,0.12), 
-                0 4px 4px rgba(0,0,0,0.12), 
-                0 8px 8px rgba(0,0,0,0.12),
-                0 16px 16px rgba(0,0,0,0.12);
-    --shadow-3: 0 1px 1px rgba(0,0,0,0.12), 
-                0 2px 2px rgba(0,0,0,0.12), 
-                0 4px 4px rgba(0,0,0,0.12), 
-                0 8px 8px rgba(0,0,0,0.12),
-                0 16px 16px rgba(0,0,0,0.12),
-                0 32px 32px rgba(0,0,0,0.12);
-    }
-  
 .navtext {
     font-weight: bolder;
     font-size: 1.5rem;
@@ -54,7 +5,9 @@ body {
 }
 
 #verticalnav {
-    position: absolute;
+    position: fixed;
+    top: 0;
+    margin: 0px;
     height: 100%;
     width: 64px;
     background-color: var(--accent1);
@@ -64,13 +17,16 @@ body {
 }
 
 #expandednav {
-    position: absolute;
+    position: fixed;
+    display: none;
+    top: 0;
     left: 63px;
     height: 100%;
     width: 196px;
     background-color: white;
     border-radius: 0px 16px 16px 0px;
     box-shadow: var(--shadow-2);
+    z-index: 8;
 }
 
 .navitem {
@@ -83,33 +39,42 @@ div.ui.navbtn {
     background-color: white;
     height: 64px;
     width: 100%;
-    padding-top:16px;
-    text-align: left;
+    padding-top: 16px;
 }
 
 div.ui.navbtn:hover {
-    background-color: var(--accent1);
-    color: white !important;
+    background-color: var(--white-darken);
 }
 
-#closemsg {
-color: white;
-font-size: 1.5rem;
-position:absolute;
-right: 0px;
-top: 8px;
+.icon {
+    font-size: 2.5em !important;
+    margin: auto !important;
+    margin-top: 12px !important;
 }
 
-#closemsg:hover {
-    font-size: 2rem;
+.flexbox {
+    margin: 40px 80px;
+    display: flex;
+    row-gap: 80px;
+    column-gap: 40px;
+    flex-wrap: wrap;
 }
 
-#msg {
-    background-color: red;
-    color: white;
-    position: absolute;
-    width: 360px;
-    left: 10%;
-    top: 80px;
-    box-shadow: var(--shadow-3);
+.flex-item {
+    background-color: white;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+#body {
+    width: 70%;
+    background-color: white;
+    margin: 50px auto auto 100px;
+    padding: 64px;
+
 }

@@ -1,91 +1,73 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title>GP - {% block title %}{% endblock %}</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+{% extends 'home/base.html' %}
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
+{% block page_title %}
+  GP - {% block title %}{% endblock %}
+{%endblock%}
 
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-
-  <script src="{% static 'home/user.js' %}"></script>
-  <link rel="stylesheet" href="{% static 'home/user.css' %}">
+{% block page_head %}
+  {% block head %} {% endblock %}
+{% endblock %}
 
 
-  {% block head %}
-  
-  {% endblock %}
+{% block page_body %}
+    <div class="ui inverted vertical grid" id="verticalnav" style="z-index: 9;">
 
-  <script>
-
-
-    
-  </script>
-
-  <style>
-  
-
-  
-  </style>
-</head>
-<body>
-  <div style="height: 100%; width: 100%; position: fixed; background-color: grey;">
-    <div class="ui inverted vertical menu grid" id="verticalnav" style="z-index: 9;">
       <div class="navitem row">
-        <i class="icon home" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
+        <i class="icon home"></i>
+      </div>
+
+      <div class="navitem row">
+        <i class="icon compass"></i>
       </div>
       <div class="navitem row">
-        <i class="icon compass" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
-      </div>
-      <div class="navitem row">
-        <i class="icon book" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
+        <i class="icon book"></i>
       </div>
       <div class="row" style="height: calc(100% - 320px);"></div>
       <div class="navitem row">
-        <i class="arrow alternate circle left icon" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
+        <i class="arrow alternate circle left icon"></i>
       </div>
       <div class="navitem row">
-        <i class="cog icon" style="font-size: 2.5em; margin: auto; margin-top: 12px;"></i>
-      </div>
-    </div>
-    <div id="expandednav" style="z-index: 8;">
-      <div class="ui vertical buttons" style="width: 100%;">
-        <a href="{% url 'user' %}">
-          <div class="ui button navbtn" style="border-radius: 0px 16px 0px 0px;">
-            <h2 class="navtext">Home</h2>
-          </div>
-        </a>
-        <a href="/files">
-          <div class="ui button navbtn" style="border-radius: 0px 0px 0px 0px;">
-            <h2 class="navtext">Lessen</h2>
-          </div>
-        </a>
-        <a href="{% url 'user' %}">
-          <div class="ui button navbtn" style="border-radius: 0px 0px 16px 0px;">
-            <h2 class="navtext">Documentatie</h2>
-          </div>
-        </a>
-      </div>
-      <div style="height: calc(100% - 320px); width: 100%;"></div>
-      <div class="ui vertical buttons" style="width:100%;">
-        <a href="{% url 'logout' %}">
-          <div class="ui button navbtn" style="border-radius: 0px 16px 0px 0px;">
-            <h2 class="navtext">Log uit</h2>
-          </div>
-        </a>
-        <a href="{% url 'user' %}">
-          <div class="ui button navbtn" style="border-radius: 0px 0px 16px 0px;">
-            <h2 class="navtext">Opties</h2>
-          </div>
-        </a>
+        <i class="cog icon"></i>
       </div>
     </div>
 
+
+    <div id="expandednav">
+
+      <a class="navlink" href="{% url 'user' %}">
+        <div class="ui button navbtn" style="border-radius: 0px 16px 0px 0px;">
+          <h2 class="navtext">Home</h2>
+        </div>
+      </a>
+
+      <a class="navlink" href="{% url 'file_index' %}">
+        <div class="ui button navbtn" style="border-radius: 0px 0px 0px 0px;">
+          <h2 class="navtext">Lessen</h2>
+        </div>
+      </a>
+
+      <a class="navlink" href="{% url 'user' %}">
+        <div class="ui button navbtn" style="border-radius: 0px 0px 16px 0px;">
+          <h2 class="navtext">Documentatie</h2>
+        </div>
+      </a>
+
+      <div style="height: calc(100% - 320px)"></div>
+
+      <a class="navlink" href="{% url 'account_logout' %}">
+        <div class="ui button navbtn" style="border-radius: 0px 16px 0px 0px;">
+          <h2 class="navtext">Log uit</h2>
+        </div>
+      </a>
+
+      <a class="navlink" href="{% url 'user' %}">
+        <div class="ui button navbtn" style="border-radius: 0px 0px 16px 0px;">
+          <h2 class="navtext">Opties</h2>
+        </div>
+      </a>
+      
+    </div>
+    
     {% block body %}
     {% endblock %}
 
@@ -97,17 +79,4 @@
       {% endfor %}
     </script>
     {% endif %}
-
-
-    {% if message %}
-    <!-- error and succession messages-->
-    <div class="ui message" id="msg" value="{{ status_code }}">
-      <h4>{{ message }}</h4>
-      <a onclick="closemsg()" id="closemsg">
-        <i class="ui icon close"></i>
-      </a>
-    </div>
-    {% endif %}
-  </div>
-</body>
-</html>
+{% endblock %}

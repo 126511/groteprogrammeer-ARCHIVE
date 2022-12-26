@@ -6,64 +6,31 @@
 
     // Fires when the DOM has finished loading
     $(document).ready( function() {
-
         // Changes the background color of the first vertical navbar item
         $('.navbtn').eq(0).css({"background-color": "var(--accent1)", "color": "white"});
-
+        $('.navlink').eq(0).addClass('disabled');
+        $('.navlink').eq(0).click(function(e) { e.preventDefault(); });
     })
 </script>
-
-<style>
-    #welcome-div {
-        width: 100%;
-        height: 100%;
-        background-color: white;
-        border-radius: 4px;
-        margin: 8px;
-    }
-
-    #ifcourse {
-        width: 100%;
-        height: 100%;
-        background-color: white;
-        border-radius: 4px;
-        margin: 8px;
-    }
-
-    #elsecourse {
-        width: 100%;
-        height: 100%;
-        background-color: white;
-        border-radius: 4px;
-        margin: 8px;
-    }
-
-    #tolesson {
-        width: 100%;
-        height: 100%;
-        background-color: white;
-        border-radius: 4px;
-        margin: 8px;
-    }
-</style>
 {% endblock %}
 
 {% block title %} Welkom! {% endblock %}
 
-{% block body %}
-    <div class="ui grid" style="margin-left: 80px; margin-right: 80px; margin-top: 40px; margin-bottom: 40px;">
-        <div class="four wide column" id="welcome-div">
-            <h1> Welkom, {{ request.user.username }} </h1>
-        </div>
 
-        {% if chapter %}
-        <div class="four wide column" id="ifcourse">
-            <p>Leuk dat je al een les van ons volgt!</p>
-            <p>Klik <a href="{% url 'latestpage' %}">hier</a> om direct te gaan leren!</p>
-        </div>
-        {% else %}
-        <div class="four wide column" id="elsecourse">
+{% block body %}
+    <div class="flexbox">
+        <div class="flex-item">
+            <h1> Welkom, {{ request.user.username }} </h1>
+
+            {% if chapter %}
+
+                <p>Leuk dat je al een les van ons volgt!</p>
+                <p>Klik <a href="{% url 'latestpage' %}">hier</a> om direct te gaan leren!</p>
+
+            {% else %}
+
             <p>Helaas! Je volgt nog geen lessen van ons.</p>
+
             <p>
                 <form action="{% url 'user' %}" method="post">
                     {% csrf_token %}
@@ -76,11 +43,13 @@
                     <button type="submit">Start de les</button>
                 </form>
             </p>
-        </div>
-        {% endif %}
 
-        
-        <div class="four wide column" id="tolesson">
+            {% endif %}
+        </div>
+
+        {% if chapter %}
+        <div class="flex-item">
+            <h3>Lessen</h3>
             <ul>
             {% for page, completed in progresses.items %}
                 <li>
@@ -90,11 +59,11 @@
             {% endfor %}
             </ul>
 
-            {% if chapter %}
             <form method="get" action="{% url 'leavecourse' %}">
                 <button type="submit">Maak de les af</button>
             </form>
-            {% endif %}
-        </div>
+        </div>      
+        {% endif %}
+
     </div>
 {% endblock %}
